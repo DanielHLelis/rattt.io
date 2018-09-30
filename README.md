@@ -1,2 +1,2 @@
 # rattt.io
-Ratt.io react made version repo.
+Tic tac toe game with rat theme. Basec on React framework.
