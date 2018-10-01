@@ -8,13 +8,24 @@ import {
 import IntroScreen from 'screens/IntroScreen'
 import MainScreen from 'screens/MainScreen'
 
+/*
+    Switch stops on the first route element, or eof, and renders everything before except routes.
+    TODO:
+        -404 page
+        -rato page EE
+*/
+
 const ROUTES = (props) => (
     <Switch>
-        <Route exact path="/" component={IntroScreen} />
+        <Route exact path={props.prefix + '/'} component={IntroScreen} />
         <props.Mestre>
-            <Route exact path="/index" component={MainScreen} />
+            <Route exact path={props.prefix + '/main'} component={MainScreen} />
         </props.Mestre>
     </Switch>
 );
+
+ROUTES.defaultProps = {
+    prefix: ''
+}
 
 export default ROUTES;
