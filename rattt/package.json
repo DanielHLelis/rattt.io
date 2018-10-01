@@ -1,10 +1,12 @@
 {
   "name": "rattt",
   "version": "0.1.0",
+  "homepage": "https://ymegam.github.io/rattt",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.3",
     "cheet.js": "^0.3.3",
+    "gh-pages": "^2.0.0",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.4",
     "pubsub": "^3.2.1",
@@ -20,6 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
