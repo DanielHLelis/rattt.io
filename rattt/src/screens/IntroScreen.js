@@ -13,7 +13,7 @@ class IntroScreen extends Component {
     this.state={
       x:0,
       y:0,
-      hue: 0
+      ee: ''
     }
   }
 
@@ -32,18 +32,15 @@ class IntroScreen extends Component {
   }
 
   render() {
-    cheet('r a t o', () => setInterval(() => {
-      // window.alert('Ok');
-      this.setState({hue: this.state.hue + 5});
-    }, 10));
+    cheet('r a t o', () => this.setState({ee: 'animation: rainbow infinite linear 0.5s;'}));
     return (
-      <Filter hue={this.state.hue} style={[this._backgroundPosition(this.state.x, this.state.y), {filter: `hue-rotate(${this.state.hue}deg)`}]} id='background' onMouseMove={this._parallax}>
+      <Filter ee={this.state.ee} style={this._backgroundPosition(this.state.x, this.state.y)} id='background' onMouseMove={this._parallax}>
         <div className="main">
           <p className='logo blue lt'>Rattt.io</p>
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
         <div className="button">
-          <Link className="st blue link" to="/index">
+          <Link className="st blue link" to="/main">
             Entrar
           </Link>
         </div>
@@ -53,7 +50,7 @@ class IntroScreen extends Component {
 }
 
 const Filter = styled.div`
-  filter: hue-rotate(${props => props.hue + 'deg'});
+  ${props=>props.ee}
 `;
 
 export default IntroScreen;
