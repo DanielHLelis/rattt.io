@@ -6,7 +6,7 @@ export default class Master extends Component{
     render(){
         return(
             <div>
-                <p className="blue lt">Top</p>
+                <p style={{position: 'absolute'}}className="blue lt header">Top</p>
                 {this.props.children}
             </div>
         );

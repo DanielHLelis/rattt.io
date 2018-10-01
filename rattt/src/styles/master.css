@@ -8,6 +8,16 @@ body {
   box-sizing: border-box;
 }
 
+.header{
+  background-color: #5d5d5d;
+  width: 100%;
+  text-align: center;
+  height: 1.5em;
+}
+.header + *{
+  padding-top: 0em;
+}
+
 .lt{
   font-size: 3em;
   font-family: "Quicksand", "Arial", "FreeSans", sans-serif;

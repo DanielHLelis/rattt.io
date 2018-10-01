@@ -34,7 +34,7 @@ class IntroScreen extends Component {
   render() {
     cheet('r a t o', () => this.setState({ee: 'animation: rainbow infinite linear 0.5s;'}));
     return (
-      <Filter ee={this.state.ee} style={this._backgroundPosition(this.state.x, this.state.y)} id='background' onMouseMove={this._parallax}>
+      <Filter ee={this.state.ee} style={this._backgroundPosition(this.state.x, this.state.y)} id='backgroundIntro' onMouseMove={this._parallax}>
         <div className="main">
           <p className='logo blue lt'>Rattt.io</p>
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
