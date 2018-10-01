@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree|Hind|Monoton|Quicksand|Rubik');
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Quicksand";
+}
+*{
+  box-sizing: border-box;
+}
+
+.lt{
+  font-size: 3em;
+  font-family: "Quicksand", "Arial", "FreeSans", sans-serif;
+}
+.st{
+  font-size: 1.5em;
+  font-family: "Quicksand", "Arial", "FreeSans", sans-serif;
+}
+.mt{
+  font-size: 2em;
+  font-family: "Quicksand", "Arial", "FreeSans", sans-serif;
+}
+.logo{
+  font-family: "Monoton", sans-serif !important;
+}
+.blue{
+  color: #00a4dd;
+}
+.white{
+  color: #fff;
+}
+a{
+  text-decoration: none;
+}
+.link:active{
+  color: #00a4ddaa;
+}
+.link:hover{
+  color: #00b4ed;
+}
+
+p{
+  margin: 0;
+}
