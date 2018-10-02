@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { Button } from 'reactstrap'
 
 import cheet from 'cheet.js'
 
@@ -15,6 +16,10 @@ class IntroScreen extends Component {
       y:window.innerHeight/2,
       ee: ''
     }
+  }
+
+  _setEnter = (e) => {
+    window.localStorage.setItem('firstEnter', 'false');
   }
 
   _parallax = (e) => {
@@ -40,8 +45,10 @@ class IntroScreen extends Component {
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
         <div className="button">
-          <Link className="st blue link" to="/main">
-            Entrar
+          <Link onClick={this._setEnter} className="st blue" to="/main">
+            <Button size='lg' color="primary" >
+              Entrar
+            </Button>
           </Link>
         </div>
       </Filter>

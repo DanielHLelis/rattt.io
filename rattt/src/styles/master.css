@@ -1,8 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree|Hind|Monoton|Quicksand|Rubik');
-body {
+
+@keyframes rainbow{
+  from{
+    filter: hue-rotate(0deg)
+  }
+  to{
+    filter: hue-rotate(359deg)
+  }
+}
+
+html, body {
   margin: 0;
   padding: 0;
   font-family: "Quicksand";
+  background-color: #2b2b2b;
 }
 *{
   box-sizing: border-box;
@@ -19,21 +30,32 @@ body {
   flex: 1 1 auto;
 }
 
+main{
+  flex: 1 1 auto;
+}
+
+.darkBg{
+  background-color: #2b2b2b;
+}
+
 .header{
-  background-color: #5d5d5d;
-  width: 100%;
-  text-align: center;
-  height: 1.5em;
+  background-color: #343a40;
   flex: 0 1 auto;
 }
 .header + *{
-  padding-top: 0em;
+  padding-top: 1em;
 }
 
 .lt{
   font-size: 3em;
   font-family: "Quicksand", "Arial", "FreeSans", sans-serif;
 }
+
+.sst{
+  font-size: 1em;
+  font-family: "Quicksand", "Arial", "FreeSans", sans-serif;
+}
+
 .st{
   font-size: 1.5em;
   font-family: "Quicksand", "Arial", "FreeSans", sans-serif;
@@ -65,11 +87,24 @@ p{
   margin: 0;
 }
 
-.pageEnter {
-  opacity: 0;
+.rotate-active{
+  transform: rotateZ(180deg);
+}
+.rotate{
+  transition: transform 0.1s ease-in-out;
+}
+
+.rainbow{
+  animation: rainbow infinite linear 0.5s;
+}
+
+/* .page-enter {
+  position: absolute;
+  background-color: #2b2b2b;
+  right: 100vw;
   z-index: 1;
 }
-.pageEnter.pageEnterActive{
-  opacity: 1;
-  transition: opacity 250ms ease-in;
-}
+.page-enter.page-enter-active{
+  right: 0;
+  transition: all 250ms ease-in;
+} */

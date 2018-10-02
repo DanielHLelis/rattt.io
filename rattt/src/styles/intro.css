@@ -1,12 +1,3 @@
-@keyframes rainbow{
-  from{
-    filter: hue-rotate(0deg)
-  }
-  to{
-    filter: hue-rotate(359deg)
-  }
-}
-
 :root{
   --rotate: 0deg;
 }

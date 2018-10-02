@@ -1,12 +1,9 @@
 import React from 'react'
 import {
     Route,
-    Switch
+    Switch,
+    Redirect
 } from 'react-router-dom'
-import {
-    TransitionGroup,
-    CSSTransition
-} from 'react-transition-group'
 
 import paths from 'config/paths'
 
@@ -23,11 +20,12 @@ import NotFound from 'screens/404'
 
 const ROUTES = (props) => (
     <Switch>
-        <Route exact path={paths.index} component={IntroScreen} />
+        <Route exact path={paths.index} component={(window.localStorage.getItem('firstEnter')==='false')?(() => <Redirect to={paths.main} />):(IntroScreen)} />
         <props.Mestre>
             <Switch>
                 <Route exact path={paths.main} component={MainScreen} />
-                <NotFound/>
+
+                <Route component={NotFound} />
             </Switch>
         </props.Mestre>
     </Switch>

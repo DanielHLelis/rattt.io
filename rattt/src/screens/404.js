@@ -4,6 +4,11 @@ import 'styles/404.css'
 import Particles from 'react-particles-js'
 import ParticlesConfig from 'config/particles'
 
+/*
+    TODO:
+        -Glitch
+*/
+
 export default class NotFound extends Component{
 
 
@@ -11,7 +16,7 @@ export default class NotFound extends Component{
 
         return(
             <div className="contentDiv">
-                <Particles params={ParticlesConfig} className="particles" width={window.innerWidth} height={window.innerHeight}/>
+                <Particles params={ParticlesConfig['0']} className="particles" width={window.innerWidth} height={window.innerHeight}/>
                 <div id="bg" >
                     <p className="blue logo nf">404</p>
                     <p className="white mt">Nossos ratos não encontraram a página!</p>
