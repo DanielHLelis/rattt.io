@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     return (
         <Router>
-          <Routes prefix="/rattt" Mestre={Master}/>
+          <Routes prefix="/" Mestre={Master}/>
         </Router>
     );
   }

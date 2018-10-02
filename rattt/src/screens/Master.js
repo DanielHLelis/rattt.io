@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import NavBox from 'components/NavBar'
 import 'styles/master.css'
 
 export default class Master extends Component{
@@ -6,7 +7,7 @@ export default class Master extends Component{
     render(){
         return(
             <div>
-                <p style={{position: 'absolute'}}className="blue lt header">Top</p>
+                <NavBox/>
                 {this.props.children}
             </div>
         );

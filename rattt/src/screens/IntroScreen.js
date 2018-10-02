@@ -11,8 +11,8 @@ class IntroScreen extends Component {
     super(props);
 
     this.state={
-      x:0,
-      y:0,
+      x:window.innerWidth/2,
+      y:window.innerHeight/2,
       ee: ''
     }
   }
