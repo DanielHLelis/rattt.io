@@ -11,7 +11,7 @@ import NotFound from 'screens/404'
 /*
     Switch stops on the first route element, or eof, and renders everything before except routes.
     TODO:
-        -404 page
+        -pages transition
         -rato page EE
 */
 
