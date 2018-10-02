@@ -5,6 +5,7 @@ import {
     NavbarBrand,
     NavbarToggler
 } from 'reactstrap'
+import paths from 'config/paths'
 
 export default class NavBox extends Component{
 
@@ -23,9 +24,9 @@ export default class NavBox extends Component{
     render(){
 
         return(
-            <div>
+            <div style={{zIndex: 5}}>
                 <Navbar color="dark" expand="md" >
-                    <NavbarBrand href="/main"><span class="logo blue">Ratt.io</span></NavbarBrand>
+                    <NavbarBrand href={paths.main}><span class="logo blue">Ratt.io</span></NavbarBrand>
                     <NavbarToggler onClick={this._toggleNav}/>
                 </Navbar>
             </div>

@@ -3,6 +3,12 @@ import {
     Route,
     Switch
 } from 'react-router-dom'
+import {
+    TransitionGroup,
+    CSSTransition
+} from 'react-transition-group'
+
+import paths from 'config/paths'
 
 import IntroScreen from 'screens/IntroScreen'
 import MainScreen from 'screens/MainScreen'
@@ -17,10 +23,12 @@ import NotFound from 'screens/404'
 
 const ROUTES = (props) => (
     <Switch>
-        <Route exact path={props.prefix + '/'} component={IntroScreen} />
+        <Route exact path={paths.index} component={IntroScreen} />
         <props.Mestre>
-            <Route exact path={props.prefix + '/main'} component={MainScreen} />
-            <NotFound/>
+            <Switch>
+                <Route exact path={paths.main} component={MainScreen} />
+                <NotFound/>
+            </Switch>
         </props.Mestre>
     </Switch>
 );

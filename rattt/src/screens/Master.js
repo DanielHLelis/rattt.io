@@ -6,7 +6,7 @@ export default class Master extends Component{
 
     render(){
         return(
-            <div>
+            <div className="master">
                 <NavBox/>
                 {this.props.children}
             </div>

@@ -10,7 +10,7 @@ export default class NotFound extends Component{
     render(){
 
         return(
-            <div>
+            <div className="contentDiv">
                 <Particles params={ParticlesConfig} className="particles" width={window.innerWidth} height={window.innerHeight}/>
                 <div id="bg" >
                     <p className="blue logo nf">404</p>

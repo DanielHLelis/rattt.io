@@ -1,7 +1,7 @@
 {
   "name": "rattt",
   "version": "0.1.0",
-  "homepage": "https://ymegam.github.io/rattt",
+  "homepage": "https://ymegam.github.io/",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.3",
