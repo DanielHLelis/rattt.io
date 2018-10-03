@@ -1,13 +1,4 @@
-.nf{
-    font-size: 10em;
-    animation: rainbow infinite linear 0.5s;
-}
-.contentDiv{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+/*Positioning*/
 #bg{
     background-color: #2b2b2b;
     display: flex;
@@ -20,6 +11,17 @@
     flex: 1 1 auto;
     text-align: center;
 }
+.contentDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .particles{
     position: fixed;
+}
+/*Text*/
+.nf{
+    font-size: 10em;
+    animation: rainbow infinite linear 0.5s;
 }
