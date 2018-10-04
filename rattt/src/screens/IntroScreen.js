@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button } from 'reactstrap'
+import { Button } from 'react-bootstrap'
 
 import cheet from 'cheet.js'
 
@@ -45,11 +45,11 @@ class IntroScreen extends Component {
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
         <div className="button">
-          <Link onClick={this._setEnter} className="st blue" to="/main">
-            <Button size='lg' color="primary" >
+
+            <Button size='lg' className="lt" variant="primary" onClick={this._setEnter} href="/main" >
               Entrar
             </Button>
-          </Link>
+
         </div>
       </Filter>
     );

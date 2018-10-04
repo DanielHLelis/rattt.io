@@ -1,26 +1,11 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import {
     Navbar,
-    NavbarBrand,
-    NavbarToggler,
     Nav,
-    NavItem,
-    NavLink,
-    Collapse,
-    Button,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem
-} from 'reactstrap'
-import paths, {NavData} from 'config/paths'
+    Button
+} from 'react-bootstrap'
 
-const test = [
-    {href: '/', label: 'Intro', func: (e) => {
-        window.localStorage.setItem('firstEnter', 'true');
-    }}
-]
+import paths, {NavData} from 'config/paths'
 
 export default class NavBox extends Component{
 
@@ -43,22 +28,18 @@ export default class NavBox extends Component{
     render(){
         return(
             <header className='header'>
-                <Navbar color="dark" expand="md">
-                    <NavbarBrand href={paths.main}><span id="mark" class="logo st blue">Ratt.io</span></NavbarBrand>
-                    <NavbarToggler className={(this.state.isOpen)?('rotate rotate-active'):('rotate')} onClick={this._toggleNav}>
-                        <Button color="primary">{' ▼ '}</Button>
-                    </NavbarToggler>
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
+                <Navbar variant="dark" bg="dark" expand="lg">
+                    <Navbar.Brand href={paths.main}><span id="mark" className="logo st blue">Ratt.io</span></Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" color="primary" />
+                    <Navbar.Collapse>
+                        <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/}
                             {NavData.map((item, index) => 
-                                <NavItem key={toString(index)}>
-                                    <NavLink onClick={item.onClick} className="sst" href={item.href}>
-                                        <Button color="primary" outline >{item.label}</Button>
-                                    </NavLink>
-                                </NavItem>
+                                    <Nav.Link key={index.toString()} onClick={item.onClick} className="mt" href={item.href}>
+                                        <Button size="md" variant="outline-primary" >{item.label}</Button>
+                                    </Nav.Link>
                             )}
                         </Nav>
-                    </Collapse>
+                    </Navbar.Collapse>
                 </Navbar>
             </header>
         )

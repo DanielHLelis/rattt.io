@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import NavBox from 'components/NavBar'
 import {
     
-} from 'reactstrap'
+} from 'react-bootstrap'
 import cheet from 'cheet.js'
 import 'styles/master.css'
 
