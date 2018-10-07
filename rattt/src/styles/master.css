@@ -87,6 +87,9 @@
   .darkBg{
     background-color: #2b2b2b;
   }
+  .bluesvg{
+    filter: invert(0.45) sepia(1) saturate(6) hue-rotate(175deg);
+  }
 /*State and Animations*/
   @keyframes rainbow{
     from{

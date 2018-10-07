@@ -14,7 +14,10 @@ export default class TradicionalScreen extends Component{
             <main style={{
                 alignItems: 'center',
             }} className="darkBg contentDiv">
-                <TTT/>
+                <TTT xSize={3} ySize={3} players={2} symbols={{
+                    '1': 'X',
+                    '2': 'O'
+                }} />
             </main>
 
         );

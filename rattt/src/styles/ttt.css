@@ -1,0 +1,11 @@
+.gridBlock{
+    margin: 2px 2px 0 0;
+    border: 1px solid var(--primary);
+    border-radius: 4%;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+}
