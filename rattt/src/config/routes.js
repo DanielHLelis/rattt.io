@@ -9,6 +9,7 @@ import paths from 'config/paths'
 
 import IntroScreen from 'screens/IntroScreen'
 import MainScreen from 'screens/MainScreen'
+import Tradicional from 'screens/Tradicional'
 import NotFound from 'screens/404'
 
 /*
@@ -24,6 +25,7 @@ const ROUTES = (props) => (
         <props.Mestre>
             <Switch>
                 <Route exact path={paths.main} component={MainScreen} />
+                <Route exact path={paths.tradicional} component={Tradicional} />
 
                 <Route component={NotFound} />
             </Switch>

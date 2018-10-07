@@ -29,7 +29,7 @@ export default class NavBox extends Component{
         return(
             <header className='header'>
                 <Navbar variant="dark" bg="dark" expand="lg">
-                    <Navbar.Brand href={paths.main}><span id="mark" className="logo st blue">Ratt.io</span></Navbar.Brand>
+                    <Navbar.Brand href={paths.main}><span id="mark" className="logo st blue">Rattt.io</span></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" color="primary" />
                     <Navbar.Collapse>
                         <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/}
