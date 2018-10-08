@@ -5,6 +5,8 @@ import {
     Button
 } from 'react-bootstrap'
 
+import { Link } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import{
     faCaretDown
@@ -26,6 +28,8 @@ export default class NavBox extends Component{
         window.localStorage.setItem('firstEnter', 'true');
     }
 
+    _ratttAlert = () => window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servido! Tente novamente mais tarde!')
+
     _toggleNav = () => {
         this.setState({isOpen: !this.state.isOpen})
     }
@@ -38,13 +42,19 @@ export default class NavBox extends Component{
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" variant="outline-primary" />
                     <Navbar.Collapse>
                         <Nav className="mr-auto">{/*ml == margin left; mr == margin right*/}
+
                         </Nav>
-                        <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/}
-                            {RightNavData.map((item, index) => 
-                                    <Nav.Link key={index.toString()} onClick={item.onClick} className="mt" href={item.href}>
-                                        <Button size="md" variant="outline-primary" >{item.label}</Button>
-                                    </Nav.Link>
-                            )}
+
+                        <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/} 
+
+                            <NavLink onClick={this._ratttAlert} className="mt" href={''}>
+                                <Button size="md" variant="outline-primary" >Log-in</Button>
+                            </NavLink>
+
+                            <NavLink onClick={this._ratttAlert} className="mt" href={''}>
+                                <Button size="md" variant="outline-primary" >Sign-up</Button>
+                            </NavLink>
+
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
@@ -52,7 +62,23 @@ export default class NavBox extends Component{
         )
     }
 }
+const NavLink = (props) => (
+    <Link to={props.href}>
+        <Nav.Link {...props} className={props.className} >
+            {props.children}
+        </Nav.Link>
+    </Link>
+    
+);
 
+const NavItem = (props) => (
+    <Link to={props.href}>
+        <Nav.Item>
+            <Nav.Link {...props} className={props.className}>{props.children}</Nav.Link>
+        </Nav.Item>
+    </Link>
+    
+);
 const Caret = (props) => (
     <FontAwesomeIcon className='caret' style={(props.active)?({transform: 'rotate(90deg)'}):({transform: 'rotate(-90deg)'})} icon={faCaretDown}/>
 );

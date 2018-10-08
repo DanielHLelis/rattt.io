@@ -5,6 +5,8 @@ import {
 } from 'react-bootstrap'
 import styled from 'styled-components'
 
+import { Link } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faCaretDown
@@ -34,12 +36,14 @@ export default class SideBar extends Component{
                     <NavItem onClick={(e) => window.localStorage.setItem('firstEnter', 'true')} href={paths.index}>
                         Intro
                     </NavItem>
+
                     <NavItem href={paths.main}>
                         Home
                     </NavItem>
+                    
 
                     <Nav.Item>
-                        <NavLink onClick={this.toggleTTT}><Caret {...this.state}/> TicTacToe</NavLink>
+                        <Nav.Link className="sidebar-item" onClick={this.toggleTTT}><Caret {...this.state}/> TicTacToe</Nav.Link>
                         <Collapse in={this.state.tttCollapse} className="sideCollapse">
                             <NavLink href={paths.tradicional}>Tradicional</NavLink>
                         </Collapse>
@@ -54,15 +58,21 @@ export default class SideBar extends Component{
 
 
 const NavLink = (props) => (
-    <Nav.Link {...props} className={props.className + ' sidebar-item'} >
-        {props.children}
-    </Nav.Link>
+    <Link to={props.href}>
+        <Nav.Link {...props} className={props.className + ' sidebar-item'} >
+            {props.children}
+        </Nav.Link>
+    </Link>
+    
 );
 
 const NavItem = (props) => (
-    <Nav.Item>
-        <Nav.Link {...props} className={props.className + " sidebar-item"}>{props.children}</Nav.Link>
-    </Nav.Item>
+    <Link to={props.href}>
+        <Nav.Item>
+            <Nav.Link {...props} className={props.className + ' sidebar-item'}>{props.children}</Nav.Link>
+        </Nav.Item>
+    </Link>
+    
 );
 
 const Caret = (props) => (

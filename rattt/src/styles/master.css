@@ -28,7 +28,7 @@
     cursor: pointer;
   }
   .sidebar{
-    --sideWidth: 16vw;
+    --sideWidth: 20vw;
     --sideBreath: 1vw;
     position: fixed;
     background-color: #3b3b3b;
@@ -49,6 +49,7 @@
   .sidebar-item{
     text-align: right;
     font-size: 1.5em;
+    opacity: 1;
     font-family: var(--font);
     color: var(--primary);
   }
@@ -60,8 +61,11 @@
     background-color: #303030;
     color: var(--primary);
   }
-  .nav-link.sideCollapse{
-    padding-right: 1.5em;
+  .nav-link.sidebar-item.sideCollapse{
+    padding-right: calc(var(--sideBreath) + 1.5em);
+  }
+  .nav-link.sidebar-item{
+    padding-right: calc(var(--sideBreath) + 0.1vw);
   }
   .master{
     min-height: 100vh;
@@ -132,6 +136,9 @@
   }
   a{
     transition: opacity linear 0.1s;
+  }
+  * a:hover{
+    text-decoration: none;
   }
   .link:hover{
     color: none;
