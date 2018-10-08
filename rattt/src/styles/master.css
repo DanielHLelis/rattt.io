@@ -2,6 +2,7 @@
 
 :root{
   --font: "Quicksand", "Arial", "FreeSans", sans-serif;
+  --headerSize: 5em;
 }
 
 /*Master Tags*/
@@ -22,6 +23,46 @@
     background-color: #2b2b2b;
   }
 /*Master Classes*/
+  #mark{
+    user-select: none;
+    cursor: pointer;
+  }
+  .sidebar{
+    --sideWidth: 16vw;
+    --sideBreath: 1vw;
+    position: fixed;
+    background-color: #3b3b3b;
+    box-shadow:  1px 0 1em #0002;
+    height: 100vh;
+    width: var(--sideWidth);
+    left: 0;
+    z-index: 2;
+    transition: left 0.6s ease-in-out;
+    padding-top: calc(var(--headerSize) + 1em);
+  }
+  .sidebar.hide{
+    left: calc((-1 * var(--sideWidth)) + var(--sideBreath));
+  }
+  .sidebar.hide:hover{
+    left: 0;
+  }
+  .sidebar-item{
+    text-align: right;
+    font-size: 1.5em;
+    font-family: var(--font);
+    color: var(--primary);
+  }
+  .sidebar-item:active{
+    background-color: #2b2b2b;
+    color: var(--primary);
+  }
+  .sidebar-item:hover{
+    background-color: #303030;
+    color: var(--primary);
+  }
+  .nav-link.sideCollapse{
+    padding-right: 1.5em;
+  }
   .master{
     min-height: 100vh;
     width: 100%;
@@ -32,9 +73,11 @@
     background-color: #343a40;
     flex: 0 1 auto;
     z-index: 5;
+    height: var(--headerSize);
+    box-shadow:  0 2px 1em #0007;
   }
   .header + *{
-    padding-top: 1em;
+    padding-top: 1.5em;
   }
   header .drp{
     background-color: #343a40;
@@ -128,23 +171,15 @@
   .rotate{
     transition: transform 0.1s ease-in-out;
   }
+  .caret{
+    transition: transform 0.2s ease-in-out;
+  }
   .rainbow{
     will-change: filter;
     animation: rainbow infinite linear 0.5s;
   }
 
-/* .page-enter {
-  position: absolute;
-  background-color: #2b2b2b;
-  right: 100vw;
-  z-index: 1;
-}
-.page-enter.page-enter-active{
-  right: 0;
-  transition: all 250ms ease-in;
-} */
-
-@media (min-width: 376px) and (max-width: 425px){
+@media only screen and (max-width: 425px){
   .xlt{
     font-size: 3em;
   }
@@ -153,6 +188,10 @@
   }
   .mt{
     font-size: 1.75em;
+  }
+  .sidebar{
+    --sideBreath: 0vw;
+    --sideWidth: 100vw;
   }
 }
 

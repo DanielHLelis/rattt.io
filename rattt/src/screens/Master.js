@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
-import NavBox from 'components/NavBar'
 import {
     Modal,
     Button
 } from 'react-bootstrap'
-import cheet from 'cheet.js'
+import styled from 'styled-components'
+
 import 'styles/master.css'
 
+import NavBox from 'components/NavBar'
+import SideBar from 'components/SideBar'
+
 import $ from 'jquery'
-import styled from 'styled-components'
+import cheet from 'cheet.js'
 
 export default class Master extends Component{
 
@@ -16,45 +19,55 @@ export default class Master extends Component{
         super();
 
         this.state = {
-            isVisible: false,
-            title: '',
-            content: ''
+            modalVisible: false,
+            modalTitle: '',
+            modalContent: '',
+            sideBar: false
         }
     }
 
     handleClose = () => {
-        this.setState({isVisible: false});
+        this.setState({modalVisible: false});
     }
     handleOpen = () => {
-        this.setState({isVisible: true});
+        this.setState({modalVisible: true});
+    }
+    toggleSidebar = () => {
+        this.setState({sideBar: !this.state.sideBar});
     }
 
-    ratttAlert = (title, content) => {
-        this.setState({isVisible: true, title, content});
+    ratttAlert = (modalTitle, modalContent) => {
+        this.setState({modalVisible: true, modalTitle, modalContent});
     }
 
     render(){
         cheets();
+
         window.ratttAlert = this.ratttAlert;
+
         return(
             <div className="master">
-                <Modal show={this.state.isVisible} onHide={this.handleClose} dialogClassName="darkDialog">
-                    <Modal.Header>
-                        <Modal.Title className="white mt"><span className="white mt">{this.state.title}</span></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className="white st">{this.state.content}</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="outline-danger" onClick={this.handleClose}>Fechar</Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <NavBox/>
+                <RatttAlert {...this.state} handleClose={this.handleClose} />
+                <SideBar visible={this.state.sideBar} />
+                <NavBox sidebar={this.state.sideBar} brandOnClick={this.toggleSidebar} />
                 
                 {this.props.children}
             </div>
         );
     }
 }
+
+const RatttAlert = (props) => (
+    <Modal show={props.modalVisible} onHide={props.handleClose} dialogClassName="darkDialog">
+        <Modal.Header>
+            <Modal.Title className="white mt"><span className="white mt">{props.modalTitle}</span></Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="white st">{props.modalContent}</Modal.Body>
+        <Modal.Footer>
+            <Button variant="outline-danger" onClick={props.handleClose}>Fechar</Button>
+        </Modal.Footer>
+    </Modal>
+);
 
 const cheets = () => {
     cheet('4 0 4', () => {
