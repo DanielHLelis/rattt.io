@@ -28,7 +28,7 @@ export default class NavBox extends Component{
         window.localStorage.setItem('firstEnter', 'true');
     }
 
-    _ratttAlert = () => window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servido! Tente novamente mais tarde!')
+    _ratttAlert = () => window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servidor! Tente novamente mais tarde!')
 
     _toggleNav = () => {
         this.setState({isOpen: !this.state.isOpen})
