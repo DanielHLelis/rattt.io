@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button } from 'react-bootstrap'
 
@@ -41,7 +40,7 @@ class IntroScreen extends Component {
     return (
       <Filter ee={this.state.ee} style={this._backgroundPosition(this.state.x, this.state.y)} id='backgroundIntro' onMouseMove={this._parallax}>
         <div className="main">
-          <p className='logo blue lt'>Rattt.io</p>
+          <p className='logo primary lt'>Rattt.io</p>
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
         <div className="button">

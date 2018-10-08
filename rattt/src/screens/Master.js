@@ -6,11 +6,31 @@ import {
 import cheet from 'cheet.js'
 import 'styles/master.css'
 
+import $ from 'jquery'
+
 export default class Master extends Component{
 
     render(){
         cheet('4 0 4', () => {
             window.open('/404', '_self');
+        });
+        cheet('g i r l', () => {
+            $('#mark').html('Girl Power');
+            $('body').css('--primary', 'var(--pink)');
+            let $el = $('.btn-outline-primary');
+            console.log($el);
+            $el.each(function(){
+                let act = $(this);
+                act.removeClass('btn-outline-primary');
+                act.addClass('btn-outline-primaryPink');
+            })
+            
+            $el = $('.btn-primary');
+            $el.each(function(){
+                let act = $(this);
+                act.removeClass('btn-primary');
+                act.addClass('btn-primaryPink');
+            });
         });
         return(
             <div className="master">

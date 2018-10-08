@@ -1,3 +1,36 @@
+@keyframes appear{
+    0% {opacity: 0}
+    100% {opacity: 1}
+}
+@keyframes disappear{
+    0% { opacity: 1; }
+    100% {opacity: 0; }
+}
+@keyframes reduce{
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.4;
+    }
+}
+.tttGrid{
+    display: grid;
+    max-height: 98vw;
+    max-width: 98vw;
+    height: 70vh;
+    width: 70vh;
+}
+.wrapper{
+    max-height: 98vw;
+    max-width: 98vw;
+    height: 70vh;
+    width: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
 .gridBlock{
     margin: 2px 2px 0 0;
     border: 1px solid var(--primary);
@@ -8,4 +41,40 @@
     justify-content: center;
     cursor: pointer;
     overflow: hidden;
+}
+.blockContent{
+    animation: appear 0.15s ease-in-out;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    user-select: none;
+}
+.finishOverlay{
+    display: grid;
+    max-height: 98vw;
+    max-width: 98vw;
+    height: 70vh;
+    width: 70vh;
+    position: absolute;
+    z-index: 1;
+}
+.reduce .willReduce{
+    animation: reduce 0.5s linear;
+    opacity: 0.4;
+}
+.disappear {
+    animation: disappear 0.4s ease-in-out;
+    opacity: 0;
+}
+*.tttWho{
+    animation: appear 0.6s ease-in-out, rainbow .5s linear infinite;
+    font-weight: bold;
+    z-index: 1;
+    position: absolute;
+    text-align: center;
+    opacity: 1;
+    text-shadow: 0em 0em .2em #fff3;
+    user-select: none;
 }

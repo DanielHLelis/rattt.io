@@ -78,8 +78,11 @@
     opacity: 0.6;
   }
 /*Colors*/
+  .primary{
+    color: var(--primary);
+  }
   .blue{
-    color: #00a4dd;
+    color: var(--blue);
   }
   .white{
     color: #fff;
@@ -96,7 +99,7 @@
       filter: hue-rotate(0deg)
     }
     to{
-      filter: hue-rotate(359deg)
+      filter: hue-rotate(359.99999deg)
     }
   }
   .rotate-active{
@@ -120,3 +123,27 @@
   right: 0;
   transition: all 250ms ease-in;
 } */
+
+@media (min-width: 376px) and (max-width: 425px){
+  .xlt{
+    font-size: 3em;
+  }
+  .lt{
+    font-size: 2.5em;
+  }
+  .mt{
+    font-size: 1.75em;
+  }
+}
+
+@media only screen and (max-width: 375px){
+  .xlt{
+    font-size: 2.75em;
+  }
+  .lt{
+    font-size: 2.25em;
+  }
+  .mt{
+    font-size: 1.75em;
+  }
+}
