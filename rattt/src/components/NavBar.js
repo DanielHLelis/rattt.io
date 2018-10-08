@@ -47,13 +47,13 @@ export default class NavBox extends Component{
 
                         <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/} 
 
-                            <NavLink onClick={this._ratttAlert} className="mt" href={''}>
-                                <Button size="md" variant="outline-primary" >Log-in</Button>
-                            </NavLink>
+                            <Nav.Link onClick={this._ratttAlert} className="mt" href={''}>
+                                <Button onClick={this._ratttAlert} size="md" variant="outline-primary" >Log-in</Button>
+                            </Nav.Link>
 
-                            <NavLink onClick={this._ratttAlert} className="mt" href={''}>
-                                <Button size="md" variant="outline-primary" >Sign-up</Button>
-                            </NavLink>
+                            <Nav.Link onClick={this._ratttAlert} className="mt" href={''}>
+                                <Button onClick={this._ratttAlert} size="md" variant="outline-primary" >Sign-up</Button>
+                            </Nav.Link>
 
                         </Nav>
                     </Navbar.Collapse>
