@@ -76,20 +76,22 @@ const cheets = () => {
     cheet('p i n k', () => {
         // $('#mark').html('Pink Mode');
         $('body').css('--primary', 'var(--pink)');
-        let $el = $('.btn-outline-primary');
-        console.log($el);
-        $el.each(function(){
-            let act = $(this);
-            act.removeClass('btn-outline-primary');
-            act.addClass('btn-outline-primaryPink');
-        })
-        
-        $el = $('.btn-primary');
-        $el.each(function(){
-            let act = $(this);
-            act.removeClass('btn-primary');
-            act.addClass('btn-primaryPink');
-        });
+        setInterval(() => {
+            let $el = $('.btn-outline-primary');
+            console.log($el);
+            $el.each(function(){
+                let act = $(this);
+                act.removeClass('btn-outline-primary');
+                act.addClass('btn-outline-primaryPink');
+            })
+            
+            $el = $('.btn-primary');
+            $el.each(function(){
+                let act = $(this);
+                act.removeClass('btn-primary');
+                act.addClass('btn-primaryPink');
+            });
+        }, 10);
     });
     cheet('u n i c o r n', () => {
         $('body').addClass('rainbow');

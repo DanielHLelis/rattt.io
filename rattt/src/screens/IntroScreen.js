@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Button } from 'react-bootstrap'
 
+import { Link } from 'react-router-dom'
+
 import cheet from 'cheet.js'
 
 import 'styles/intro.css'
@@ -43,9 +45,11 @@ class IntroScreen extends Component {
           <p className='logo primary lt'>Rattt.io</p>
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
-          <Button size='lg' className="lt" variant="primary" onClick={this._setEnter} href="/main" >
-              Entrar
+        <Link to="/main">
+          <Button size='lg' className="lt" variant="primary" onClick={this._setEnter} >
+                Entrar
           </Button>
+        </Link>
       </Filter>
     );
   }
