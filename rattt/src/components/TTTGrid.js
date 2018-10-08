@@ -17,7 +17,7 @@ import toMatrix from 'utils/objToMatrix'
 
 /*
     TODO:
-        -Aprimorar e redfdatorar bots
+        -Aprimorar e refatorar bots
 */
 
 export default class TTTGrid extends Component{
