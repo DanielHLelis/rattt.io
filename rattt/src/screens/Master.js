@@ -32,6 +32,9 @@ export default class Master extends Component{
                 act.addClass('btn-primaryPink');
             });
         });
+        cheet('u n i c o r n', () => {
+            $('body').addClass('rainbow');
+        })
         return(
             <div className="master">
                 <NavBox/>

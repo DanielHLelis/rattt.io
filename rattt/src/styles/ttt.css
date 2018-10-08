@@ -53,15 +53,6 @@
     align-content: center;
     user-select: none;
 }
-.finishOverlay{
-    display: grid;
-    max-height: 98vw;
-    max-width: 98vw;
-    height: 70vh;
-    width: 70vh;
-    position: absolute;
-    z-index: 1;
-}
 .reduce .willReduce{
     animation: reduce 0.5s linear;
     opacity: 0.4;
@@ -76,6 +67,8 @@
     z-index: 1;
     position: absolute;
     text-align: center;
+    max-width: 98vw;
+    width: 70vh;
     opacity: 1;
     text-shadow: 0em 0em .2em #fff3;
     user-select: none;

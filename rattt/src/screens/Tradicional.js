@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {
+    Button
 } from 'react-bootstrap'
 import $ from 'jquery'
 import cheet from 'cheet.js'
@@ -8,6 +9,27 @@ import 'styles/ttt.css'
 
 import TTT from 'components/TTTGrid'
 
+import PubSub from 'pubsub-js'
+
+const modes = {
+    local: [
+        {
+            name: 'Jogador 1',
+            symbol: 'X',
+            type: 'local',
+            playing: true,
+            me: true
+        },
+        {
+            name: 'Jogador 2',
+            symbol: 'O',
+            type: 'local',
+            playing: true,
+            me: true
+        }
+    ]
+}
+
 export default class TradicionalScreen extends Component{
     render(){
         cheet('w i n', () => {
@@ -15,12 +37,9 @@ export default class TradicionalScreen extends Component{
         });
         return(
             <main style={{
-                alignItems: 'center',
+                flexDirection: 'row'
             }} className="darkBg contentDiv">
-                <TTT xSize={3} ySize={3} seq={3} players={2} symbols={{
-                    '1': <span className='blockContent'>X</span>,
-                    '2': <span className='blockContent'>O</span>
-                }} />
+                <TTT local={true} xSize={3} ySize={3} seq={3} players={modes.local} />
             </main>
 
         );
