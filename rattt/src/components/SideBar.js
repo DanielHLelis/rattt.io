@@ -58,10 +58,8 @@ export default class SideBar extends Component{
 
 
 const NavLink = (props) => (
-    <Link to={props.href}>
-        <Nav.Link {...props} className={props.className + ' sidebar-item'} >
+    <Link {...props} className={props.className + ' sidebar-item nav-link'} to={props.href}>
             {props.children}
-        </Nav.Link>
     </Link>
     
 );
@@ -69,7 +67,7 @@ const NavLink = (props) => (
 const NavItem = (props) => (
     <Link to={props.href}>
         <Nav.Item>
-            <Nav.Link {...props} className={props.className + ' sidebar-item'}>{props.children}</Nav.Link>
+            <NavLink {...props} className={props.className}>{props.children}</NavLink>
         </Nav.Item>
     </Link>
     

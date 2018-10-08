@@ -52,6 +52,7 @@
     opacity: 1;
     font-family: var(--font);
     color: var(--primary);
+    transition: all 100ms linear;
   }
   .sidebar-item:active{
     background-color: #2b2b2b;

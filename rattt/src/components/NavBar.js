@@ -63,21 +63,16 @@ export default class NavBox extends Component{
     }
 }
 const NavLink = (props) => (
-    <Link to={props.href}>
-        <Nav.Link {...props} className={props.className} >
+    <Link {...props} className={props.className + ' nav-link'} to={props.href}>
             {props.children}
-        </Nav.Link>
     </Link>
     
 );
 
 const NavItem = (props) => (
-    <Link to={props.href}>
         <Nav.Item>
-            <Nav.Link {...props} className={props.className}>{props.children}</Nav.Link>
+            <NavLink {...props} >{props.children}</NavLink>
         </Nav.Item>
-    </Link>
-    
 );
 const Caret = (props) => (
     <FontAwesomeIcon className='caret' style={(props.active)?({transform: 'rotate(90deg)'}):({transform: 'rotate(-90deg)'})} icon={faCaretDown}/>
