@@ -15,13 +15,6 @@ import symbols from 'config/symbols'
 import TTT from 'utils/TTT'
 import toMatrix from 'utils/objToMatrix'
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-
-// const icons = {
-//     pizza: require('assets/images/pizza.svg')
-// }
-
 /*
     TODO:
         -Aprimorar e redfdatorar bots
@@ -74,11 +67,6 @@ export default class TTTGrid extends Component{
         }
         return false;
     }
-    _botPlay = (newMatrix) => {
-        console.log({newMatrix, botType: this.state.botType})
-        if(!this.state.players[this.state.playing].me && this.state.botType && this.state.finished === -1) //BOT
-            this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, newMatrix)); //BOT
-    }
     _handle = (e) => {
         e.preventDefault();
         let $el = $(e.target);
@@ -127,10 +115,13 @@ export default class TTTGrid extends Component{
         }
             
     }
+    _botPlay = (newMatrix) => {
+        if(!this.state.players[this.state.playing].me && this.state.botType && this.state.finished === -1) //BOT
+            this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, newMatrix)); //BOT
+    }
     _setup = () => {
         this._testBot(()=>{
-            if(this.state.playing === this.state.botIndx)
-                this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, this.state.matrix))
+            this._botPlay(this.state.matrix);
         });
     }
     /* Component */

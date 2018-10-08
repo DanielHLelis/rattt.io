@@ -22,6 +22,5 @@
 }
 /*Text*/
 .nf{
-    font-size: 10em;
-    animation: rainbow infinite linear 0.5s;
+    z-index: 2;
 }

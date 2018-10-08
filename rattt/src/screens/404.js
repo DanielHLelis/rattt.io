@@ -9,21 +9,12 @@ import ParticlesConfig from 'config/particles'
         -Glitch
 */
 
-export default class NotFound extends Component{
-
-
-    render(){
-
-        return(
-            <div className="contentDiv">
-                <Particles params={ParticlesConfig['0']} className="particles" width={window.innerWidth} height={window.innerHeight}/>
-                <div id="bg" >
-                    <p className="blue logo nf">404</p>
-                    <p className="white mt">Nossos ratos não encontraram a página!</p>
-                </div>
-            </div>
-            
-        );
-    }
-
-}
+export default (props => (
+    <div className="contentDiv">
+        <Particles params={ParticlesConfig['0']} className="particles" width={window.innerWidth} height={window.innerHeight}/>
+        <div id="bg" >
+            <p className="blue logo rainbow giant">404</p>
+            <p className="white nf mt">Nossos ratos não encontraram a página!</p>
+        </div>
+    </div>
+));

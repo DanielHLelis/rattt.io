@@ -43,13 +43,9 @@ class IntroScreen extends Component {
           <p className='logo primary lt'>Rattt.io</p>
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
-        <div className="button">
-
-            <Button size='lg' className="lt" variant="primary" onClick={this._setEnter} href="/main" >
+          <Button size='lg' className="lt" variant="primary" onClick={this._setEnter} href="/main" >
               Entrar
-            </Button>
-
-        </div>
+          </Button>
       </Filter>
     );
   }

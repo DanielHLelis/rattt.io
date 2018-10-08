@@ -8,7 +8,7 @@ import {
 import paths from 'config/paths'
 
 import IntroScreen from 'screens/IntroScreen'
-import MainScreen from 'screens/MainScreen'
+import PlansScreen from 'screens/PlansScreen'
 import Tradicional from 'screens/Tradicional'
 import NotFound from 'screens/404'
 
@@ -24,7 +24,7 @@ const ROUTES = (props) => (
         <Route exact path={paths.index} component={(window.localStorage.getItem('firstEnter')==='false')?(() => <Redirect to={paths.main} />):(IntroScreen)} />
         <props.Mestre>
             <Switch>
-                <Route exact path={paths.main} component={MainScreen} />
+                <Route exact path={paths.main} component={PlansScreen} />{/*Change Later*/}
                 <Route exact path={paths.tradicional} component={Tradicional} />
 
                 <Route component={NotFound} />

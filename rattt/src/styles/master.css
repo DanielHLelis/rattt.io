@@ -36,7 +36,7 @@
     height: 100vh;
     width: var(--sideWidth);
     left: 0;
-    z-index: 2;
+    z-index: 4;
     transition: left 0.6s ease-in-out;
     padding-top: calc(var(--headerSize) + 1em);
   }
@@ -121,6 +121,9 @@
     font-size: 3.5em;
     font-family: var(--font);
   }
+  .giant{
+    font-size: 10em;
+  }
   .logo{
     font-family: "Monoton", sans-serif !important;
   }
@@ -156,6 +159,12 @@
   .bluesvg{
     filter: invert(0.45) sepia(1) saturate(6) hue-rotate(175deg);
   }
+  .textShadow{
+    text-shadow: 0em 0em 0.2em #0008;
+  }
+  .boxShadow{
+    box-shadow:  1px 0 1em #0002;
+  }
 /*State and Animations*/
   @keyframes rainbow{
     from{
@@ -188,6 +197,9 @@
   }
   .mt{
     font-size: 1.75em;
+  }
+  .giant{
+    font-size: 5em;
   }
   .sidebar{
     --sideBreath: 0vw;
