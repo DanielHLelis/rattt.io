@@ -60,7 +60,7 @@ export default class TTTGrid extends Component{
 
     /* Mechanics */
 
-    _turn = (x, y, matrix, who) => {
+    _turn = (x, y, matrix, cb = () => null) => {
         this._moreThan1(this.state.players, (val) => this.setState({finished: val})); //SURRENDER
         if(!this.state.matrix[`${x}/${y}`] && (x !== null && x !== undefined) && (y !== null && y !== undefined) && this.state.finished === -1){
             matrix[`${x}/${y}`] = this.state.playing;
@@ -69,19 +69,22 @@ export default class TTTGrid extends Component{
                 matrix: matrix,
                 used: this.state.used + 1,
                 finished: this.ttt().validate()
-            });
+            }, ()=>cb(matrix));
             return true;
         }
         return false;
+    }
+    _botPlay = (newMatrix) => {
+        console.log({newMatrix, botType: this.state.botType})
+        if(!this.state.players[this.state.playing].me && this.state.botType && this.state.finished === -1) //BOT
+            this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, newMatrix)); //BOT
     }
     _handle = (e) => {
         e.preventDefault();
         let $el = $(e.target);
         let x = $el.data('posx'), y = $el.data('posy'), newMatrix = this.state.matrix;
         if(this.state.players[this.state.playing].me) //BOT + ONLINE
-            this._turn(x, y, newMatrix);
-        if(this.state.botType && this.state.finished === -1) //BOT
-            this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, newMatrix)); //BOT
+            this._turn(x, y, newMatrix, this._botPlay);
     }
     _restart = (e) => { //RESTART
         this.setState({restart: true});
@@ -92,7 +95,7 @@ export default class TTTGrid extends Component{
         newPlayers.forEach((el) => {
             if(el.me)el.playing = false;
         })
-        this.setState({players: newPlayers})/
+        this.setState({players: newPlayers});
         this._moreThan1(this.state.players, (val) => this.setState({finished: val}));
     }
     _moreThan1(obj, cb){ //SURRENDER
@@ -110,17 +113,25 @@ export default class TTTGrid extends Component{
     ttt = () => new TTT(this.state.ySize, this.state.xSize, toMatrix(this.state.matrix, this.state.xSize, this.state.ySize), this.state.seq, this.state.used + 1, this.state.xSize * this.state.ySize, this.state.botIndx);
 
     /* Bot */
-    _testBot = () => { //BOT
+    _testBot = (cb = () => null) => { //BOT
+        let indx = null;
         this.state.players.forEach((el, index) => { //BOT
             if(el.type.slice(0, 3) === 'bot'){ //BOT
-                this.setState({bot: true, botType: el.type, botIndx: index}); //BOT
+                if(!indx>=0){
+                    indx = index;
+                }
             }
-        })
+        });
+        if(indx!=null){
+            this.setState({botType: this.state.players[indx].type, botIndx: indx}, cb);
+        }
+            
     }
     _setup = () => {
-        this._testBot();
-        if(this.state.playing === this.state.botIndx)
-            setTimeout(() => this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, this.state.matrix)), 100);
+        this._testBot(()=>{
+            if(this.state.playing === this.state.botIndx)
+                this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, this.state.matrix))
+        });
     }
     /* Component */
 

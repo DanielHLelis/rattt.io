@@ -73,9 +73,9 @@ export default class TTT{
 		let casaDisponivel = false;
 		for(let c = 0; c < casas.length; c++) {
 			let i = casas[c][0], j = casas[c][1];
-			if(this.props.tabuleiro[i][j] === undefined && casaDisponivel == false)
+			if(this.props.tabuleiro[i][j] === undefined && casaDisponivel === false)
 				casaDisponivel = [i, j];
-			else if(this.props.tabuleiro[i][j] != jogador)
+			else if(this.props.tabuleiro[i][j] !== jogador)
 				return false;
 		}
 		return casaDisponivel;
@@ -99,13 +99,13 @@ export default class TTT{
 	}
 
 	tradicional_primeiraJogada() {
-		if(this.props.atual > 1) return false;
+		if(this.props.atual > 2) return false;
 		return this.props.tabuleiro[1][1] === undefined ? [1, 1] : this.tradicional_canto();
 	}
 
 	tradicional_casoDireto(caso) {
 		let jogador, analise;
-		if(caso == 'vitoria') jogador = this.props.bot;
+		if(caso === 'vitoria') jogador = this.props.bot;
 		else jogador = (this.props.bot === 1) ? 0 : 1;
 
 		for(let i = 0; i < 3; i++) {
@@ -117,7 +117,7 @@ export default class TTT{
 
 			if(i) {
 				analise = this.analisaSequenciaVitoria(
-					[ [0, i === 1 ? 0 : 2], [1, 1], [2, i == 1 ? 2 : 0] ], jogador
+					[ [0, i === 1 ? 0 : 2], [1, 1], [2, i === 1 ? 2 : 0] ], jogador
 				);
 				if(analise) return analise;
 			}
@@ -126,7 +126,7 @@ export default class TTT{
 	}
 
 	tradicional_defensivaDiagonais() {
-		let adversario = (this.props.bot == 1) ? 0 : 1;
+		let adversario = (this.props.bot === 1) ? 0 : 1;
 		if((this.props.tabuleiro[0][0] === adversario && this.props.tabuleiro[2][2] === adversario) ||
 		   (this.props.tabuleiro[0][2] === adversario && this.props.tabuleiro[2][0] === adversario))
 			return this.tradicional_medio();
@@ -167,6 +167,7 @@ export default class TTT{
 	}
 
 	jogadaComputador(tipoBot, handle) {
+		console.log(tipoBot);
 		let that = this;
 		this.timeout = setTimeout(function() {
 			let casa;
@@ -175,33 +176,35 @@ export default class TTT{
 					that.preencheCasa(that.casoAleatorio(), handle);
 					break;
 				case 'bot-tradicional-medio':
-					if(casa = that.tradicional_primeiraJogada())
+					if((casa = that.tradicional_primeiraJogada()))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_casoDireto('vitoria'))
+					else if((casa = that.tradicional_casoDireto('vitoria')))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_casoDireto('derrota'))
+					else if((casa = that.tradicional_casoDireto('derrota')))
 						that.preencheCasa(casa, handle);
 					else
 						that.preencheCasa(that.casoAleatorio(), handle);
 					break;
 				case 'bot-tradicional-impossivel':
-					if(casa = that.tradicional_primeiraJogada())
+					if((casa = that.tradicional_primeiraJogada()))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_casoDireto('vitoria'))
+					else if((casa = that.tradicional_casoDireto('vitoria')))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_casoDireto('derrota'))
+					else if((casa = that.tradicional_casoDireto('derrota')))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_defensivaDiagonais())
+					else if((casa = that.tradicional_defensivaDiagonais()))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_defensivaMedios())
+					else if((casa = that.tradicional_defensivaMedios()))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_defensivaCantoMedio())
+					else if((casa = that.tradicional_defensivaCantoMedio()))
 						that.preencheCasa(casa, handle);
-					else if(casa = that.tradicional_canto())
+					else if((casa = that.tradicional_canto()))
 						that.preencheCasa(casa, handle);
 					else
 						that.preencheCasa(that.casoAleatorio(), handle);
 					break;
+				default:
+					console.log('Bot failed');
 			}
 		}, 500);
 	}
