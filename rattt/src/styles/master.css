@@ -40,6 +40,9 @@
     background-color: #343a40;
     color: #fff;
   }
+  .darkDialog .modal-content{
+    background-color: #2b2b2b;
+  }
   .darkDropdown .dropdown-menu{
     background-color: #343a40;
   }

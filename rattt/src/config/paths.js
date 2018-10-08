@@ -9,13 +9,6 @@ const paths = {
 
 export const LeftNavData = [
     {
-        label: "3x3",
-        href: paths.tradicional
-    },
-]
-
-export const RightNavData = [
-    {
         label: 'Intro',
         href: paths.index,
         onClick: (e) => {
@@ -23,8 +16,25 @@ export const RightNavData = [
         }
     },
     {
-        label: 'GitHub',
-        href: 'https://github.com/'
+        label: "3x3",
+        href: paths.tradicional
+    },
+]
+
+export const RightNavData = [
+    {
+        label: 'Log-in',
+        href: null,
+        onClick: (e) => {
+            window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servido! Tente novamente mais tarde!')
+        }
+    },
+    {
+        label: 'Sign-up',
+        href: null,
+        onClick: (e) => {
+            window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servido! Tente novamente mais tarde!')
+        }
     }
 ]
 
