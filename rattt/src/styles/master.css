@@ -62,7 +62,7 @@
     color: var(--primary);
   }
   .nav-link.sidebar-item.sideCollapse{
-    padding-right: calc(var(--sideBreath) + 1.5em);
+    padding-right: calc(var(--sideBreath) + 1em);
   }
   .nav-link.sidebar-item{
     padding-right: calc(var(--sideBreath) + 0.1vw);
