@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+import {
+    ButtonGroup,
+    Button
+} from 'react-bootstrap'
 import styled from 'styled-components'
 import $ from 'jquery'
 
@@ -14,6 +18,13 @@ import toMatrix from 'utils/objToMatrix'
 //     pizza: require('assets/images/pizza.svg')
 // }
 
+/*
+    TODO:
+        -Surrender
+        -Custom Names (players include name symbol and more)
+        -Bots
+*/
+
 export default class TTTGrid extends Component{
     constructor(props){
         super(props);
@@ -23,11 +34,13 @@ export default class TTTGrid extends Component{
             ySize: props.ySize,
             seq: props.seq,
             players: props.players,
+            me: props.me,
             playing: 1,
             used: 0,
             symbols: props.symbols,
             matrix: {},
-            finished: -1
+            finished: -1,
+            restart: false
         }
 
     }  
@@ -49,7 +62,7 @@ export default class TTTGrid extends Component{
         let x = $el.data('posx'), y = $el.data('posy'), newMatrix = this.state.matrix;
         if(!this.state.matrix[`${x}/${y}`] && (x !== null && x !== undefined) && (y !== null && y !== undefined) && this.state.finished === -1){
             newMatrix[`${x}/${y}`] = this.state.playing;
-            console.log(toMatrix(newMatrix, this.state.xSize, this.state.ySize));
+            // console.log(toMatrix(newMatrix, this.state.xSize, this.state.ySize));
             this.setState({
                 playing: (this.state.playing % this.state.players) + 1,
                 matrix: newMatrix,
@@ -59,21 +72,30 @@ export default class TTTGrid extends Component{
         }
     }
 
+    _restart = (e) => {
+        this.setState({restart: true});
+        setTimeout(() => this.setState({...this.state.oldState, matrix: {}}), 200);
+    }
+
     componentWillMount(){
-        this.setState({oldState: {...this.state}});
+        this.setState({oldState: this.state});
     }
 
     render(){
         return(
             <div style={{marginBottom: 'auto'}}>
-                <TopState {...this.state} />
-                <div className="wrapper">
+                <div className={"wrapper" + (this.state.restart ? ' disappear' : '') }>
+                    <TopState {...this.state} />
                     <WinnerWinnerChickenDinner {...this.state} />
                     <Grid className={`tttGrid` + (this.state.finished === -1 ? '' : ' reduce')} finished={this.state.finished} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
                             {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock willReduce`,symbols: {...this.state.symbols}} )}
                     </Grid>
+                    <ButtonGroup style={{paddingTop: '1em'}}>
+                        <Button size="lg" variant="outline-primary" onClick={this._restart}>
+                            Restart
+                        </Button>
+                    </ButtonGroup>
                 </div>
-                
             </div>
                 
         );

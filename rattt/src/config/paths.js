@@ -7,11 +7,14 @@ const paths = {
     nf: prefix + '/404'
 };
 
-export const NavData = [
+export const LeftNavData = [
     {
-        label: "TTT",
+        label: "TicTacToe",
         href: paths.tradicional
     },
+]
+
+export const RightNavData = [
     {
         label: 'Intro',
         href: paths.index,

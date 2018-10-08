@@ -22,11 +22,13 @@
     width: 70vh;
 }
 .wrapper{
-    max-height: 98vw;
+    /* max-height: 98vw;
     max-width: 98vw;
     height: 70vh;
-    width: 70vh;
+    width: 70vh; */
+    animation: appear 0.2s ease-in-out;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
@@ -65,7 +67,7 @@
     opacity: 0.4;
 }
 .disappear {
-    animation: disappear 0.4s ease-in-out;
+    animation: disappear 0.2s ease-in-out;
     opacity: 0;
 }
 *.tttWho{

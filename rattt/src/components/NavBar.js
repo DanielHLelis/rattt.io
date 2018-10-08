@@ -5,7 +5,7 @@ import {
     Button
 } from 'react-bootstrap'
 
-import paths, {NavData} from 'config/paths'
+import paths, { LeftNavData, RightNavData} from 'config/paths'
 
 export default class NavBox extends Component{
 
@@ -32,8 +32,15 @@ export default class NavBox extends Component{
                     <Navbar.Brand href={paths.main}><span id="mark" className="logo st primary">Rattt.io</span></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" color="primary" />
                     <Navbar.Collapse>
+                        <Nav className="mr-auto">{/*ml == margin left; mr == margin right*/}
+                            {LeftNavData.map((item, index) => 
+                                    <Nav.Link key={index.toString()} onClick={item.onClick} className="mt" href={item.href}>
+                                        <span className="primary ssst link" >{item.label}</span>
+                                    </Nav.Link>
+                            )}
+                        </Nav>
                         <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/}
-                            {NavData.map((item, index) => 
+                            {RightNavData.map((item, index) => 
                                     <Nav.Link key={index.toString()} onClick={item.onClick} className="mt" href={item.href}>
                                         <Button size="md" variant="outline-primary" >{item.label}</Button>
                                     </Nav.Link>

@@ -41,6 +41,10 @@
     color: #fff;
   }
 /*Text Settings*/
+  .ssst{
+    font-size: 0.75em;
+    font-family: var(--font);
+  }
   .sst{
     font-size: 1em;
     font-family: var(--font);
