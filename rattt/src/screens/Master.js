@@ -14,8 +14,8 @@ export default class Master extends Component{
         cheet('4 0 4', () => {
             window.open('/404', '_self');
         });
-        cheet('g i r l', () => {
-            $('#mark').html('Girl Power');
+        cheet('p i n k', () => {
+            $('#mark').html('Pink Mode');
             $('body').css('--primary', 'var(--pink)');
             let $el = $('.btn-outline-primary');
             console.log($el);
