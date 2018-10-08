@@ -197,6 +197,8 @@ export default class TTT{
 						that.preencheCasa(casa, handle);
 					else if(casa = that.tradicional_defensivaCantoMedio())
 						that.preencheCasa(casa, handle);
+					else if(casa = that.tradicional_canto())
+						that.preencheCasa(casa, handle);
 					else
 						that.preencheCasa(that.casoAleatorio(), handle);
 					break;

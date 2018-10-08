@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import {
-    Button
+    ButtonToolbar,
+    ButtonGroup,
+    Button,
+    Dropdown,
+    DropdownButton
 } from 'react-bootstrap'
 import $ from 'jquery'
 import cheet from 'cheet.js'
@@ -23,6 +27,22 @@ const modes = {
         {
             name: 'Jogador 2',
             symbol: 'O',
+            type: 'local',
+            playing: true,
+            me: true
+        }
+    ],
+    bot: [
+        {
+            name: 'Jogador 1',
+            symbol: 'X',
+            type: 'local',
+            playing: true,
+            me: true
+        },
+        {
+            name: 'Bot Rick',
+            symbol: 'O',
             type: 'bot-tradicional-impossivel',
             playing: true,
             me: false
@@ -31,15 +51,39 @@ const modes = {
 }
 
 export default class TradicionalScreen extends Component{
+
+    constructor(){
+        super();
+
+        this.state = {
+            mode: modes.local
+        }
+    }
+
+    _changeBot = () => {
+        this.setState({mode: modes.bot});
+        PubSub.publish('reinicia');
+    }
+    _changeUser = () => {
+        this.setState({mode: modes.local})
+        PubSub.publish('reinicia');
+    }
+
     render(){
         cheet('w i n', () => {
             $('#mark').html('Winner')
         });
         return(
-            <main style={{
-                flexDirection: 'row'
-            }} className="darkBg contentDiv">
-                <TTT local={true} xSize={3} ySize={3} seq={3} players={modes.local} />
+            <main className="darkBg contentDiv">
+                <TTT local={true} xSize={3} ySize={3} seq={3} players={this.state.mode}>
+                        <Button size='lg' variant="outline-primary" onClick={this._changeBot} >
+                            Bot
+                        </Button>
+                        <Button size='lg' variant="outline-primary" onClick={this._changeUser} >
+                            Local
+                        </Button>
+                </TTT>
+
             </main>
 
         );

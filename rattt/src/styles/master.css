@@ -40,6 +40,16 @@
     background-color: #343a40;
     color: #fff;
   }
+  .darkDropdown .dropdown-menu{
+    background-color: #343a40;
+  }
+  .darkDropdown .dropdown-menu .dropdown-item{
+    color: var(--primary);
+  }
+  .darkDropdown .dropdown-menu .dropdown-item:hover{
+    color: var(--primary);
+    background-color: #303136;
+  }
 /*Text Settings*/
   .ssst{
     font-size: 0.75em;

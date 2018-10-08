@@ -38,7 +38,6 @@ export default class TTTGrid extends Component{
             players: props.players,
             playing: 0,
             used: 0,
-            symbols: props.symbols,
             matrix: {},
             finished: -1,
             restart: false
@@ -86,8 +85,7 @@ export default class TTTGrid extends Component{
     }
     _restart = (e) => { //RESTART
         this.setState({restart: true});
-        setTimeout(() => this.setState({...this.state.oldState, matrix: {}}), 200);
-        this._setup();
+        setTimeout(() => this.setState({...this.state.oldState, matrix: {}, players: this.props.players}, this._setup), 200);
     }
     _surrender = (e) => { //SURRENDER
         let newPlayers = this.state.players;
@@ -128,7 +126,7 @@ export default class TTTGrid extends Component{
 
 
 
-    componentWillMount(){
+    componentDidMount(){
         this._setup();
         this.setState({oldState: this.state});
         PubSub.subscribe('reinicia', () => {
@@ -145,18 +143,21 @@ export default class TTTGrid extends Component{
                     <Grid className={`tttGrid` + (this.state.finished === -1 ? '' : ' reduce')} finished={this.state.finished} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
                             {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock willReduce`,symbols: {...this.state.symbols}} )}
                     </Grid>
-                    <ButtonGroup style={{paddingTop: '1em'}}>
-                        {this.props.local?(
-                            <Button size="lg" variant="outline-primary" onClick={this._restart}>
-                                Reiniciar
-                            </Button>    
-                        ):(
-                            <Button size="lg" variant="outline-primary" onClick={this._surrender}>
-                                Desistir
-                            </Button>
-                        )}
-                        
-                    </ButtonGroup>
+                    <div style={{display: 'flex', flexDirection: 'row'}}>
+                        <ButtonGroup style={{paddingTop: '1em'}}>
+                            {this.props.local?(
+                                <Button size="lg" variant="outline-primary" onClick={this._restart}>
+                                    Reiniciar
+                                </Button>    
+                            ):(
+                                <Button size="lg" variant="outline-primary" onClick={this._surrender}>
+                                    Desistir
+                                </Button>
+                            )}
+                            {this.props.children /*Remover*/}
+                        </ButtonGroup>
+                    </div>
+                    
                 </div>
             </div>
         );

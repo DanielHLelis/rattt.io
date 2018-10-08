@@ -9,7 +9,7 @@ const paths = {
 
 export const LeftNavData = [
     {
-        label: "TicTacToe",
+        label: "3x3",
         href: paths.tradicional
     },
 ]
