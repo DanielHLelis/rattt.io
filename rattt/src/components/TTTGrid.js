@@ -12,7 +12,7 @@ import paths from 'config/paths'
 
 import symbols from 'config/symbols'
 
-import validate from 'utils/validatorTTT'
+import TTT from 'utils/TTT'
 import toMatrix from 'utils/objToMatrix'
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,8 +24,7 @@ import toMatrix from 'utils/objToMatrix'
 
 /*
     TODO:
-        -Surrender
-        -Bots
+        -Aprimorar e redfdatorar bots
 */
 
 export default class TTTGrid extends Component{
@@ -37,7 +36,6 @@ export default class TTTGrid extends Component{
             ySize: props.ySize,
             seq: props.seq,
             players: props.players,
-            me: props.me,
             playing: 0,
             used: 0,
             symbols: props.symbols,
@@ -46,6 +44,8 @@ export default class TTTGrid extends Component{
             restart: false
         }
     }
+
+    /* Grid */
 
     _getSymbol = (symbol) => symbols[symbol]
     _generateGrid = (x, y, El, props) => {
@@ -58,24 +58,18 @@ export default class TTTGrid extends Component{
         }
         return(matrix);
     }
-    _moreThan1(obj, cb){
-        if(obj.filter((el) => el.playing).length === 1){
-            for(let i = 0; i < obj.length; i++){
-                if(obj[i].playing){
-                    cb(i);
-                }
-            }
-        }
-    }
-    _turn = (x, y, matrix) => {
-        this._moreThan1(this.state.players, (val) => this.setState({finished: val}));
-        if(this.state.players[this.state.playing].me && !this.state.matrix[`${x}/${y}`] && (x !== null && x !== undefined) && (y !== null && y !== undefined) && this.state.finished === -1){
+
+    /* Mechanics */
+
+    _turn = (x, y, matrix, who) => {
+        this._moreThan1(this.state.players, (val) => this.setState({finished: val})); //SURRENDER
+        if(!this.state.matrix[`${x}/${y}`] && (x !== null && x !== undefined) && (y !== null && y !== undefined) && this.state.finished === -1){
             matrix[`${x}/${y}`] = this.state.playing;
             this.setState({
                 playing: (this.state.playing + 1) % this.state.players.length,
                 matrix: matrix,
                 used: this.state.used + 1,
-                finished: validate(this.state.ySize, this.state.xSize, toMatrix(matrix, this.state.xSize, this.state.ySize), this.state.seq, this.state.used + 1, this.state.xSize * this.state.ySize)
+                finished: this.ttt().validate()
             });
             return true;
         }
@@ -85,9 +79,17 @@ export default class TTTGrid extends Component{
         e.preventDefault();
         let $el = $(e.target);
         let x = $el.data('posx'), y = $el.data('posy'), newMatrix = this.state.matrix;
-        this._turn(x, y, newMatrix);
+        if(this.state.players[this.state.playing].me) //BOT + ONLINE
+            this._turn(x, y, newMatrix);
+        if(this.state.botType && this.state.finished === -1) //BOT
+            this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, newMatrix)); //BOT
     }
-    _surrender = (e) => {
+    _restart = (e) => { //RESTART
+        this.setState({restart: true});
+        setTimeout(() => this.setState({...this.state.oldState, matrix: {}}), 200);
+        this._setup();
+    }
+    _surrender = (e) => { //SURRENDER
         let newPlayers = this.state.players;
         newPlayers.forEach((el) => {
             if(el.me)el.playing = false;
@@ -95,15 +97,43 @@ export default class TTTGrid extends Component{
         this.setState({players: newPlayers})/
         this._moreThan1(this.state.players, (val) => this.setState({finished: val}));
     }
-    _restart = (e) => {
-        this.setState({restart: true});
-        setTimeout(() => this.setState({...this.state.oldState, matrix: {}}), 200);
+    _moreThan1(obj, cb){ //SURRENDER
+        if(obj.filter((el) => el.playing).length === 1){
+            for(let i = 0; i < obj.length; i++){
+                if(obj[i].playing){
+                    cb(i);
+                }
+            }
+        }
     }
+
+    /* Core */
+
+    ttt = () => new TTT(this.state.ySize, this.state.xSize, toMatrix(this.state.matrix, this.state.xSize, this.state.ySize), this.state.seq, this.state.used + 1, this.state.xSize * this.state.ySize, this.state.botIndx);
+
+    /* Bot */
+    _testBot = () => { //BOT
+        this.state.players.forEach((el, index) => { //BOT
+            if(el.type.slice(0, 3) === 'bot'){ //BOT
+                this.setState({bot: true, botType: el.type, botIndx: index}); //BOT
+            }
+        })
+    }
+    _setup = () => {
+        this._testBot();
+        if(this.state.playing === this.state.botIndx)
+            setTimeout(() => this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, this.state.matrix)), 100);
+    }
+    /* Component */
+
+
+
     componentWillMount(){
+        this._setup();
         this.setState({oldState: this.state});
         PubSub.subscribe('reinicia', () => {
             this._restart();
-        })
+        });
     }
 
     render(){

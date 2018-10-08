@@ -23,9 +23,9 @@ const modes = {
         {
             name: 'Jogador 2',
             symbol: 'O',
-            type: 'local',
+            type: 'bot-tradicional-impossivel',
             playing: true,
-            me: true
+            me: false
         }
     ]
 }
