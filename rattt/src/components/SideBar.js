@@ -27,8 +27,23 @@ export default class SideBar extends Component{
     toggleTTT = () => {
         this.setState({tttCollapse: !this.state.tttCollapse});
     }
-
+    NavLink = (props) => (
+        <Link {...props} onClick={(e) => {
+            props.onClick ? props.onClick(e) : null;
+            this.props.toggleSidebar(false);
+        }} className={props.className + ' sidebar-item nav-link'} to={props.href}>
+                {props.children}
+        </Link>
+        
+    );
+    NavItem = (props) => (
+        <Nav.Item>
+            <this.NavLink {...props} className={props.className}>{props.children}</this.NavLink>
+        </Nav.Item>
+    
+    );
     render(){
+        let {NavLink, NavItem} = this;
         return(
             <div className={'sidebar' + (this.props.visible ? '' : ' hide')} visible={this.state.visible} >
                 <Nav className='flex-column'>
@@ -55,23 +70,6 @@ export default class SideBar extends Component{
     }
 
 }
-
-
-const NavLink = (props) => (
-    <Link {...props} className={props.className + ' sidebar-item nav-link'} to={props.href}>
-            {props.children}
-    </Link>
-    
-);
-
-const NavItem = (props) => (
-    <Link to={props.href}>
-        <Nav.Item>
-            <NavLink {...props} className={props.className}>{props.children}</NavLink>
-        </Nav.Item>
-    </Link>
-    
-);
 
 const Caret = (props) => (
     <FontAwesomeIcon className='caret' style={(props.tttCollapse)?({transform: 'rotate(180deg)'}):null} icon={faCaretDown}/>

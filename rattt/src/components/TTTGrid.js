@@ -20,6 +20,12 @@ import toMatrix from 'utils/objToMatrix'
         -Aprimorar e refatorar bots
 */
 
+let defineContent = (i, val) => {
+    let res = [];
+    while(i--)res.push(val);
+    return res;
+}
+
 export default class TTTGrid extends Component{
     constructor(props){
         super(props);
@@ -32,6 +38,11 @@ export default class TTTGrid extends Component{
             playing: 0,
             used: 0,
             matrix: {},
+            matrixv2:{
+                width: props.xSize,
+                height: props.ySize,
+                content: defineContent(props.xSize*props.ySize, null)
+            },
             finished: -1,
             restart: false
         }
@@ -45,6 +56,7 @@ export default class TTTGrid extends Component{
         for(let i = 0; i < y; ++i){
             matrix[i] = [];
             for(let j = 0; j < x; ++j){
+                console.log({pos: i*x + j, x: (i*x + j) % x, y: Math.floor((i*x + j)/ x)});
                 matrix[i][j] = <El key={`${i}/${j}`} data-posy={j} data-posx={i}{...props}>{this._getSymbol(this.state.players[this.state.matrix[`${i}/${j}`]] ? this.state.players[this.state.matrix[`${i}/${j}`]].symbol : null)}</El>;
             }
         }

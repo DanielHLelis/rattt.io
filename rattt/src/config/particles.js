@@ -112,23 +112,28 @@ const config = {
   "1": {
     "particles": {
       "number": {
-        "value": 100,
+        "value": 80,
         "density": {
           "enable": true,
-          "value_area": 500
+          "value_area": 800
         }
       },
       "color": {
         "value": "#ffffff"
       },
       "shape": {
-        "type": "polygon",
+        "type": "circle",
         "stroke": {
           "width": 0,
           "color": "#000000"
         },
         "polygon": {
-          "nb_sides": 8
+          "nb_sides": 5
+        },
+        "image": {
+          "src": "img/github.svg",
+          "width": 100,
+          "height": 100
         }
       },
       "opacity": {
@@ -142,7 +147,7 @@ const config = {
         }
       },
       "size": {
-        "value": 2,
+        "value": 3,
         "random": true,
         "anim": {
           "enable": false,
@@ -167,7 +172,7 @@ const config = {
         "out_mode": "out",
         "bounce": false,
         "attract": {
-          "enable": true,
+          "enable": false,
           "rotateX": 600,
           "rotateY": 1200
         }
@@ -178,11 +183,11 @@ const config = {
       "events": {
         "onhover": {
           "enable": false,
-          "mode": "grab"
+          "mode": "repulse"
         },
         "onclick": {
-          "enable": false,
-          "mode": "repulse"
+          "enable": true,
+          "mode": "push"
         },
         "resize": true
       },

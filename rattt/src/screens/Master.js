@@ -32,8 +32,9 @@ export default class Master extends Component{
     handleOpen = () => {
         this.setState({modalVisible: true});
     }
-    toggleSidebar = () => {
-        this.setState({sideBar: !this.state.sideBar});
+    toggleSidebar = (pos) => {
+        typeof(pos) === 'boolean' ? null: pos = !this.state.sideBar;
+        this.setState({sideBar: pos});
     }
 
     ratttAlert = (modalTitle, modalContent) => {
@@ -48,7 +49,7 @@ export default class Master extends Component{
         return(
             <div className="master">
                 <RatttAlert {...this.state} handleClose={this.handleClose} />
-                <SideBar visible={this.state.sideBar} />
+                <SideBar visible={this.state.sideBar} toggleSidebar={this.toggleSidebar} />
                 <NavBox sidebar={this.state.sideBar} brandOnClick={this.toggleSidebar} />
                 
                 {this.props.children}
