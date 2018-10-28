@@ -51,14 +51,13 @@ export default class TTTGrid extends Component{
     /* Grid */
 
     _getSymbol = (symbol) => symbols[symbol]
-    _generateGrid = (x, y, El, props) => {
+    _generateGrid = (w, h, El, props) => {
         let matrix = [];
-        for(let i = 0; i < y; ++i){
-            matrix[i] = [];
-            for(let j = 0; j < x; ++j){
-                console.log({pos: i*x + j, x: (i*x + j) % x, y: Math.floor((i*x + j)/ x)});
-                matrix[i][j] = <El key={`${i}/${j}`} data-posy={j} data-posx={i}{...props}>{this._getSymbol(this.state.players[this.state.matrix[`${i}/${j}`]] ? this.state.players[this.state.matrix[`${i}/${j}`]].symbol : null)}</El>;
-            }
+        for(let i = 0; i < w*h; ++i){
+            let x = i % w, y = Math.floor(i / w);
+            // console.log({pos: i*x + j, x: (i*x + j) % x, y: Math.floor((i*x + j)/ x), i, j});
+            //TODO: Change inverse x y
+            matrix[i] = <El key={`${y}/${x}`} data-posy={x} data-posx={y}{...props}>{this._getSymbol(this.state.players[this.state.matrix[`${y}/${x}`]] ? this.state.players[this.state.matrix[`${y}/${x}`]].symbol : null)}</El>;
         }
         return(matrix);
     }
