@@ -18,13 +18,15 @@ import PubSub from 'pubsub-js'
 const modes = {
     local: [
         {
+            _id: '0',
             name: 'Jogador 1',
             symbol: 'X',
             type: 'local',
             playing: true,
             me: true
         },
-        {
+        {   
+            _id: '1',
             name: 'Jogador 2',
             symbol: 'O',
             type: 'local',
@@ -33,7 +35,8 @@ const modes = {
         }
     ],
     bot: [
-        {
+        {   
+            _id: '2',
             name: 'Jogador 1',
             symbol: 'X',
             type: 'local',
@@ -41,6 +44,7 @@ const modes = {
             me: true
         },
         {
+            _id: '3',
             name: 'Bot Rick',
             symbol: 'O',
             type: 'bot-tradicional-impossivel',

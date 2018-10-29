@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import {
     ButtonGroup,
     Button
@@ -6,26 +7,22 @@ import {
 import styled from 'styled-components'
 import $ from 'jquery'
 
+
 import PubSub from 'pubsub-js'
 
 import paths from 'config/paths'
 
 import symbols from 'config/symbols'
 
-import TTT from 'utils/TTT'
+import TTT from 'utils/TicTacToe'
 import toMatrix from 'utils/objToMatrix'
 
 /*
     TODO:
+        -Adicionar surrender
+        -Adicionar bots
         -Aprimorar e refatorar bots
 */
-
-let defineContent = (i, val) => {
-    let res = [];
-    while(i--)res.push(val);
-    return res;
-}
-
 export default class TTTGrid extends Component{
     constructor(props){
         super(props);
@@ -37,42 +34,57 @@ export default class TTTGrid extends Component{
             players: props.players,
             playing: 0,
             used: 0,
-            matrix: {},
-            matrixv2:{
-                width: props.xSize,
-                height: props.ySize,
-                content: defineContent(props.xSize*props.ySize, null)
-            },
-            finished: -1,
             restart: false
-        }
+        };
+    }
+
+    _resetMatrix = () => {
+        this.setState({
+            matrixv2:{
+                width: this.props.xSize,
+                height: this.props.ySize,
+                content: this.defineContent(this.props.xSize*this.props.ySize, null)
+            }
+        })
+    }
+    _resetGameState = () => {
+        this.setState({
+            gameState: {
+                blankSpaces: this.props.xSize*this.props.ySize,
+                finished: false,
+                winner: undefined
+            }
+        })
+    }
+
+    defineContent = (i, val) => {
+        let res = [];
+        while(i--)res.push(val);
+        return res;
     }
 
     /* Grid */
 
     _getSymbol = (symbol) => symbols[symbol]
+
     _generateGrid = (w, h, El, props) => {
         let matrix = [];
-        for(let i = 0; i < w*h; ++i){
-            let x = i % w, y = Math.floor(i / w);
-            // console.log({pos: i*x + j, x: (i*x + j) % x, y: Math.floor((i*x + j)/ x), i, j});
-            //TODO: Change inverse x y
-            matrix[i] = <El key={`${y}/${x}`} data-posy={x} data-posx={y}{...props}>{this._getSymbol(this.state.players[this.state.matrix[`${y}/${x}`]] ? this.state.players[this.state.matrix[`${y}/${x}`]].symbol : null)}</El>;
-        }
+        for(let i = 0; i < w*h; ++i)
+            matrix[i] = <El key={`${i}`} data-pos={i} {...props}>{this._getSymbol(this.state.players[this.state.matrixv2.content[i]] ? this.state.players[this.state.matrixv2.content[i]].symbol : null)}</El>;
         return(matrix);
     }
 
     /* Mechanics */
 
-    _turn = (x, y, matrix, cb = () => null) => {
-        this._moreThan1(this.state.players, (val) => this.setState({finished: val})); //SURRENDER
-        if(!this.state.matrix[`${x}/${y}`] && (x !== null && x !== undefined) && (y !== null && y !== undefined) && this.state.finished === -1){
-            matrix[`${x}/${y}`] = this.state.playing;
+    _turn = (i, matrix, cb = () => null) => {
+        // this._moreThan1(this.state.players, (val) => this.setState({finished: val})); //SURRENDER
+
+        if(!this.state.matrixv2.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
+            matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
             this.setState({
                 playing: (this.state.playing + 1) % this.state.players.length,
-                matrix: matrix,
-                used: this.state.used + 1,
-                finished: this.ttt().validate()
+                matrixv2: matrix,
+                gameState: this.TTT.validate(matrix.content)
             }, ()=>cb(matrix));
             return true;
         }
@@ -81,71 +93,71 @@ export default class TTTGrid extends Component{
     _handle = (e) => {
         e.preventDefault();
         let $el = $(e.target);
-        let x = $el.data('posx'), y = $el.data('posy'), newMatrix = this.state.matrix;
+        let pos = $el.data('pos'), newMatrix = this.state.matrixv2;
         if(this.state.players[this.state.playing].me) //BOT + ONLINE
-            this._turn(x, y, newMatrix, this._botPlay);
+            this._turn(pos, newMatrix/*, this._botPlay*/); //Bot off
     }
     _restart = (e) => { //RESTART
         this.setState({restart: true});
-        setTimeout(() => this.setState({...this.state.oldState, matrix: {}, players: this.props.players}, this._setup), 200);
-    }
-    _surrender = (e) => { //SURRENDER
-        let newPlayers = this.state.players;
-        newPlayers.forEach((el) => {
-            if(el.me)el.playing = false;
-        })
-        this.setState({players: newPlayers});
-        this._moreThan1(this.state.players, (val) => this.setState({finished: val}));
-    }
-    _moreThan1(obj, cb){ //SURRENDER
-        if(obj.filter((el) => el.playing).length === 1){
-            for(let i = 0; i < obj.length; i++){
-                if(obj[i].playing){
-                    cb(i);
-                }
-            }
-        }
+        setTimeout(() => this.setState({...this.state.oldState, players: this.props.players}, this._setup), 200);
     }
 
     /* Core */
 
-    ttt = () => new TTT(this.state.ySize, this.state.xSize, toMatrix(this.state.matrix, this.state.xSize, this.state.ySize), this.state.seq, this.state.used + 1, this.state.xSize * this.state.ySize, this.state.botIndx);
-
-    /* Bot */
-    _testBot = (cb = () => null) => { //BOT
-        let indx = null;
-        this.state.players.forEach((el, index) => { //BOT
-            if(el.type.slice(0, 3) === 'bot'){ //BOT
-                if(!indx>=0){
-                    indx = index;
-                }
-            }
-        });
-        if(indx!=null){
-            this.setState({botType: this.state.players[indx].type, botIndx: indx}, cb);
-        }
-            
-    }
-    _botPlay = (newMatrix) => {
-        if(!this.state.players[this.state.playing].me && this.state.botType && this.state.finished === -1) //BOT
-            this.ttt().jogadaComputador(this.state.botType, (X, Y) => this._turn(X, Y, newMatrix)); //BOT
-    }
-    _setup = () => {
-        this._testBot(()=>{
-            this._botPlay(this.state.matrix);
-        });
-    }
     /* Component */
+    _setup = () => {
+        this.TTT = new TTT({
+            seq: this.state.seq,
+            players: this.state.players,
+            width: this.state.xSize,
+            height: this.state.ySize
+        });
+        this._resetMatrix();
+        this._resetGameState();
 
-
+        // this._testBot(()=>{
+        //     this._botPlay(this.state.matrix);
+        // });
+    }
+    componentWillMount(){
+        this._setup();
+    }
 
     componentDidMount(){
-        this._setup();
         this.setState({oldState: this.state});
         PubSub.subscribe('reinicia', () => {
-            this._restart();
+            if(this.props.local)
+                this._restart();
+            else
+                console.error('Error! Forbidden Command')
         });
     }
+
+    /*Clean Render*/
+
+    Grid = () => (
+        <Grid className={this.gridClass()} finished={this.state.gameState.finished} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
+                {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock willReduce`,symbols: {...this.state.symbols}})}
+        </Grid>
+    )
+
+    Toolbar = () => (
+        <ButtonGroup style={{paddingTop: '1em'}}>        
+            {this.props.local?(
+                <Button size="lg" variant="outline-primary" onClick={this._restart}>
+                    Reiniciar
+                </Button>    
+            ):(
+                <Button size="lg" variant="outline-primary" onClick={this._surrender}>
+                    Desistir
+                </Button>
+            )}
+        </ButtonGroup>
+    )
+
+    /*Styles*/
+
+    gridClass = (extra = '') => (`tttGrid ${this.state.gameState.finished ? 'reduce' : ''} ${extra}`)
 
     render(){
         return(
@@ -153,22 +165,9 @@ export default class TTTGrid extends Component{
                 <div className={"wrapper" + (this.state.restart ? ' disappear' : '') }>
                     <TopState {...this.state} />
                     <WinnerWinnerChickenDinner local={this.props.local} _restart={this._restart} {...this.state} />
-                    <Grid className={`tttGrid` + (this.state.finished === -1 ? '' : ' reduce')} finished={this.state.finished} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
-                            {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock willReduce`,symbols: {...this.state.symbols}} )}
-                    </Grid>
+                    <this.Grid/>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
-                        <ButtonGroup style={{paddingTop: '1em'}}>
-                            {this.props.local?(
-                                <Button size="lg" variant="outline-primary" onClick={this._restart}>
-                                    Reiniciar
-                                </Button>    
-                            ):(
-                                <Button size="lg" variant="outline-primary" onClick={this._surrender}>
-                                    Desistir
-                                </Button>
-                            )}
-                            {this.props.children /*Remover*/}
-                        </ButtonGroup>
+                        <this.Toolbar/>
                     </div>
                     
                 </div>
@@ -180,12 +179,12 @@ export default class TTTGrid extends Component{
 
 
 const WinnerWinnerChickenDinner = props => (
-    props.finished === -1 ?(
+    !props.gameState.finished ?(
         null
     ):(
         <div className="primary lt tttWho">
             <p>
-                {(props.finished === -2)?('Empate!'):(`${props.players[props.finished].name} ganhou!`)}
+                {(!props.gameState.winner)?('Empate!'):(`${props.gameState.winner.name} ganhou!`)}
             </p>
             <ButtonGroup>
                 {props.local?(
@@ -195,7 +194,7 @@ const WinnerWinnerChickenDinner = props => (
                 ):(
                     null
                 )}
-                <Button size="lg" variant="outline-primary" href={paths.main}>
+                <Button size="lg" variant="outline-primary" as={Link} to={paths.main} href={paths.main}>
                     Voltar
                 </Button>
             </ButtonGroup>
@@ -204,14 +203,14 @@ const WinnerWinnerChickenDinner = props => (
 );
 
 const TopState = props => (
-    <p style={{textAlign: 'center'}} className={"lt primary" + (props.finished === -1 ? '' : ' disappear')}>
-        {(props.finished === -1)?(
+    <p style={{textAlign: 'center'}} className={"lt primary" + (props.gameState.finished ? ' disappear' : '')}>
+        {(!props.gameState.finished)?(
             `Vez de ${props.players[props.playing].name}!`
         ):(
-            (props.finished === -2)?(
+            (!props.gameState.winner)?(
                 'Empate!'
             ):(
-                `${props.players[props.finished].name} ganhou!`
+                `${props.gameState.winner.name} ganhou!`
             )
         )}
     </p>

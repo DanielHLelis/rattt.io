@@ -6,8 +6,13 @@ export default class Validator{
         this.width = props.width || 3;
         this.height = props.height || 3;
         this.matrix = props.matrix || [];
+        this.players = props.players;
 
-        this.options = this.generateAllOptions()
+        this.options = this.generateAllOptions();
+    }
+
+    get solves(){
+        return this.options;
     }
 
     generateAllOptions = () =>{
@@ -58,15 +63,49 @@ export default class Validator{
         return res;
     }
 
-    blankSpaces(content){
-        let blank = [], {matrix} = this;
+    blankSpaces = (matrix = this.matrix) => {
+        let blank = [];
         for(let i = 0; i < matrix.length; i++){
             if(matrix[i] === null || matrix[i] === undefined)blank.push(i);
         }
         return blank;
     }
 
-    get solves(){
-        return this.options;
+    validate = (matrix = this.matrix) => {
+        let blank = this.blankSpaces(matrix), // Espaços em branco
+            gameState = { //Definição de retorno padrão do estado de jogo
+                blankSpaces: blank.length,
+                winner: undefined,
+                finished: blank.length === 0 ? true : false,
+            },
+            {players, solves} = this;
+        
+        if(players.length === 1){
+            gameState.winner = players[0],
+            gameState.finished = true
+        }else
+            players.forEach((el) => {
+                let newMatrix = [];
+
+                matrix.forEach((current, index) => { //Posições pertencentes ao el atual
+                    current == el._id
+                    ? newMatrix.push(index)
+                    :null
+                })
+                
+                for(let i = 0; i < solves.length; i++){
+                    let winned = true;
+                    
+                    solves[i].forEach(el => winned = winned && newMatrix.includes(el)); //Verifica se as posições pertecentes ao jogador enquadram-se a um caso de vitória
+                    if(winned){
+                        gameState.winner = gameState.winner === undefined ? el : null;
+                        gameState.finished = true;
+                        break;
+                    }
+                }
+            });
+
+        return gameState;
+
     }
 };
