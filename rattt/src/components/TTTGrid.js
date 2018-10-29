@@ -64,12 +64,22 @@ export default class TTTGrid extends Component{
 
     /* Grid */
 
-    _getSymbol = (symbol) => symbols[symbol]
+    _getSymbol = (_id) => {
+        if(typeof _id !== 'string' && typeof _id !== 'number') return;
+
+        let symbol;
+        
+        this.state.players.forEach(el => {
+            if(el._id === _id)
+                symbol = el.symbol;
+        });
+        return symbols[symbol];
+    }
 
     _generateGrid = (w, h, El, props) => {
         let matrix = [];
         for(let i = 0; i < w*h; ++i)
-            matrix[i] = <El key={`${i}`} data-pos={i} {...props}>{this._getSymbol(this.state.players[this.state.matrixv2.content[i]] ? this.state.players[this.state.matrixv2.content[i]].symbol : null)}</El>;
+            matrix[i] = <El key={`${i}`} data-pos={i} {...props}>{this._getSymbol(this.state.matrixv2.content[i])}</El>;
         return(matrix);
     }
 
@@ -92,11 +102,24 @@ export default class TTTGrid extends Component{
         let $el = $(e.target);
         let pos = $el.data('pos'), newMatrix = this.state.matrixv2;
         if(this.state.players[this.state.playing].me)
-            this._turn(pos, newMatrix);
+            this._turn(pos, newMatrix, this._botPlay);
     }
     _restart = (e) => { //RESTART
         this.setState({restart: true});
         setTimeout(() => this.setState({...this.state.oldState, players: this.props.players}, this._setup), 200);
+    }
+
+    _botPlay = (byMatrix, timer = 0) => {
+        let {players, playing, matrixv2} = this.state;
+        let tipo = players[playing].type,
+            id = players[playing]._id,
+            oponentId = players[(playing + 1) % players.length]._id;    //Funciona somente 1v1
+        
+        if(typeof(tipo) === 'string' && tipo.includes('bot')){
+            let newMatrix = matrixv2.content, pos = this.TTT.botPlay(id, oponentId, newMatrix, tipo);
+            if(!this._turn(pos, matrixv2))
+                console.log('Fail?')
+        }else return;
     }
 
     /* Core */
@@ -111,6 +134,8 @@ export default class TTTGrid extends Component{
         });
         this._resetMatrix();
         this._resetGameState();
+
+        this._botPlay();
     }
     componentWillMount(){
         this._setup();

@@ -107,4 +107,85 @@ export default class Validator{
         return gameState;
 
     }
+
+
+
+
+
+    //bots
+
+    randomPlay = (matrix = this.matrix) =>{
+        let blank = this.blankSpaces(matrix), factor = Math.floor(Math.random()*blank.length);
+        return(blank[factor]);
+    }
+
+    gameScore = (gameState, id, depth = 0) => {
+        if(gameState.winner === undefined || gameState.winner === null)
+            return 0;
+        if(gameState.winner._id === id)
+            return 100 - depth;
+        else
+            return -100 + depth;
+    }
+
+    proBot = (botId, oponentId, matrix, botTurn = true, depth = 0) => { //Change from minimax to alpha - beta pruning
+        
+        let blankSpaces = this.blankSpaces(matrix),
+            gameState = this.validate(matrix),
+            results = [] ;
+        
+        if(gameState.finished)
+            return {
+                pos: null,
+                score: this.gameScore(gameState, botId, depth)
+            }
+        
+        blankSpaces.forEach(el => {
+            let newMatrix = this.cloneMatrix(matrix);
+            newMatrix[el] = botTurn ? botId : oponentId;
+            results.push({
+                pos: el,
+                score: this.proBot(botId, oponentId, newMatrix, !botTurn, depth + 1).score
+            });
+        });
+
+
+        let base = results[0];
+        for(let i = 1; i < results.length; i++){
+            if(botTurn){
+                if(results[i].score > base.score)
+                    base = results[i];
+            }else{
+                if(results[i].score < base.score)
+                    base = results[i];
+            }
+        }
+
+        return base;
+    }
+
+    botPlay = (botId, oponentId = -1, matrix = this.matrix, tipo = 'random-bot') => {
+
+        switch(tipo){
+            case 'random-bot':
+                return this.randomPlay(matrix);
+            case 'pro-bot':
+                if(this.width === 3 && this.height === 3)
+                    return this.proBot(botId, oponentId, matrix).pos;
+                else
+                    return this.randomPlay(matrix)
+
+            default:
+                return this.randomPlay(matrix);
+        }
+    }
+
+
+    cloneMatrix = (matrix) => {
+        let res = [];
+        for(let i = 0; i < matrix.length; i++){
+            res.push(matrix[i]);
+        }
+        return res;
+    }
 };

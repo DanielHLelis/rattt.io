@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import {
-    // ButtonToolbar,
-    // ButtonGroup,
-    Button,
-    // Dropdown,
-    // DropdownButton
-} from 'react-bootstrap'
+// import {
+//     // ButtonToolbar,
+//     // ButtonGroup,
+//     Button,
+//     // Dropdown,
+//     // DropdownButton
+// } from 'react-bootstrap'
 import $ from 'jquery'
 import cheet from 'cheet.js'
 
@@ -47,12 +47,18 @@ const modes = {
             _id: '3',
             name: 'Bot Rick',
             symbol: 'O',
-            type: 'bot-tradicional-impossivel',
+            type: 'pro-bot',
             playing: true,
             me: false
         }
     ]
 }
+
+/*
+    TODO:
+        -Per player, burguer icon with player name to extend player config selection
+        -Add disabled prop to prevent editing
+*/
 
 export default class TradicionalScreen extends Component{
 
@@ -60,7 +66,7 @@ export default class TradicionalScreen extends Component{
         super();
 
         this.state = {
-            mode: modes.local
+            mode: modes.bot
         }
     }
 
@@ -79,15 +85,7 @@ export default class TradicionalScreen extends Component{
         });
         return(
             <main className="darkBg contentDiv">
-                <TTT local={true} xSize={3} ySize={3} seq={3} players={this.state.mode}>
-                        <Button size='lg' variant="outline-primary" onClick={this._changeBot} >
-                            Bot
-                        </Button>
-                        <Button size='lg' variant="outline-primary" onClick={this._changeUser} >
-                            Local
-                        </Button>
-                </TTT>
-
+                <TTT local={true} xSize={3} ySize={3} seq={3} players={this.state.mode}/>
             </main>
 
         );

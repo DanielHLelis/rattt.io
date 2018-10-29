@@ -16,10 +16,8 @@
 }
 .tttGrid{
     display: grid;
-    max-height: 98vw;
-    max-width: 98vw;
-    height: 70vh;
-    width: 70vh;
+    height: 70vmin;
+    width: 70vmin;
 }
 .wrapper{
     /* max-height: 98vw;
