@@ -3,7 +3,7 @@ import {
     Modal,
     Button
 } from 'react-bootstrap'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 
 import 'styles/master.css'
 
@@ -33,7 +33,7 @@ export default class Master extends Component{
         this.setState({modalVisible: true});
     }
     toggleSidebar = (pos) => {
-        typeof(pos) === 'boolean' ? null: pos = !this.state.sideBar;
+        if(typeof(pos) !== 'boolean') pos = !this.state.sideBar;
         this.setState({sideBar: pos});
     }
 

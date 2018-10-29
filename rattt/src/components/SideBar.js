@@ -3,7 +3,6 @@ import {
     Nav,
     Collapse
 } from 'react-bootstrap'
-import styled from 'styled-components'
 
 import { Link } from 'react-router-dom'
 
@@ -29,7 +28,7 @@ export default class SideBar extends Component{
     }
     NavLink = (props) => (
         <Link {...props} onClick={(e) => {
-            props.onClick ? props.onClick(e) : null;
+            if(props.onClick) props.onClick(e);
             this.props.toggleSidebar(false);
         }} className={props.className + ' sidebar-item nav-link'} to={props.href}>
                 {props.children}
@@ -74,14 +73,3 @@ export default class SideBar extends Component{
 const Caret = (props) => (
     <FontAwesomeIcon className='caret' style={(props.tttCollapse)?({transform: 'rotate(180deg)'}):null} icon={faCaretDown}/>
 );
-
-const SideBarContainer = styled.div`
-    --sideWidth: 20vw;
-    position: fixed;
-    background-color: #3b3b3b;
-    height: 100vh;
-    width: var(--sideWidth);
-    left: ${props => props.visible ? 0 : -20}vw;
-    z-index: 2;
-    transition: left 0.6s ease-in-out;
-`;

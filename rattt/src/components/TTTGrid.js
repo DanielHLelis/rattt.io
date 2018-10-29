@@ -15,7 +15,6 @@ import paths from 'config/paths'
 import symbols from 'config/symbols'
 
 import TTT from 'utils/TicTacToe'
-import toMatrix from 'utils/objToMatrix'
 
 /*
     TODO:

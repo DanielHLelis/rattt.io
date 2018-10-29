@@ -81,16 +81,15 @@ export default class Validator{
             {players, solves} = this;
         
         if(players.length === 1){
-            gameState.winner = players[0],
-            gameState.finished = true
+            gameState.winner = players[0];
+            gameState.finished = true;
         }else
             players.forEach((el) => {
                 let newMatrix = [];
 
                 matrix.forEach((current, index) => { //Posições pertencentes ao el atual
-                    current == el._id
-                    ? newMatrix.push(index)
-                    :null
+                    if(current === el._id)
+                        newMatrix.push(index)
                 })
                 
                 for(let i = 0; i < solves.length; i++){

@@ -5,14 +5,14 @@ import {
     Button
 } from 'react-bootstrap'
 
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import{
     faCaretDown
 } from '@fortawesome/free-solid-svg-icons'
 
-import paths, {RightNavData} from 'config/paths'
+// import paths from 'config/paths'
 
 export default class NavBox extends Component{
 
@@ -62,18 +62,18 @@ export default class NavBox extends Component{
         )
     }
 }
-const NavLink = (props) => (
-    <Link {...props} className={props.className + ' nav-link'} to={props.href}>
-            {props.children}
-    </Link>
+// const NavLink = (props) => (
+//     <Link {...props} className={props.className + ' nav-link'} to={props.href}>
+//             {props.children}
+//     </Link>
     
-);
+// );
 
-const NavItem = (props) => (
-        <Nav.Item>
-            <NavLink {...props} >{props.children}</NavLink>
-        </Nav.Item>
-);
+// const NavItem = (props) => (
+//         <Nav.Item>
+//             <NavLink {...props} >{props.children}</NavLink>
+//         </Nav.Item>
+// );
 const Caret = (props) => (
     <FontAwesomeIcon className='caret' style={(props.active)?({transform: 'rotate(90deg)'}):({transform: 'rotate(-90deg)'})} icon={faCaretDown}/>
 );
