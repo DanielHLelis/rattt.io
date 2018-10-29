@@ -77,8 +77,6 @@ export default class TTTGrid extends Component{
     /* Mechanics */
 
     _turn = (i, matrix, cb = () => null) => {
-        // this._moreThan1(this.state.players, (val) => this.setState({finished: val})); //SURRENDER
-
         if(!this.state.matrixv2.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
             matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
             this.setState({
@@ -94,8 +92,8 @@ export default class TTTGrid extends Component{
         e.preventDefault();
         let $el = $(e.target);
         let pos = $el.data('pos'), newMatrix = this.state.matrixv2;
-        if(this.state.players[this.state.playing].me) //BOT + ONLINE
-            this._turn(pos, newMatrix/*, this._botPlay*/); //Bot off
+        if(this.state.players[this.state.playing].me)
+            this._turn(pos, newMatrix);
     }
     _restart = (e) => { //RESTART
         this.setState({restart: true});
@@ -114,10 +112,6 @@ export default class TTTGrid extends Component{
         });
         this._resetMatrix();
         this._resetGameState();
-
-        // this._testBot(()=>{
-        //     this._botPlay(this.state.matrix);
-        // });
     }
     componentWillMount(){
         this._setup();
@@ -136,8 +130,8 @@ export default class TTTGrid extends Component{
     /*Clean Render*/
 
     Grid = () => (
-        <Grid className={this.gridClass()} finished={this.state.gameState.finished} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
-                {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock willReduce`,symbols: {...this.state.symbols}})}
+        <Grid className={this.gridClass()} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
+                {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock`,symbols: {...this.state.symbols}})}
         </Grid>
     )
 

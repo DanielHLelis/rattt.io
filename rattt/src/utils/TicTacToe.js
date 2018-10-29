@@ -96,7 +96,7 @@ export default class Validator{
                 for(let i = 0; i < solves.length; i++){
                     let winned = true;
                     
-                    solves[i].forEach(el => winned = winned && newMatrix.includes(el)); //Verifica se as posições pertecentes ao jogador enquadram-se a um caso de vitória
+                    solves[i].every(el => (winned = newMatrix.includes(el))); //Verifica se as posições pertecentes ao jogador enquadram-se a um caso de vitória
                     if(winned){
                         gameState.winner = gameState.winner === undefined ? el : null;
                         gameState.finished = true;
