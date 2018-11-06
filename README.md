@@ -1,2 +1,2 @@
 # rattt.io
-Tic tac toe game with rat theme. Basec on React framework.
+Tic tac toe service based on React framework.
