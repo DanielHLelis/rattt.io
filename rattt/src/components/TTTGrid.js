@@ -19,8 +19,7 @@ import TTT from 'utils/TicTacToe'
 /*
     TODO:
         -Adicionar surrender
-        -Adicionar bots
-        -Aprimorar e refatorar bots
+        -Alpha-beta pruning
 */
 export default class TTTGrid extends Component{
     constructor(props){
