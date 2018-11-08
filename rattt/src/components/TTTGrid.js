@@ -37,14 +37,14 @@ export default class TTTGrid extends Component{
         };
     }
 
-    _resetMatrix = () => {
+    _resetMatrix = (cb = () => null) => {
         this.setState({
-            matrixv2:{
+            matrix:{
                 width: this.props.xSize,
                 height: this.props.ySize,
                 content: this.defineContent(this.props.xSize*this.props.ySize, null)
             }
-        })
+        }, cb)
     }
     _resetGameState = () => {
         this.setState({
@@ -79,18 +79,19 @@ export default class TTTGrid extends Component{
     _generateGrid = (w, h, El, props) => {
         let matrix = [];
         for(let i = 0; i < w*h; ++i)
-            matrix[i] = <El key={`${i}`} data-pos={i} {...props}>{this._getSymbol(this.state.matrixv2.content[i])}</El>;
+            matrix[i] = <El key={`${i}`} data-pos={i} {...props}>{this._getSymbol(this.state.matrix.content[i])}</El>;
         return(matrix);
     }
 
     /* Mechanics */
 
     _turn = (i, matrix, cb = () => null) => {
-        if(!this.state.matrixv2.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
+        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
             matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
+            this.TTT.matrix = matrix.content;
             this.setState({
                 playing: (this.state.playing + 1) % this.state.players.length,
-                matrixv2: matrix,
+                matrix: matrix,
                 gameState: this.TTT.validate(matrix.content)
             }, ()=>cb(matrix));
             return true;
@@ -100,7 +101,7 @@ export default class TTTGrid extends Component{
     _handle = (e) => {
         e.preventDefault();
         let $el = $(e.target);
-        let pos = $el.data('pos'), newMatrix = this.state.matrixv2;
+        let pos = $el.data('pos'), newMatrix = this.state.matrix;
         if(this.state.players[this.state.playing].me)
             this._turn(pos, newMatrix, this._botPlay);
     }
@@ -110,14 +111,14 @@ export default class TTTGrid extends Component{
     }
 
     _botPlay = (byMatrix, timer = 0) => {
-        let {players, playing, matrixv2} = this.state;
+        let {players, playing, matrix} = this.state;
         let tipo = players[playing].type,
             id = players[playing]._id,
             oponentId = players[(playing + 1) % players.length]._id;    //Funciona somente 1v1
         
         if(typeof(tipo) === 'string' && tipo.includes('bot')){
-            let newMatrix = matrixv2.content, pos = this.TTT.botPlay(id, oponentId, newMatrix, tipo);
-            if(!this._turn(pos, matrixv2))
+            let pos = this.TTT.botPlay(id, oponentId, tipo);
+            if(!this._turn(pos, matrix))
                 console.log('Fail?')
         }else return;
     }
@@ -126,15 +127,18 @@ export default class TTTGrid extends Component{
 
     /* Component */
     _setup = () => {
-        this.TTT = new TTT({
-            seq: this.state.seq,
-            players: this.state.players,
-            width: this.state.xSize,
-            height: this.state.ySize
-        });
-        this._resetMatrix();
-        this._resetGameState();
 
+        this._resetMatrix(() => {
+            this.TTT = new TTT({
+                seq: this.state.seq,
+                players: this.state.players,
+                width: this.state.xSize,
+                height: this.state.ySize,
+                matrix: this.state.matrix.content
+            });    
+        });
+        this._resetGameState();
+        
         this._botPlay();
     }
     componentWillMount(){
@@ -242,7 +246,7 @@ const Grid = styled.div`
     display: grid;
     overflow: hidden;
     font-weight: lighter;
-    grid-template: repeat(${props => props.y}, ${props => 100/props.y}%) / repeat(${props => props.x}, ${props => 100/props.y}%);
+    grid-template: repeat(${props => props.y}, 1fr) / repeat(${props => props.x}, 1fr);
     & * *{
         font-size: var(--size);
     }

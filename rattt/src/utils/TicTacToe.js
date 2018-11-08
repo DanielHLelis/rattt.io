@@ -123,9 +123,9 @@ export default class Validator{
         if(gameState.winner === undefined || gameState.winner === null)
             return 0;
         if(gameState.winner._id === id)
-            return 100 - depth;
+            return this.width * this.height - depth;
         else
-            return -100 + depth;
+            return depth - this.width * this.height;
     }
 
     proBot = (botId, oponentId, matrix, botTurn = true, depth = 0) => { //Change from minimax to alpha - beta pruning
@@ -139,7 +139,7 @@ export default class Validator{
                 pos: null,
                 score: this.gameScore(gameState, botId, depth)
             }
-        
+
         blankSpaces.forEach(el => {
             let newMatrix = this.cloneMatrix(matrix);
             newMatrix[el] = botTurn ? botId : oponentId;
@@ -164,7 +164,7 @@ export default class Validator{
         return base;
     }
 
-    botPlay = (botId, oponentId = -1, matrix = this.matrix, tipo = 'random-bot') => {
+    botPlay = (botId, oponentId = -1, tipo = 'random-bot', matrix = this.matrix) => {
 
         switch(tipo){
             case 'random-bot':

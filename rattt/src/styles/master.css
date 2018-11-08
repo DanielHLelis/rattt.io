@@ -13,14 +13,14 @@
     margin: 0;
     padding: 0;
     font-family: var(--font);
-    background-color: #2b2b2b;
+    background-color: var(--background);
   }
   *{
     box-sizing: border-box;
   }
   .contentDiv{
     flex: 1 1 auto;
-    background-color: #2b2b2b;
+    background-color: var(--background);
   }
 /*Master Classes*/
   #mark{
@@ -55,7 +55,7 @@
     transition: all 100ms linear;
   }
   .sidebar-item:active{
-    background-color: #2b2b2b;
+    background-color: var(--background);
     color: var(--primary);
   }
   .sidebar-item:hover{
@@ -89,7 +89,7 @@
     color: #fff;
   }
   .darkDialog .modal-content{
-    background-color: #2b2b2b;
+    background-color: var(--background);
   }
   .darkDropdown .dropdown-menu{
     background-color: #343a40;
@@ -133,7 +133,7 @@
     font-family: "Monoton", sans-serif !important;
   }
   #mark{
-    font-size: 2em;
+    font-size: 1.75em;
   }
   a{
     transition: opacity linear 0.1s;
@@ -162,7 +162,7 @@
     color: #fff;
   }
   .darkBg{
-    background-color: #2b2b2b;
+    background-color: var(--background);
   }
   .bluesvg{
     filter: invert(0.45) sepia(1) saturate(6) hue-rotate(175deg);
@@ -216,6 +216,9 @@
 }
 
 @media only screen and (max-width: 375px){
+  .giant{
+    font-size: 4em;
+  }
   .xlt{
     font-size: 2.75em;
   }

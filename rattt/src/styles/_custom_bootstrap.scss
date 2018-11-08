@@ -1,6 +1,10 @@
 $blue: #00a4dd;
+$background: #2b2b2b;
 $pink: #fb4e83;
 $primaryPink: $pink;
+$colors: (
+    "background": $background
+);
 $theme-colors: (
     "primaryPink": $primaryPink
 );

@@ -19,7 +19,8 @@ export default class SideBar extends Component{
         super();
 
         this.state = {
-            tttCollapse: false
+            tttCollapse: false,
+            scrollY: window.scrollY
         }
     }
 
@@ -41,11 +42,22 @@ export default class SideBar extends Component{
         </Nav.Item>
     
     );
+
+    _translate = () => this.state.scrollY > this.state.maxTrans ? this.state.maxTrans : this.state.scrollY
+
     render(){
         let {NavLink, NavItem} = this;
+
+        window.onscroll = (e) => {
+            this.setState({scrollY: window.scrollY,
+                maxTrans: window.document.getElementById('side-container').offsetTop});
+        }
+
         return(
             <div className={'sidebar' + (this.props.visible ? '' : ' hide')} visible={this.state.visible} >
-                <Nav className='flex-column'>
+                <Nav onScroll={e => console.log(e)} id='side-container' className='flex-column' style={{
+                    transform: `translateY(-${this._translate()}px)`
+                }}>
                 
                     <NavItem onClick={(e) => window.localStorage.setItem('firstEnter', 'true')} href={paths.index}>
                         Intro
