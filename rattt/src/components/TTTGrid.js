@@ -117,8 +117,7 @@ export default class TTTGrid extends Component{
         
         if(typeof(tipo) === 'string' && tipo.includes('bot')){
             let pos = this.TTT.botPlay(id, oponentId, tipo);
-            if(!this._turn(pos, matrix))
-                console.log('Fail?')
+            setTimeout(() => this._turn(pos, matrix), 250)
         }else return;
     }
 
