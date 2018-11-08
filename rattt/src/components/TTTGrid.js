@@ -238,16 +238,13 @@ const TopState = props => (
 );
 
 const Grid = styled.div`
-    @media only screen and (max-width: 714px) {
-        --size: ${props => 98/props.y}vw;
-    }
-    --size: ${props => 70/props.y}vh;
+    --size: ${props => 70/props.y}vmin;
     display: grid;
     overflow: hidden;
     font-weight: lighter;
     grid-template: repeat(${props => props.y}, 1fr) / repeat(${props => props.x}, 1fr);
     & * *{
-        font-size: var(--size);
+        font-size: var(--size) ;
     }
     & * * *{
         font-size: calc(var(--size) * 0.65);
