@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import cheet from 'cheet.js'
 
 import 'styles/intro.css'
+import 'styles/emoji.css'
 
 class IntroScreen extends Component {
   constructor(props){

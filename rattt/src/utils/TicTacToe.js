@@ -128,7 +128,7 @@ export default class Validator{
             return depth - this.width * this.height;
     }
 
-    proBot = (botId, oponentId, matrix, botTurn = true, depth = 0) => { //Change from minimax to alpha - beta pruning
+    minimax = (limit, botId, oponentId, matrix, botTurn = true, depth = 0) => { //Change from minimax to alpha - beta pruning
         
         let blankSpaces = this.blankSpaces(matrix),
             gameState = this.validate(matrix),
@@ -139,13 +139,19 @@ export default class Validator{
                 pos: null,
                 score: this.gameScore(gameState, botId, depth)
             }
+        
+        if(limit > depth)
+            return {
+                pos: null,
+                score: 0
+            }
 
         blankSpaces.forEach(el => {
             let newMatrix = this.cloneMatrix(matrix);
             newMatrix[el] = botTurn ? botId : oponentId;
             results.push({
                 pos: el,
-                score: this.proBot(botId, oponentId, newMatrix, !botTurn, depth + 1).score
+                score: this.minimax(limit, botId, oponentId, newMatrix, !botTurn, depth + 1).score
             });
         });
 
@@ -164,6 +170,12 @@ export default class Validator{
         return base;
     }
 
+    proClassic = (matrix, botId, oponentId) => this.minimax(false, botId, oponentId, matrix)
+
+    mediumClassic = (matrix, botId, oponentId) => this.minimax(4, botId, oponentId, matrix)
+
+    easyClassic = (matrix) => this.randomPlay(matrix)
+
     botPlay = (botId, oponentId = -1, tipo = 'random-bot', matrix = this.matrix) => {
 
         switch(tipo){
@@ -171,10 +183,13 @@ export default class Validator{
                 return this.randomPlay(matrix);
             case 'pro-bot':
                 if(this.width === 3 && this.height === 3)
-                    return this.proBot(botId, oponentId, matrix).pos;
+                    return this.proClassic(matrix, botId, oponentId).pos;
                 else
                     return this.randomPlay(matrix)
-
+            case 'medium-bot':
+                if(this.width === 3 && this.height === 3)
+                    return this.mediumClassic(matrix, botId, oponentId)
+                break;
             default:
                 return this.randomPlay(matrix);
         }

@@ -37,8 +37,8 @@ export default class Master extends Component{
         this.setState({sideBar: pos});
     }
 
-    ratttAlert = (modalTitle, modalContent) => {
-        this.setState({modalVisible: true, modalTitle, modalContent});
+    ratttAlert = (modalTitle, modalContent, modalButtons) => {
+        this.setState({modalVisible: true, modalTitle, modalContent, modalButtons});
     }
 
     render(){
@@ -66,6 +66,7 @@ const RatttAlert = (props) => (
         <Modal.Body className="white st">{props.modalContent}</Modal.Body>
         <Modal.Footer>
             <Button variant="outline-danger" onClick={props.handleClose}>Fechar</Button>
+            {props.modalButtons}
         </Modal.Footer>
     </Modal>
 );

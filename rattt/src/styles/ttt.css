@@ -23,9 +23,9 @@
     box-shadow: inset 0 0 8px 8px var(--background);
 }
 .wrapper{
-    /* max-height: 98vw;
-    max-width: 98vw;
-    height: 70vh;
+    /* max-height: 98vw;*/
+    /* max-width: 98vw; */
+    /*height: 70vh;
     width: 70vh; */
     animation: appear 0.2s ease-in-out;
     display: flex;

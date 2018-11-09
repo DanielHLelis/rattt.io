@@ -161,8 +161,9 @@ export default class TTTGrid extends Component{
         </Grid>
     )
 
-    Toolbar = () => (
-        <ButtonGroup style={{paddingTop: '1em'}}>        
+    Toolbar = (props) => (
+        <ButtonGroup style={{paddingTop: '1em', maxWidth: '98vw'}}>    
+            {props.leftButtons}    
             {this.props.local?(
                 <Button size="lg" variant="outline-primary" onClick={this._restart}>
                     Reiniciar
@@ -172,6 +173,7 @@ export default class TTTGrid extends Component{
                     Desistir
                 </Button>
             )}
+            {props.rightButtons}
         </ButtonGroup>
     )
 
@@ -181,16 +183,17 @@ export default class TTTGrid extends Component{
 
     render(){
         return(
-            <div style={{marginBottom: 'auto'}}>
+            <div className={"wrapper"} style={{marginBottom: 'auto'}}>
+                {this.props.children}
                 <div className={"wrapper" + (this.state.restart ? ' disappear' : '') }>
                     <TopState {...this.state} />
                     <WinnerWinnerChickenDinner local={this.props.local} _restart={this._restart} {...this.state} />
                     <this.Grid/>
-                    <div style={{display: 'flex', flexDirection: 'row'}}>
-                        <this.Toolbar/>
-                    </div>
-                    
                 </div>
+                <div className="toolbar" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                        <this.Toolbar leftButtons={this.props.leftButtons} rightButtons={this.props.rightButtons} />
+                </div>
+                
             </div>
         );
     }
@@ -244,6 +247,9 @@ const Grid = styled.div`
     grid-template: repeat(${props => props.y}, 1fr) / repeat(${props => props.x}, 1fr);
     & * *{
         font-size: var(--size) ;
+    }
+    & * *.emojiIcon{
+        font-size: calc(var(--size) * 0.8);
     }
     & * * *{
         font-size: calc(var(--size) * 0.65);
