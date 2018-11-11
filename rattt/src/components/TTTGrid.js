@@ -31,6 +31,11 @@ export default class TTTGrid extends Component{
             ySize: props.ySize,
             seq: props.seq,
             players: props.players,
+            gravity: props.gravity,
+            hovering: {
+                raw: null,
+                applied: null
+            },
             playing: 0,
             used: 0,
             restart: false
@@ -64,7 +69,7 @@ export default class TTTGrid extends Component{
 
     /* Grid */
 
-    _getSymbol = (_id) => {
+    _getSymbol = (_id, disabled = false) => {
         if(typeof _id !== 'string' && typeof _id !== 'number') return;
 
         let symbol;
@@ -73,7 +78,14 @@ export default class TTTGrid extends Component{
             if(el._id === _id)
                 symbol = el.symbol;
         });
-        return symbols[symbol];
+        return <span style={{pointerEvents: 'none', ...(disabled ? {opacity: 0.6} : {})}} >{symbols[symbol]}</span>;
+    }
+
+    _houseChild = (pos, hovering = false) => {
+        if(!hovering || (this.state.matrix.content[pos] !== null  && this.state.matrix.content[pos] !== undefined && this.state.matrix.content[pos] !== false))
+            return this._getSymbol(this.state.matrix.content[pos]);
+        
+        return this._getSymbol(this.state.players[this.state.playing]._id, true)
     }
 
     _generateGrid = (w, h, El, props) => {
@@ -84,20 +96,34 @@ export default class TTTGrid extends Component{
 
                 let className = `${i === 0 ? 'block-top ' : ''}${i === h-1 ? 'block-bottom ' : ''}${j === 0 ? 'block-left ' : ''}${j === w-1 ? 'block-right ' : ''}`;
 
-                matrix[linearPos] = <El key={`${linearPos}`} data-pos={linearPos} {...props} className={`${props.className} ${className}`} >{this._getSymbol(this.state.matrix.content[linearPos])}</El>;
+                matrix[linearPos] = 
+                <El 
+                    key={`${linearPos}`} 
+                    data-pos={linearPos} {...props} 
+                    className={`${props.className} ${className}`} 
+                    onMouseEnter={() => this.setState({hovering: {raw: linearPos, applied: this.TTT.apply(linearPos)}})}
+                    onMouseLeave={() => this.setState({hovering: {raw: null, applied: null}})}
+                >
+                    {this._houseChild(linearPos,  this.state.hovering.applied === linearPos )}
+                </El>;
             }
         }
             
         return(matrix);
     }
 
+    
+
     /* Mechanics */
 
     _turn = (i, matrix, cb = () => null) => {
+        i = this.TTT.apply(i, matrix.content);
+
         if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
             matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
             this.TTT.matrix = matrix.content;
             this.setState({
+                hovering: {raw: this.state.hovering.raw, applied: this.TTT.apply(this.state.hovering.raw, matrix.content)},
                 playing: (this.state.playing + 1) % this.state.players.length,
                 matrix: matrix,
                 gameState: this.TTT.validate(matrix.content)
@@ -143,7 +169,8 @@ export default class TTTGrid extends Component{
                 players: this.state.players,
                 width: this.state.xSize,
                 height: this.state.ySize,
-                matrix: this.state.matrix.content
+                matrix: this.state.matrix.content,
+                gravity: this.state.gravity
             });    
         });
         this._resetGameState();
@@ -256,13 +283,13 @@ const Grid = styled.div`
     overflow: hidden;
     font-weight: lighter;
     grid-template: repeat(${props => props.y}, 1fr) / repeat(${props => props.x}, 1fr);
-    & * *{
+    & * * *{
         font-size: var(--size) ;
     }
-    & * *.emojiIcon{
+    & * * *.emojiIcon{
         font-size: calc(var(--size) * 0.8);
     }
-    & * * *{
+    & * * * *{
         font-size: calc(var(--size) * 0.65);
         height: calc(var(--size) * 0.90);
         width: calc(var(--size) * 0.90);

@@ -53,7 +53,7 @@ export class Select extends Component{
                         {...this.props}
                         id={labelId}
                         className={labelClassName}
-                        style={this._handleLabel(this.state)}
+                        style={{...this._handleLabel(this.state), ...labelStyle}}
                     >
                         {label}
                     </LabelText>
@@ -123,7 +123,7 @@ export class Input extends Component{
                         {...this.props}
                         id={labelId}
                         className={labelClassName}
-                        style={this._handleLabel(this.state)}>{label}</LabelText>
+                        style={{...this._handleLabel(this.state), ...labelStyle}}>{label}</LabelText>
                     <TextInput
                         {...this.props}
                         style={inputStyle}

@@ -74,7 +74,7 @@ export default class PlayerConfig extends Component{
         return(
             <div>
                 <Input disabled={this.state.type ? this.state.type.value.includes('bot') : false} label="Nome" placeholder="Nome" type="text" value={this.state.name} onChange={this.handleInput.bind(this, 'name')} />
-                <Select label="Jogador" placeholder="Selecione" options={Players} value={this.state.type} onChange={this.handleType} />
+                <Select label="Tipo" placeholder="Selecione..." options={Players} value={this.state.type} onChange={this.handleType} />
                 {this._symbols()}
                 {this.props.children}
             </div>

@@ -6,6 +6,7 @@ export default class Validator{
         this.width = props.width || 3;
         this.height = props.height || 3;
         this.matrix = props.matrix || [];
+        this.gravity = props.gravity || false;
         this.players = props.players;
 
         this.options = this.generateAllOptions();
@@ -13,6 +14,29 @@ export default class Validator{
 
     get solves(){
         return this.options;
+    }
+
+    apply = (pos, matrix = this.matrix) => {
+        if(this.gravity){
+            return this.gravitate(pos, matrix);
+        }else return pos;
+    }
+
+    validOptions = (matrix) => {
+        
+        if(this.gravity){
+            return this.blankGravity(matrix);
+        }else return this.blankSpaces(matrix);
+    }
+
+    gravitate = (pos, matrix = this.matrix) => {
+        let posy = Math.floor(pos / this.width), posx = pos % this.width, blank = this.blankSpaces(matrix);
+
+        for(let i = this.height - 1; i >= posy; i--){ //Down Gravitate
+            if(blank.includes(i*this.width + posx))return i*this.width + posx;
+        }
+        
+        return null;
     }
 
     generateAllOptions = () =>{
@@ -71,6 +95,20 @@ export default class Validator{
         return blank;
     }
 
+    blankGravity = (matrix = this.matrix) => {
+        let blank = [];
+        for(let i = 0; i < this.width; i++){
+            for(let j = this.height - 1; j >= 0; j--){
+                let pos = j*this.width + i;
+                if(matrix[pos] === null || matrix[pos] === undefined){
+                    blank.push(pos);
+                    break;
+                }
+            }
+        }
+        return blank;
+    }
+
     validate = (matrix = this.matrix) => {
         let blank = this.blankSpaces(matrix), // Espaços em branco
             gameState = { //Definição de retorno padrão do estado de jogo
@@ -115,7 +153,7 @@ export default class Validator{
     //bots
 
     randomPlay = (matrix = this.matrix) =>{
-        let blank = this.blankSpaces(matrix), factor = Math.floor(Math.random()*blank.length);
+        let blank = this.validOptions(matrix), factor = Math.floor(Math.random()*blank.length);
         return(blank[factor]);
     }
 
@@ -130,7 +168,7 @@ export default class Validator{
 
     minimax = (limit, botId, oponentId, matrix, botTurn = true, depth = 0) => { //Change from minimax to alpha - beta pruning
         
-        let blankSpaces = this.blankSpaces(matrix),
+        let blankSpaces = this.validOptions(matrix),
             gameState = this.validate(matrix),
             results = [] ;
         
