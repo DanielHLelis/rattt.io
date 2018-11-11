@@ -34,8 +34,9 @@
     margin: 0 auto;
 }
 .gridBlock{
-    --borderWidth: 2px;
-    --bg: var(--background);
+    --borderWidth: 1px;
+    --bg: #111a;
+    --diasabled: #0000;
 
     background-color: var(--bg);
     color: var(--primary);
@@ -44,12 +45,11 @@
     justify-content: center;
     cursor: pointer;
     overflow: hidden;
-    border: 0 solid var(--primary);
-    border-bottom-width: var(--borderWidth);
-    border-right-width: var(--borderWidth);
+    border: var(--borderWidth) solid var(--primary);
 }
 .gridBlock.disabled{
-    background-color: #111a;
+    background-color: var(--diasabled);
+    opacity: 0.3;
 }
 .blockContent{
     animation: appear 0.15s ease-in-out;
@@ -109,4 +109,7 @@
 }
 .noBorder{
     border-width: 0;
+}
+.toolbar{
+    margin: 10px 0 0 0;
 }

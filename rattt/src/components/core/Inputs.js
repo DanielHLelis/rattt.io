@@ -5,6 +5,8 @@ import{
     Dropdown
 } from 'react-bootstrap'
 
+import PropTypes from 'prop-types'
+
 import posed from 'react-pose'
 
 
@@ -160,3 +162,7 @@ const TextInput = styled.input`
         cursor: not-allowed;
     }
 `;
+
+Select.propTypes = {
+    options: PropTypes.array
+}

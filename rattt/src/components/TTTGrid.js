@@ -39,7 +39,8 @@ export default class TTTGrid extends Component{
             disabled: props.disabled || [],
             playing: 0,
             used: 0,
-            restart: false
+            restart: false,
+            innerWidth: window.innerWidth
         };
     }
 
@@ -198,6 +199,8 @@ export default class TTTGrid extends Component{
 
     componentDidMount(){
         this.setState({oldState: this.state});
+        window.addEventListener('resize', () => this.setState({innerWidth: window.innerWidth}))
+
         PubSub.subscribe('reinicia', () => {
             if(this.props.local)
                 this._restart();
@@ -215,7 +218,7 @@ export default class TTTGrid extends Component{
     )
 
     Toolbar = (props) => (
-        <ButtonGroup size="sm" style={{paddingTop: '1em', maxWidth: '98vw'}}>    
+        <ButtonGroup vertical={props.vertical} className="toolbar" size="sm">    
             {props.leftButtons}    
             {this.props.local?(
                 <Button variant="outline-primary" onClick={this._restart}>
@@ -244,7 +247,7 @@ export default class TTTGrid extends Component{
                     <this.Grid/>
                 </div>
                 <div className="toolbar" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                        <this.Toolbar leftButtons={this.props.leftButtons} rightButtons={this.props.rightButtons} />
+                        <this.Toolbar vertical={this.state.innerWidth < 475} leftButtons={this.props.leftButtons} rightButtons={this.props.rightButtons} />
                 </div>
                 
             </div>
