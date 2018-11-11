@@ -27,15 +27,16 @@ export default class TTTGrid extends Component{
         super(props);
 
         this.state = {
-            xSize: props.xSize,
-            ySize: props.ySize,
-            seq: props.seq,
+            xSize: props.xSize || 3,
+            ySize: props.ySize || 3,
+            seq: props.seq || 3,
             players: props.players,
-            gravity: props.gravity,
+            gravity: props.gravity || false,
             hovering: {
                 raw: null,
                 applied: null
             },
+            disabled: props.disabled || [],
             playing: 0,
             used: 0,
             restart: false
@@ -96,16 +97,27 @@ export default class TTTGrid extends Component{
 
                 let className = `${i === 0 ? 'block-top ' : ''}${i === h-1 ? 'block-bottom ' : ''}${j === 0 ? 'block-left ' : ''}${j === w-1 ? 'block-right ' : ''}`;
 
-                matrix[linearPos] = 
-                <El 
-                    key={`${linearPos}`} 
-                    data-pos={linearPos} {...props} 
-                    className={`${props.className} ${className}`} 
-                    onMouseEnter={() => this.setState({hovering: {raw: linearPos, applied: this.TTT.apply(linearPos)}})}
-                    onMouseLeave={() => this.setState({hovering: {raw: null, applied: null}})}
-                >
-                    {this._houseChild(linearPos,  this.state.hovering.applied === linearPos )}
-                </El>;
+                if(!this.state.disabled.includes(linearPos)){
+                    matrix[linearPos] = 
+                        <El 
+                            key={`${linearPos}`} 
+                            data-pos={linearPos} {...props} 
+                            className={`${props.className} ${className}`} 
+                            onMouseEnter={() => this.setState({hovering: {raw: linearPos, applied: this.TTT.apply(linearPos)}})}
+                            onMouseLeave={() => this.setState({hovering: {raw: null, applied: null}})}
+                        >
+                            {this._houseChild(linearPos,  this.state.hovering.applied === linearPos )}
+                        </El>;
+                }else{
+                    matrix[linearPos] =
+                        <El 
+                            key={`${linearPos}`} 
+                            data-pos={linearPos} {...props} 
+                            className={`${props.className} ${className} disabled`} 
+                        >
+                        </El>;
+                }
+
             }
         }
             
@@ -119,7 +131,7 @@ export default class TTTGrid extends Component{
     _turn = (i, matrix, cb = () => null) => {
         i = this.TTT.apply(i, matrix.content);
 
-        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
+        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished && !this.state.disabled.includes(i)){
             matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
             this.TTT.matrix = matrix.content;
             this.setState({

@@ -44,8 +44,6 @@ const modes = {
 
 /*
     TODO:
-        -Per player, burguer icon with player name to extend player config selection
-        -Add disabled prop to prevent editing
 */
 
 export default class TradicionalScreen extends Component{

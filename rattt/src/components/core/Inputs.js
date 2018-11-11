@@ -8,6 +8,8 @@ import{
 import posed from 'react-pose'
 
 
+//TODO ADD PROP-TYPES
+
 export class Select extends Component{
 
     constructor(props){
