@@ -64,10 +64,12 @@ export default class TradicionalScreen extends Component{
     _playerConfig = (divide = false, first = true) => {
         let buttons = [], {mode} = this.state;
         for(let i = 0; i < mode.length / 2 && (!divide || first); i++)
+            if(!mode[i].disabled)
             buttons.push(
                 <Button key={`l${i}`} variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}><span className="st">{this.ConfigIcon()} {`${mode[i].name} `}</span></Button>
             )
         for(let i = mode.length / 2; i < mode.length && (!divide || !first); i++)
+            if(!mode[i].disabled)
             buttons.push(
                 <Button key={`r${i}`} variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}><span className="st">{this.ConfigIcon()} {`${mode[i].name} `}</span></Button>
             )
