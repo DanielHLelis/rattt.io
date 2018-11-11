@@ -3,6 +3,9 @@
 :root{
   --font: "Quicksand", "Arial", "FreeSans", sans-serif;
   --headerSize: 5em;
+
+  --fontMainColor: #fff;
+  --fontSecondaryColor: var(--primary);
 }
 
 /*Master Tags*/
@@ -210,6 +213,23 @@
     animation: rainbow infinite linear 0.5s;
   }
 
+/*Dropdown Color*/
+
+  .dropdown .dropdown-menu{
+    background-color: var(--dark);
+  }
+  .dropdown .dropdown-menu .dropdown-item{
+    background-color: var(--dark);
+    color: var(--fontMainColor);
+  }
+  .dropdown .dropdown-menu .dropdown-item:hover{
+    background-color: var(--dark);
+    color: var(--fontSecondaryColor);
+  }
+
+
+/*Media Queries*/
+
 @media only screen and (max-width: 425px){
   .xlt{
     font-size: 3em;
@@ -245,5 +265,8 @@
   }
   .mt{
     font-size: 1.75em;
+  }
+  .st{
+    font-size: 1em;
   }
 }

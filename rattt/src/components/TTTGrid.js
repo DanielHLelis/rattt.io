@@ -20,6 +20,7 @@ import TTT from 'utils/TicTacToe'
     TODO:
         -Adicionar surrender
         -Alpha-beta pruning
+        -Adicionar casas disablitadas
 */
 export default class TTTGrid extends Component{
     constructor(props){
@@ -77,8 +78,16 @@ export default class TTTGrid extends Component{
 
     _generateGrid = (w, h, El, props) => {
         let matrix = [];
-        for(let i = 0; i < w*h; ++i)
-            matrix[i] = <El key={`${i}`} data-pos={i} {...props}>{this._getSymbol(this.state.matrix.content[i])}</El>;
+        for(let i = 0; i < h; ++i){
+            for(let j = 0; j < w; j++){
+                let linearPos = i*w + j;
+
+                let className = `${i === 0 ? 'block-top ' : ''}${i === h-1 ? 'block-bottom ' : ''}${j === 0 ? 'block-left ' : ''}${j === w-1 ? 'block-right ' : ''}`;
+
+                matrix[linearPos] = <El key={`${linearPos}`} data-pos={linearPos} {...props} className={`${props.className} ${className}`} >{this._getSymbol(this.state.matrix.content[linearPos])}</El>;
+            }
+        }
+            
         return(matrix);
     }
 
@@ -110,15 +119,17 @@ export default class TTTGrid extends Component{
     }
 
     _botPlay = (byMatrix, timer = 0) => {
-        let {players, playing, matrix} = this.state;
-        let tipo = players[playing].type,
-            id = players[playing]._id,
-            oponentId = players[(playing + 1) % players.length]._id;    //Funciona somente 1v1
-        
-        if(typeof(tipo) === 'string' && tipo.includes('bot')){
-            let pos = this.TTT.botPlay(id, oponentId, tipo);
-            setTimeout(() => this._turn(pos, matrix), 250)
-        }else return;
+        setTimeout(() => {
+            let {players, playing, matrix} = this.state;
+            let tipo = players[playing].type,
+                id = players[playing]._id,
+                oponentId = players[(playing + 1) % players.length]._id;    //Funciona somente 1v1
+            
+            if(typeof(tipo) === 'string' && tipo.includes('bot')){
+                let pos = this.TTT.botPlay(id, oponentId, tipo);
+                setTimeout(() => this._turn(pos, matrix, this._botPlay), 0)
+            }else return;
+        }, 300)
     }
 
     /* Core */
@@ -162,14 +173,14 @@ export default class TTTGrid extends Component{
     )
 
     Toolbar = (props) => (
-        <ButtonGroup style={{paddingTop: '1em', maxWidth: '98vw'}}>    
+        <ButtonGroup size="sm" style={{paddingTop: '1em', maxWidth: '98vw'}}>    
             {props.leftButtons}    
             {this.props.local?(
-                <Button size="lg" variant="outline-primary" onClick={this._restart}>
-                    Reiniciar
+                <Button variant="outline-primary" onClick={this._restart}>
+                    <span className="st" >Reiniciar</span>
                 </Button>    
             ):(
-                <Button size="lg" variant="outline-primary" onClick={this._surrender}>
+                <Button variant="outline-primary" onClick={this._surrender}>
                     Desistir
                 </Button>
             )}

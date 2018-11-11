@@ -123,9 +123,9 @@ export default class Validator{
         if(gameState.winner === undefined || gameState.winner === null)
             return 0;
         if(gameState.winner._id === id)
-            return this.width * this.height - depth;
+            return 100 - depth;
         else
-            return depth - this.width * this.height;
+            return depth - 100;
     }
 
     minimax = (limit, botId, oponentId, matrix, botTurn = true, depth = 0) => { //Change from minimax to alpha - beta pruning
@@ -140,7 +140,7 @@ export default class Validator{
                 score: this.gameScore(gameState, botId, depth)
             }
         
-        if(limit > depth)
+        if(limit && limit < depth)
             return {
                 pos: null,
                 score: 0
@@ -188,7 +188,7 @@ export default class Validator{
                     return this.randomPlay(matrix)
             case 'medium-bot':
                 if(this.width === 3 && this.height === 3)
-                    return this.mediumClassic(matrix, botId, oponentId)
+                    return this.mediumClassic(matrix, botId, oponentId).pos;
                 break;
             default:
                 return this.randomPlay(matrix);

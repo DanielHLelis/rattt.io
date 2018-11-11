@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-import{
-} from 'react-bootstrap'
 
-import posed from 'react-pose'
+import {
+    Select,
+    Input
+} from 'components/core/Inputs'
+
+import Players, { findPlayer } from 'config/players'
+import symbols from 'config/symbols'
+
 
 export default class PlayerConfig extends Component{
 
@@ -11,7 +15,9 @@ export default class PlayerConfig extends Component{
         super(props);
 
         this.state = {
-            nome: props.player.name || ''
+            name: props.player.name || null,
+            type: props.player.type ? findPlayer(props.player.type) : null,
+            symbol: props.player.symbol ? {label: props.player.symbol, value: props.player.symbol} : null
         }
     }
 
@@ -19,82 +25,59 @@ export default class PlayerConfig extends Component{
         this.setState({[who]: e.target.value});
         
         let player = this.props.player;
-        player.name = e.target.value;
+        player[who] = e.target.value;
         this.props.handleChange(player);
     }
 
-    render(){
+    handleSelect = (who, e, value) => {
+        this.setState({[who]: value});
+
+        let player = this.props.player;
+        player[who] = value.value;
+        this.props.handleChange(player);
+    }
+
+    handleType = (e, value) => {
+        this.setState({type: value});
+
+        let player = this.props.player;
+
+        if(value.value.includes('bot')){
+            player.me = false;
+            player.name = value.label;
+            this.setState({name: value.label});
+        }
+        else
+            player.me = true
+        
+
+        player.type = value.value;
+        this.props.handleChange(player);
+    }
+
+    _symbols = () => {
+        let options = []
+
+        for(let key in symbols){
+            options.push({
+                label: key,
+                value: key
+            });
+        }
+
         return(
-            <Input label="Nome" placeholder="Nome" type="text" value={this.state.nome} onChange={this.handleInput.bind(this, 'nome')} />
+            <Select label="Símbolo" placeholder="Selecione..." options={options} value={this.state.symbol} onChange={this.handleSelect.bind(this, 'symbol')} />
         )
     }
-}
-
-export class Input extends Component{
-    constructor(props){
-        super(props);
-
-        this.state = {
-            isFocused: false
-        }
-    }
-
-    blur = (e) => {
-        this.setState({isFocused: false});
-        if(this.props.onBlur)
-            this.props.onBlur(e);
-    }
-
-    focus = (e) => {
-        this.setState({isFocused: true});
-        if(this.props.onFocus)
-            this.props.onFocus(e);
-    }
-
-    _handleLabel = (state) => {
-        let {isFocused} = state, content = this.props.value;
-        return{
-            opacity: (isFocused || content.length > 0) ? 1 : 0,
-            transform: `${(!isFocused && content.length > 0) ? 'translateY(40%)' : ''}${isFocused ? ' scale(1.2)' : ''}`,
-        }
-    }
 
     render(){
-        let {label, inputClassName, labelClassName, labelId, labelStyle, inputStyle} = this.props;
-
         return(
             <div>
-                <label>
-                    <LabelText
-                        {...this.props}
-                        id={labelId}
-                        className={labelClassName}
-                        style={this._handleLabel(this.state)}>{label}</LabelText>
-                    <TextInput
-                        {...this.props}
-                        style={inputStyle}
-                        className={inputClassName}
-                        onFocus={this.focus} onBlur={this.blur}
-                    />
-                </label>
+                <Input disabled={this.state.type ? this.state.type.value.includes('bot') : false} label="Nome" placeholder="Nome" type="text" value={this.state.name} onChange={this.handleInput.bind(this, 'name')} />
+                <Select label="Jogador" placeholder="Selecione" options={Players} value={this.state.type} onChange={this.handleType} />
+                {this._symbols()}
+                {this.props.children}
             </div>
         )
     }
 }
-
-const LabelText = styled.span`
-    color: var(--primary);
-    display: block;
-    font-size: 0.6em;
-    transition: all 0.3s;
-    transform-origin: 0 50%;
-`;
-
-const TextInput = styled.input`
-    background-color: transparent;
-    border: 0;
-    border-color: var(--primary);
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    color: var(--light);
-`;

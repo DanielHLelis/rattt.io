@@ -22,11 +22,16 @@ export default class Master extends Component{
             modalVisible: false,
             modalTitle: '',
             modalContent: '',
+            modalError: '',
             sideBar: false
         }
     }
 
+    handleError = (msg) => {
+        this.setState({modalError: msg});
+    }
     handleClose = () => {
+        this.handleError('');
         this.setState({modalVisible: false});
     }
     handleOpen = () => {
@@ -48,7 +53,7 @@ export default class Master extends Component{
 
         return(
             <div className="master">
-                <RatttAlert {...this.state} handleClose={this.handleClose} />
+                <RatttAlert {...this.state} handleError={this.handleError} handleClose={this.handleClose} />
                 <SideBar visible={this.state.sideBar} toggleSidebar={this.toggleSidebar} />
                 <NavBox sidebar={this.state.sideBar} brandOnClick={this.toggleSidebar} />
                 
@@ -58,18 +63,26 @@ export default class Master extends Component{
     }
 }
 
-const RatttAlert = (props) => (
-    <Modal show={props.modalVisible} onHide={props.handleClose} dialogClassName="darkDialog">
-        <Modal.Header>
-            <Modal.Title className="white mt"><span className="white mt">{props.modalTitle}</span></Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="white st">{props.modalContent}</Modal.Body>
-        <Modal.Footer>
-            <Button variant="outline-danger" onClick={props.handleClose}>Fechar</Button>
-            {props.modalButtons}
-        </Modal.Footer>
-    </Modal>
-);
+const RatttAlert = (props) => {
+    let ModalButtons = props.modalButtons;
+
+    return(
+        <Modal show={props.modalVisible} onHide={props.handleClose} dialogClassName="darkDialog">
+            <Modal.Header>
+                <Modal.Title className="white mt"><span className="white mt">{props.modalTitle}</span></Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="white st">{props.modalContent}<div className="ssst" style={{textAlign: 'right', color: 'red'}}>{props.modalError}</div></Modal.Body>
+            <Modal.Footer>
+                <Button variant="outline-danger" onClick={props.handleClose}>Fechar</Button>
+                {
+                    ModalButtons
+                    ? <ModalButtons handleError={props.handleError} handleClose={props.handleClose}/>
+                    :null
+                }
+            </Modal.Footer>
+        </Modal>    
+    )
+};
 
 const cheets = () => {
     cheet('4 0 4', () => {
@@ -80,7 +93,6 @@ const cheets = () => {
         $('body').css('--primary', 'var(--pink)');
         setInterval(() => {
             let $el = $('.btn-outline-primary');
-            console.log($el);
             $el.each(function(){
                 let act = $(this);
                 act.removeClass('btn-outline-primary');

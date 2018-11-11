@@ -39,24 +39,6 @@ const modes = {
             playing: true,
             me: true
         }
-    ],
-    bot: [
-        {   
-            _id: '2',
-            name: 'Jogador 1',
-            symbol: 'Pizza',
-            type: 'local',
-            playing: true,
-            me: true
-        },
-        {
-            _id: '3',
-            name: 'Bot Rick',
-            symbol: 'O',
-            type: 'pro-bot',
-            playing: true,
-            me: false
-        }
     ]
 }
 
@@ -72,7 +54,7 @@ export default class TradicionalScreen extends Component{
         super();
 
         this.state = {
-            mode: modes.bot
+            mode: modes.local
         }
     }
 
@@ -89,21 +71,45 @@ export default class TradicionalScreen extends Component{
         let buttons = [], {mode} = this.state;
         for(let i = 0; i < mode.length / 2 && (!divide || first); i++)
             buttons.push(
-                <Button key={`l${i}`} size="lg" variant="outline-primary">{`${mode[i].name} `}{this.ConfigIcon()}</Button>
+                <Button key={`l${i}`} variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}><span className="st">{`${mode[i].name} `}{this.ConfigIcon()}</span></Button>
             )
         for(let i = mode.length / 2; i < mode.length && (!divide || !first); i++)
             buttons.push(
-                <Button key={`r${i}`} size="lg" variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}>{this.ConfigIcon()} {` ${mode[i].name}`} </Button>
+                <Button key={`r${i}`} variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}><span className="st">{this.ConfigIcon()} {`${mode[i].name} `}</span></Button>
             )
         return buttons;
     }
 
     setPlayer = (player, index) => {
-        window.ratttAlert(player.name, <PlayerConfig index={index} players={this.state.players} handleChange={(e) => {
-            let newPlayers = this.state.mode;
-            newPlayers[index] = e;
-            this.setState({mode: newPlayers});
-        }} player={player}/>)
+        let newPlayers = this.state.mode,
+            handle = (e) => {
+                newPlayers[index] = e;
+            };
+
+        window.ratttAlert(
+            player.name, 
+            <PlayerConfig index={index} players={this.state.players} handleChange={handle} player={player}/>,
+            (props) => (
+                <Button variant="outline-primary" onClick={() => {
+                    
+                    if(
+                        newPlayers[index].name 
+                        && newPlayers[index].name.length > 0 
+                        && newPlayers[index].type 
+                        && newPlayers[index].type.length > 0 
+                        && newPlayers[index].symbol 
+                        && newPlayers[index].symbol.length > 0
+                    ){
+                        PubSub.publish('reinicia');
+                        this.setState({modes: newPlayers});
+                        props.handleClose();
+                    }else{
+                        props.handleError('Todos os campos devem estar preenchidos');
+                    }
+                    
+                }}>Aplicar</Button>
+            )
+        );
     }
 
     ConfigIcon = (props) => <FontAwesomeIcon icon={faSlidersH}/>
