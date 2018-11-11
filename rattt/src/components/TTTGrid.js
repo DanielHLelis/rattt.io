@@ -36,7 +36,7 @@ export default class TTTGrid extends Component{
                 raw: null,
                 applied: null
             },
-            disabled: props.disabled || [0],
+            disabled: props.disabled || [],
             playing: 0,
             used: 0,
             restart: false
@@ -109,7 +109,7 @@ export default class TTTGrid extends Component{
                             onMouseEnter={() => this.setState({hovering: {raw: linearPos, applied: this.TTT.apply(linearPos)}})}
                             onMouseLeave={() => this.setState({hovering: {raw: null, applied: null}})}
                         >
-                            {this._houseChild(linearPos,  this.state.hovering.applied === linearPos )}
+                            {this._houseChild(linearPos,  this.state.hovering.applied === linearPos && !this.state.gameState.finished)}
                         </El>;
                 }else{
                     matrix[linearPos] =
