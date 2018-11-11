@@ -7,7 +7,7 @@ import{
 
 import PropTypes from 'prop-types'
 
-import posed from 'react-pose'
+// import posed from 'react-pose'
 
 
 //TODO ADD PROP-TYPES

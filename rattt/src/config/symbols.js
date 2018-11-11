@@ -17,8 +17,8 @@ const symbols = {
     Café: <span className='blockContent'><FontAwesomeIcon icon={faCoffee} /></span>,
     Pizza: <span aria-label="Pizza Emoji" className='blockContent emojiIcon' role="img">🍕</span>,
     Rato: <span aria-label="Rato Emoji" className='blockContent emojiIcon' role="img">🐀</span>,
-    PartyParot: <span className='blockContent'> <img src={pparot} /> </span>,
-    ThinkSpin: <span className='blockContent'> <img src={tspin} /> </span>,
+    PartyParot: <span className='blockContent'> <img alt="PartyParot Emoji" src={pparot} /> </span>,
+    ThinkSpin: <span className='blockContent'> <img alt="ThinkSpin Emoji" src={tspin} /> </span>,
 }
 
 // Pizza: <span aria-label="Pizza Emoji" className='blockContent emojiIcon' role="img">🍕</span>
