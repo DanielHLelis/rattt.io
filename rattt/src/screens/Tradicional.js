@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import {
-    // ButtonToolbar,
-    // ButtonGroup,
     Button,
-    // Dropdown,
-    // DropdownButton
 } from 'react-bootstrap'
 import $ from 'jquery'
 import cheet from 'cheet.js'
@@ -69,7 +65,7 @@ export default class TradicionalScreen extends Component{
         let buttons = [], {mode} = this.state;
         for(let i = 0; i < mode.length / 2 && (!divide || first); i++)
             buttons.push(
-                <Button key={`l${i}`} variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}><span className="st">{`${mode[i].name} `}{this.ConfigIcon()}</span></Button>
+                <Button key={`l${i}`} variant="outline-primary" onClick={() => this.setPlayer(mode[i], i)}><span className="st">{this.ConfigIcon()} {`${mode[i].name} `}</span></Button>
             )
         for(let i = mode.length / 2; i < mode.length && (!divide || !first); i++)
             buttons.push(
@@ -86,7 +82,7 @@ export default class TradicionalScreen extends Component{
 
         window.ratttAlert(
             player.name, 
-            <PlayerConfig index={index} players={this.state.players} handleChange={handle} player={player}/>,
+            <PlayerConfig index={index} players={this.state.players} possiblePlayers={['Local', 'Minnie', 'Brandom', 'Greed']} handleChange={handle} player={player}/>,
             (props) => (
                 <Button variant="outline-primary" onClick={() => {
                     

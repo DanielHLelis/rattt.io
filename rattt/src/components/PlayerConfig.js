@@ -17,8 +17,18 @@ export default class PlayerConfig extends Component{
         this.state = {
             name: props.player.name || null,
             type: props.player.type ? findPlayer(props.player.type) : null,
-            symbol: props.player.symbol ? {label: props.player.symbol, value: props.player.symbol} : null
+            symbol: props.player.symbol ? {label: props.player.symbol, value: props.player.symbol} : null,
+            possiblePlayers: props.possiblePlayers || [],
+            players: []
         }
+    }
+
+    componentWillMount(){
+        this.setState({players: Players.filter(el => {
+            let pos = this.state.possiblePlayers;
+            if(pos.includes(el.value) || pos.includes(el.label))return true
+            return false
+        })})
     }
 
     handleInput = (who, e) => {
@@ -74,7 +84,7 @@ export default class PlayerConfig extends Component{
         return(
             <div>
                 <Input disabled={this.state.type ? this.state.type.value.includes('bot') : false} label="Nome" placeholder="Nome" type="text" value={this.state.name} onChange={this.handleInput.bind(this, 'name')} />
-                <Select label="Tipo" placeholder="Selecione..." options={Players} value={this.state.type} onChange={this.handleType} />
+                <Select label="Tipo" placeholder="Selecione..." options={this.state.players} value={this.state.type} onChange={this.handleType} />
                 {this._symbols()}
                 {this.props.children}
             </div>
