@@ -36,7 +36,7 @@ export default class TTTGrid extends Component{
                 raw: null,
                 applied: null
             },
-            disabled: props.disabled || [],
+            disabled: props.disabled || [0],
             playing: 0,
             used: 0,
             restart: false
@@ -65,6 +65,9 @@ export default class TTTGrid extends Component{
     defineContent = (i, val) => {
         let res = [];
         while(i--)res.push(val);
+
+        this.state.disabled.forEach(el => res[el] = 'disabled')
+
         return res;
     }
 
@@ -97,7 +100,7 @@ export default class TTTGrid extends Component{
 
                 let className = `${i === 0 ? 'block-top ' : ''}${i === h-1 ? 'block-bottom ' : ''}${j === 0 ? 'block-left ' : ''}${j === w-1 ? 'block-right ' : ''}`;
 
-                if(!this.state.disabled.includes(linearPos)){
+                if(this.state.matrix.content[linearPos] !== 'disabled'){
                     matrix[linearPos] = 
                         <El 
                             key={`${linearPos}`} 
@@ -131,7 +134,7 @@ export default class TTTGrid extends Component{
     _turn = (i, matrix, cb = () => null) => {
         i = this.TTT.apply(i, matrix.content);
 
-        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished && !this.state.disabled.includes(i)){
+        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
             matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
             this.TTT.matrix = matrix.content;
             this.setState({
