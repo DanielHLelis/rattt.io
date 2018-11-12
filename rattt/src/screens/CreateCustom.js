@@ -204,6 +204,7 @@ export default class CreateCustom extends Component{
         return {
             width,
             height,
+            _id: new Date().getTime().toString(16) + Math.floor(Math.random()*1000000).toString(16),
             disabled: invalid,
             name: this.state.name,
             sequence: this.state.sequence,
