@@ -6,6 +6,7 @@ const paths = {
     tradicional: prefix + '/classic',
     playCustom: '/custom/play',
     createCustom: '/custom/create',
+    gameCustom: '/custom/game',
     nf: prefix + '/404'
 };
 

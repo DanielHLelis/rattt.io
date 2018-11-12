@@ -12,7 +12,8 @@ import PlansScreen from 'screens/PlansScreen'
 import NotFound from 'screens/404'
 
 import CreateCustom from 'screens/CreateCustom'
-import PlayCustom from 'screens/PlayCustom';
+import PlayCustom from 'screens/PlayCustom'
+import CustomRender from 'screens/CustomRender'
 
 import gameRoutes from 'config/gameRoutes'
 /*
@@ -38,6 +39,7 @@ const ROUTES = (props) => (
                 
                 <Route exact path={paths.playCustom} component={PlayCustom} />
                 <Route exact path={paths.createCustom} component={CreateCustom} />
+                <Route exact path={paths.gameCustom + '/:id'} render={({match}) => <CustomRender id={match.params.id} />} />
 
                 <Route component={NotFound} />
             </Switch>

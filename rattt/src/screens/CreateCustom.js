@@ -165,7 +165,7 @@ export default class CreateCustom extends Component{
                             value={this.state.players} 
                             onChange={this.handleIntInput.bind(this, 'players', playersRule.min, playersRule.max)} 
                         />
-                        <Button style={{marginTop: 'auto', marginBottom: 'auto'}} variant="outline-primary" onClick={this.save}>Salvar</Button>
+                        <Button style={{marginTop: 'auto', marginBottom: 'auto'}} variant="outline-primary" onMouseDown={this.save}>Salvar</Button>
                     </Row>
                     <Error className="sst red" >{this.state.error}</Error>
                 </Toolbar>

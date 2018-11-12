@@ -13,7 +13,7 @@ export default class CustomRenderer extends Component{
 
         this.state = {
             settings: [],
-            loading: false
+            loading: true
         };
     }
 
@@ -30,7 +30,7 @@ export default class CustomRenderer extends Component{
     }
 
     componentWillMount(){
-        this.fetchData((data) => this.handleData(data, this.state.id));
+        this.fetchData((data) => this.handleData(data, this.props.id));
     }
 
     mainComponent = props => {

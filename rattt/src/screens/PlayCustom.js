@@ -6,11 +6,15 @@ import {
     faTrashAlt
 } from '@fortawesome/free-solid-svg-icons'
 
+import {
+    NavLink as Link
+} from 'react-router-dom'
 
 import {
     Button,
     ButtonGroup
 } from 'react-bootstrap'
+import paths from 'config/paths';
 
 export default class PlayCustom extends Component{
 
@@ -39,7 +43,7 @@ export default class PlayCustom extends Component{
 
         return this.state.data.map((el, index) => (
             <ButtonGroup key={index.toString()} >
-                <Button variant="outline-primary" >{el.name}</Button>
+                <Button variant="outline-primary" ><Link to={`${paths.gameCustom}/${el._id}`}>{el.name}</Link></Button>
                 <Button variant="outline-primary" ><Icon icon={faTrashAlt} /></Button>
             </ButtonGroup>
         ));
@@ -73,8 +77,4 @@ const ItemGrid = styled.div`
     @media screen and (max-width: 475px){
         grid-template-columns: repeat(1, 1fr);
     }
-`;
-
-const ListItem = styled.div`
-
 `;
