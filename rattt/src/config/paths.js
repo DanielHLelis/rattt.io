@@ -3,7 +3,8 @@ const prefix = '';
 const paths = {
     index: prefix + '/',
     main: prefix + '/main',
-    tradicional: prefix + '/ttt',
+    tradicional: prefix + '/classic',
+    createCustom: '/custom/create',
     nf: prefix + '/404'
 };
 

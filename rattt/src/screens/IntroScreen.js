@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Button } from 'react-bootstrap'
 
-import { Link } from 'react-router-dom'
+import { NavLink as Link } from 'react-router-dom'
 
 import cheet from 'cheet.js'
 

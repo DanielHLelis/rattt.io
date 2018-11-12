@@ -83,7 +83,7 @@ export default class TTTGrid extends Component{
             if(el._id === _id)
                 symbol = el.symbol;
         });
-        return <span style={{pointerEvents: 'none', ...(disabled ? {opacity: 0.6} : {})}} >{symbols[symbol]}</span>;
+        return <span className="blockContent" style={{pointerEvents: 'none', ...(disabled ? {opacity: 0.6} : {})}} >{symbols[symbol]}</span>;
     }
 
     _houseChild = (pos, hovering = false) => {
@@ -219,7 +219,7 @@ export default class TTTGrid extends Component{
 
     Toolbar = (props) => (
         <ButtonGroup vertical={props.vertical} className="toolbar" size="sm">    
-            {props.leftButtons}    
+            {props.vertical ? null : props.leftButtons}    
             {this.props.local?(
                 <Button variant="outline-primary" onClick={this._restart}>
                     <span className="st" >Reiniciar</span>
@@ -229,6 +229,7 @@ export default class TTTGrid extends Component{
                     Desistir
                 </Button>
             )}
+            {!props.vertical ? null : props.leftButtons} 
             {props.rightButtons}
         </ButtonGroup>
     )
@@ -296,11 +297,13 @@ const TopState = props => (
 );
 
 const Grid = styled.div`
-    --size: ${props => 70/props.y}vmin;
+    --size: calc(var(--maxWidth) / ${props => (props.y<props.x ? props.x : props.y)});
+    --dimension: calc(var(--maxWidth) / ${props => (props.y<props.x ? props.x : props.y)});
+    margin: 0 auto;
     display: grid;
     overflow: hidden;
     font-weight: lighter;
-    grid-template: repeat(${props => props.y}, 1fr) / repeat(${props => props.x}, 1fr);
+    grid-template: repeat(${props => props.y}, var(--dimension)) / repeat(${props => props.x}, var(--dimension));
     & * * *{
         font-size: var(--size) ;
     }

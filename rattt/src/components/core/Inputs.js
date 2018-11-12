@@ -4,6 +4,7 @@ import{
     DropdownButton,
     Dropdown
 } from 'react-bootstrap'
+import ReactSwitch from 'react-switch'
 
 import PropTypes from 'prop-types'
 
@@ -161,8 +162,44 @@ const TextInput = styled.input`
         opacity: 0.6;
         cursor: not-allowed;
     }
+    
 `;
 
 Select.propTypes = {
     options: PropTypes.array
+}
+
+Input.propTypes = {
+    type: PropTypes.string,
+    value: PropTypes.any.isRequired,
+    inputStyle: PropTypes.object,
+    inputClassName: PropTypes.string,
+    label: PropTypes.string,
+    placeholder: PropTypes.string
+}
+
+export class Switch extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+
+        }
+    }
+
+    render(){
+        let {label, labelClassName, labelId, labelStyle} = this.props;
+        return(
+            <div>
+                <LabelText
+                    {...this.props}
+                    id={labelId}
+                    className={labelClassName}
+                    style={{...labelStyle}}>{label}
+                </LabelText>
+
+                <ReactSwitch {...this.props} />
+            </div>
+        )
+    }
 }

@@ -67,8 +67,8 @@
     color: var(--primary);
     transition: all 100ms linear;
   }
-  .sidebar-item:active{
-    background-color: var(--background);
+  .sidebar-item-active{
+    background-color: #0004;
     color: var(--primary);
   }
   .sidebar-item:hover{
@@ -226,7 +226,6 @@
     background-color: var(--dark);
     color: var(--fontSecondaryColor);
   }
-
 
 /*Media Queries*/
 

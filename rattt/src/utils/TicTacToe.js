@@ -185,7 +185,7 @@ export default class Validator{
             }
 
         blankSpaces.forEach(el => {
-            let newMatrix = this.cloneMatrix(matrix);
+            let newMatrix = Object.assign([], matrix);
             newMatrix[el] = botTurn ? botId : oponentId;
             results.push({
                 pos: el,
@@ -205,14 +205,22 @@ export default class Validator{
             }
         }
 
+        if(base.score === 0 && depth === 0 && limit === 3){ //Improviso
+            let all = results.filter(el => el.score === 0);
+
+            return all[Math.floor(Math.random() * (all.length-1))]
+        }
+
         return base;
     }
 
-    proClassic = (matrix, botId, oponentId) => this.minimax(false, botId, oponentId, matrix)
+    proClassic = (matrix, botId, oponentId) => this.minimax(9, botId, oponentId, matrix)
 
     mediumClassic = (matrix, botId, oponentId) => this.minimax(4, botId, oponentId, matrix)
 
     easyClassic = (matrix) => this.randomPlay(matrix)
+
+    medium4 = (matrix, botId, oponentId) => this.minimax(3, botId, oponentId, matrix)
 
     botPlay = (botId, oponentId = -1, tipo = 'random-bot', matrix = this.matrix) => {
 
@@ -220,25 +228,17 @@ export default class Validator{
             case 'random-bot':
                 return this.randomPlay(matrix);
             case 'pro-bot':
-                if(this.width === 3 && this.height === 3)
+                if(this.width <= 3 && this.height <=3)
                     return this.proClassic(matrix, botId, oponentId).pos;
                 else
                     return this.randomPlay(matrix)
             case 'medium-bot':
-                if(this.width === 3 && this.height === 3)
+                if(this.width <= 3 && this.height <=3)
                     return this.mediumClassic(matrix, botId, oponentId).pos;
-                break;
+                else
+                    return this.medium4(matrix, botId, oponentId).pos;
             default:
                 return this.randomPlay(matrix);
         }
-    }
-
-
-    cloneMatrix = (matrix) => {
-        let res = [];
-        for(let i = 0; i < matrix.length; i++){
-            res.push(matrix[i]);
-        }
-        return res;
     }
 };

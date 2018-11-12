@@ -4,7 +4,7 @@ import {
     Collapse
 } from 'react-bootstrap'
 
-import { Link } from 'react-router-dom'
+import { NavLink as Link } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -13,37 +13,50 @@ import {
 
 import paths from 'config/paths'
 
+import { modeExtractor } from 'config/gameRoutes'
+
+const Modes = modeExtractor();
+
 export default class SideBar extends Component{
 
     constructor(){
         super();
 
         this.state = {
-            tttCollapse: false,
+            tttCollapse: {},
             scrollY: window.scrollY
         }
     }
 
-    toggleTTT = () => {
-        this.setState({tttCollapse: !this.state.tttCollapse});
+    toggleTTT = (index, val = !this.state.tttCollapse[index]) => {
+        let tttCollapse = this.state.tttCollapse;
+        tttCollapse[index] = val;
+        this.setState({tttCollapse});
     }
     NavLink = (props) => (
         <Link {...props} onClick={(e) => {
             if(props.onClick) props.onClick(e);
             this.props.toggleSidebar(false);
-        }} className={props.className + ' sidebar-item nav-link'} to={props.href}>
+        }} className={props.className + ' sidebar-item nav-link'} activeClassName='sidebar-item-active' exact={true} to={props.href}>
                 {props.children}
         </Link>
         
     );
     NavItem = (props) => (
         <Nav.Item>
-            <this.NavLink {...props} className={props.className}>{props.children}</this.NavLink>
+            <this.NavLink {...props} className={props.className || ''}>{props.children}</this.NavLink>
         </Nav.Item>
     
     );
 
-    _translate = () => this.state.scrollY > this.state.maxTrans ? this.state.maxTrans : this.state.scrollY
+    _translate = () => this.state.scrollY > this.state.maxTrans ? this.state.maxTrans : this.state.scrollY;
+
+    MainOptions = (props) => 
+        <div {...props}>
+            {Modes.map((el, index) => (
+                <this.NavLink key={index.toString()} onClick={() => this.toggleTTT(props.index, false)} href={el.href} className="sideCollapse" >{el.name}</this.NavLink>
+            ))}
+        </div>
 
     render(){
         let {NavLink, NavItem} = this;
@@ -69,9 +82,29 @@ export default class SideBar extends Component{
                     
 
                     <Nav.Item>
-                        <Nav.Link className="sidebar-item" onClick={this.toggleTTT}><Caret {...this.state}/> TicTacToe</Nav.Link>
-                        <Collapse in={this.state.tttCollapse} className="sideCollapse">
-                            <NavLink href={paths.tradicional}>Tradicional</NavLink>
+                        <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('modes')}><Caret active={this.state.tttCollapse.modes} /> Modos</Nav.Link>
+                        <Collapse in={this.state.tttCollapse.modes} className="sideCollapse">
+                            <this.MainOptions index="modes" />
+                        </Collapse>
+                    </Nav.Item>
+
+                    <Nav.Item>
+                        <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('custom')}><Caret active={this.state.tttCollapse.custom} /> Custom</Nav.Link>
+                        <Collapse in={this.state.tttCollapse.custom} className="sideCollapse">
+                            <div>
+                                <NavLink 
+                                    onClick={() => this.toggleTTT('custom', false)} 
+                                    href={paths.createCustom} className="sideCollapse" 
+                                >
+                                    Jogar
+                                </NavLink>
+                                <NavLink 
+                                    onClick={() => this.toggleTTT('custom', false)} 
+                                    href={paths.createCustom} className="sideCollapse" 
+                                >
+                                    Criar
+                                </NavLink>
+                            </div>
                         </Collapse>
                     </Nav.Item>
                     
@@ -83,5 +116,5 @@ export default class SideBar extends Component{
 }
 
 const Caret = (props) => (
-    <FontAwesomeIcon className='caret' style={(props.tttCollapse)?({transform: 'rotate(180deg)'}):null} icon={faCaretDown}/>
+    <FontAwesomeIcon className='caret' style={(props.active)?({transform: 'rotate(180deg)'}):null} icon={faCaretDown}/>
 );

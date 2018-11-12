@@ -9,9 +9,11 @@ import paths from 'config/paths'
 
 import IntroScreen from 'screens/IntroScreen'
 import PlansScreen from 'screens/PlansScreen'
-import Tradicional from 'screens/Tradicional'
 import NotFound from 'screens/404'
 
+import CreateCustom from 'screens/CreateCustom'
+
+import gameRoutes from 'config/gameRoutes'
 /*
     Switch stops on the first route element, or eof, and renders everything before except routes.
     TODO:
@@ -25,7 +27,15 @@ const ROUTES = (props) => (
         <props.Mestre>
             <Switch>
                 <Route exact path={paths.main} component={PlansScreen} />{/*Change Later*/}
-                <Route exact path={paths.tradicional} component={Tradicional} />
+                {/* <Route exact path={paths.tradicional} component={Tradicional} /> */}
+
+                {
+                    gameRoutes.map(({ path, component: C, props }, index) => (
+                        <Route key={index.toString()} exact path={path} render={prp => <C {...prp} {...props} />} />
+                    ))
+                }
+                
+                <Route exact path={paths.createCustom} component={CreateCustom} />
 
                 <Route component={NotFound} />
             </Switch>

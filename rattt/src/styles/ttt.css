@@ -15,9 +15,11 @@
     }
 }
 .tttGrid{
+    --maxHeight: 70vmin;
+    --maxWidth: 70vmin;
     display: grid;
-    height: 70vmin;
-    width: 70vmin;
+    max-height: var(--maxHeight);
+    max-width: var(--maxWidth);
     /* grid-gap: 2px; */
     box-shadow: inset 0 0 8px 8px var(--background);
 }
@@ -37,7 +39,8 @@
     --borderWidth: 1px;
     --bg: #111a;
     --diasabled: #0000;
-
+    margin: 0;
+    padding: 0;
     background-color: var(--bg);
     color: var(--primary);
     display: flex;
@@ -112,4 +115,11 @@
 }
 .toolbar{
     margin: 10px 0 0 0;
+}
+
+@media only screen and (max-width: 425px){
+    .tttGrid{
+        --maxHeight: 85vmin;
+        --maxWidth: 85vmin;
+    }
 }
