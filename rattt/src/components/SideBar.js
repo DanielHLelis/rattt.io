@@ -94,7 +94,7 @@ export default class SideBar extends Component{
                             <div>
                                 <NavLink 
                                     onClick={() => this.toggleTTT('custom', false)} 
-                                    href={paths.createCustom} className="sideCollapse" 
+                                    href={paths.playCustom} className="sideCollapse" 
                                 >
                                     Jogar
                                 </NavLink>

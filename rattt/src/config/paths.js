@@ -4,6 +4,7 @@ const paths = {
     index: prefix + '/',
     main: prefix + '/main',
     tradicional: prefix + '/classic',
+    playCustom: '/custom/play',
     createCustom: '/custom/create',
     nf: prefix + '/404'
 };
