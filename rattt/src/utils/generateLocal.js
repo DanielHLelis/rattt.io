@@ -16,7 +16,7 @@ export default function (players = 2, symbols = getSymbols()){
     for(let i = 1; i <= players; i++){
         let pos = Math.floor(Math.random()*(symbols.length-1));
         res.push({
-            _id: (i + new Date().getTime()).toString(27),
+            _id: new Date().getTime().toString(36) + 'xxxxxxxxxx'.replace(/x/g, () => Math.floor(Math.random()*36).toString(36)),
             name: `Jogador ${i}`,
             symbol: symbols.splice(pos, 1)[0],
             type: 'local',

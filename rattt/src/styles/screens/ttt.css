@@ -2,6 +2,10 @@
     0% {opacity: 0}
     100% {opacity: 1}
 }
+@keyframes appear{
+    0% {opacity: 0}
+    100% {opacity: 0.6}
+}
 @keyframes disappear{
     0% { opacity: 1; }
     100% {opacity: 0; }
@@ -52,10 +56,10 @@
 }
 .gridBlock.disabled{
     background-color: var(--diasabled);
-    opacity: 0.3;
+    opacity: 0.2;
 }
 .blockContent{
-    animation: appear 0.15s ease-in-out;
+    animation: appear 0.2s ease-in-out;
     margin: 0;
     padding: 0;
     display: inline-flex;
@@ -63,6 +67,19 @@
     align-content: center;
     user-select: none;
     color: var(--primary);
+    pointer-events: none;
+}
+.blockContent-hover{
+    animation: appear6 0.1s forwards ease-in-out;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    align-content: center;
+    user-select: none;
+    color: var(--primary);
+    pointer-events: none;
+    opacity: 0.6;
 }
 .reduce{
     animation: reduce 0.5s linear;
@@ -115,6 +132,9 @@
 }
 .toolbar{
     margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media only screen and (max-width: 425px){

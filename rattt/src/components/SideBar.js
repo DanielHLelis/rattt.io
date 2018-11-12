@@ -13,9 +13,10 @@ import {
 
 import paths from 'config/paths'
 
-import { modeExtractor } from 'config/gameRoutes'
+import { modeExtractor, campanhaExtractor } from 'config/gameRoutes'
 
 const Modes = modeExtractor();
+const Campanha = campanhaExtractor();
 
 export default class SideBar extends Component{
 
@@ -58,6 +59,13 @@ export default class SideBar extends Component{
             ))}
         </div>
 
+    CampanhaOptions = (props) =>
+        <div {...props}>
+            {Campanha.map((el, index) => (
+                <this.NavLink key={index.toString()} onClick={() => this.toggleTTT(props.index, false)} href={el.href} className="sideCollapse" >{el.name}</this.NavLink>
+            ))}
+        </div>
+
     render(){
         let {NavLink, NavItem} = this;
 
@@ -69,47 +77,57 @@ export default class SideBar extends Component{
 
         return(
             <div className={'sidebar' + (this.props.visible ? '' : ' hide')} visible={this.state.visible} >
-                <Nav onScroll={e => console.log(e)} id='side-container' className='flex-column' style={{
-                    transform: `translateY(-${this._translate()}px)`
-                }}>
-                
-                    <NavItem onClick={(e) => window.localStorage.setItem('firstEnter', 'true')} href={paths.index}>
-                        Intro
-                    </NavItem>
-
-                    <NavItem href={paths.main}>
-                        Home
-                    </NavItem>
+                {/* <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={400}  style={{height: '100vh'}}> */}
+                <div className="scrollSide" >
+                    <Nav onScroll={e => console.log(e)} id='side-container' className='flex-column' style={{
+                        transform: `translateY(-${this._translate()}px)`
+                    }}>
                     
+                        <NavItem onClick={(e) => window.localStorage.setItem('firstEnter', 'true')} href={paths.index}>
+                            Intro
+                        </NavItem>
 
-                    <Nav.Item>
-                        <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('modes')}><Caret active={this.state.tttCollapse.modes} /> Modos</Nav.Link>
-                        <Collapse in={this.state.tttCollapse.modes} className="sideCollapse">
-                            <this.MainOptions index="modes" />
-                        </Collapse>
-                    </Nav.Item>
+                        <NavItem href={paths.main}>
+                            Home
+                        </NavItem>
+                        
 
-                    <Nav.Item>
-                        <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('custom')}><Caret active={this.state.tttCollapse.custom} /> Custom</Nav.Link>
-                        <Collapse in={this.state.tttCollapse.custom} className="sideCollapse">
-                            <div>
-                                <NavLink 
-                                    onClick={() => this.toggleTTT('custom', false)} 
-                                    href={paths.playCustom} className="sideCollapse" 
-                                >
-                                    Jogar
-                                </NavLink>
-                                <NavLink 
-                                    onClick={() => this.toggleTTT('custom', false)} 
-                                    href={paths.createCustom} className="sideCollapse" 
-                                >
-                                    Criar
-                                </NavLink>
-                            </div>
-                        </Collapse>
-                    </Nav.Item>
-                    
-                </Nav>
+                        <Nav.Item>
+                            <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('modes')}><Caret active={this.state.tttCollapse.modes} /> Modos</Nav.Link>
+                            <Collapse in={this.state.tttCollapse.modes} className="sideCollapse">
+                                <this.MainOptions index="modes" />
+                            </Collapse>
+                        </Nav.Item>
+
+                        <Nav.Item>
+                            <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('campanha')}><Caret active={this.state.tttCollapse.campanha} /> Campanha</Nav.Link>
+                            <Collapse in={this.state.tttCollapse.campanha} className="sideCollapse">
+                                <this.CampanhaOptions index="campanha" />
+                            </Collapse>
+                        </Nav.Item>
+
+                        <Nav.Item>
+                            <Nav.Link className="sidebar-item" onClick={() => this.toggleTTT('custom')}><Caret active={this.state.tttCollapse.custom} /> Custom</Nav.Link>
+                            <Collapse in={this.state.tttCollapse.custom} className="sideCollapse">
+                                <div>
+                                    <NavLink 
+                                        onClick={() => this.toggleTTT('custom', false)} 
+                                        href={paths.playCustom} className="sideCollapse" 
+                                    >
+                                        Jogar
+                                    </NavLink>
+                                    <NavLink 
+                                        onClick={() => this.toggleTTT('custom', false)} 
+                                        href={paths.createCustom} className="sideCollapse" 
+                                    >
+                                        Criar
+                                    </NavLink>
+                                </div>
+                            </Collapse>
+                        </Nav.Item>
+                    </Nav>
+                {/* </Scrollbars> */}
+                </div>
             </div>
         );
     }

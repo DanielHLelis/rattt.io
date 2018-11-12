@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PubSub from 'pubsub-js'
 
-import 'styles/ttt.css'
-
 import {
     Button,
 } from 'react-bootstrap'
@@ -27,6 +25,7 @@ export default class GameHandler extends Component{
             gravity: props.gravity || false,
             local: props.local || true,
             disabled: props.disabled || [],
+            onFinish: props.onFinish,
             possiblePlayers: props.possiblePlayers || ['local']
         }
     }
@@ -90,6 +89,7 @@ export default class GameHandler extends Component{
                     disabled={this.state.disabled} 
                     gravity={this.state.gravity} 
                     local={this.state.local} 
+                    onFinish={this.state.onFinish}
                     leftButtons={this._playerConfig(true, true)} 
                     rightButtons={this._playerConfig(true, false)} 
                 />

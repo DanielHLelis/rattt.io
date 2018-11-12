@@ -5,6 +5,8 @@ import Master from 'screens/Master'
 
 import Routes from 'config/routes'
 
+import 'config/css'
+
 class App extends Component {
   render() {
     return (

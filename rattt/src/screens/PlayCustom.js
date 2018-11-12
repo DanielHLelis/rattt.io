@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { NotificationManager } from 'react-notifications'
+
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import {
     faTrashAlt
@@ -34,17 +36,27 @@ export default class PlayCustom extends Component{
         return data;
     }
 
+    deleteItem = (id) => {
+        this.fetchData()
+            .then((data) => {
+                let newData = data.filter(el => el._id !== id);
+                window.localStorage.setItem('customLayouts', JSON.stringify(newData));
+                this.setState({data: newData});
+                NotificationManager.error('O modo foi deletado!', 'Deletado!');
+            })
+    }
+
     getList = props => {
-        if(!this.state.data) return(
-            <div className="lt blue"> Não há modos salvos! </div>
+        if(!this.state.data || this.state.data.length === 0) return(
+            <div className="mt primary"> Não há modos salvos! </div>
         )
 
         console.log(this.state.data)
 
         return this.state.data.map((el, index) => (
             <ButtonGroup key={index.toString()} >
-                <Button variant="outline-primary" ><Link to={`${paths.gameCustom}/${el._id}`}>{el.name}</Link></Button>
-                <Button variant="outline-primary" ><Icon icon={faTrashAlt} /></Button>
+                <Button variant="outline-primary" ><Link className="primary" to={`${paths.gameCustom}/${el._id}`}>{el.name}</Link></Button>
+                <Button variant="outline-primary" onClick={() => this.deleteItem(el._id)} ><Icon icon={faTrashAlt} /></Button>
             </ButtonGroup>
         ));
     }
@@ -57,7 +69,7 @@ export default class PlayCustom extends Component{
     render(){
         return(
             <main className="darkBg contentDiv">
-                <h1 className="lt blue" style={{textAlign: 'center'}} >Jogar customizado</h1>
+                <h1 className="lt primary ct" >Jogar customizado</h1>
                 <ItemGrid length={this.state.data ? this.state.data.length : 3} >
                     <this.getList />
                 </ItemGrid>

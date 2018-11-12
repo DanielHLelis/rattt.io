@@ -6,9 +6,6 @@ import { NavLink as Link } from 'react-router-dom'
 
 import cheet from 'cheet.js'
 
-import 'styles/intro.css'
-import 'styles/emoji.css'
-
 class IntroScreen extends Component {
   constructor(props){
     super(props);
@@ -47,7 +44,7 @@ class IntroScreen extends Component {
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
         <Link to="/main">
-          <Button size='lg' className="lt" variant="primary" onClick={this._setEnter} >
+          <Button size='lg' className="mt" variant="primary" onClick={this._setEnter} >
                 Entrar
           </Button>
         </Link>

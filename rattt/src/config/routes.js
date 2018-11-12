@@ -15,7 +15,7 @@ import CreateCustom from 'screens/CreateCustom'
 import PlayCustom from 'screens/PlayCustom'
 import CustomRender from 'screens/CustomRender'
 
-import gameRoutes from 'config/gameRoutes'
+import gameRoutes, { Campanha } from 'config/gameRoutes'
 /*
     Switch stops on the first route element, or eof, and renders everything before except routes.
     TODO:
@@ -34,6 +34,12 @@ const ROUTES = (props) => (
                 {
                     gameRoutes.map(({ path, component: C, props }, index) => (
                         <Route key={index.toString()} exact path={path} render={prp => <C {...prp} {...props} />} />
+                    ))
+                }
+
+                {
+                    Campanha.map(({ path, component: C, props, name, _id, auth, requires }, index) => (
+                        <Route key={index.toString()} exact path={path} render={prp => <C {...prp} {...props} name={name} _id={_id} auth={auth} requires={requires} />} />
                     ))
                 }
                 

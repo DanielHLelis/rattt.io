@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
+import { NotificationManager } from 'react-notifications'
+
 import {
     Button
 } from 'react-bootstrap'
@@ -27,9 +29,9 @@ export default class CreateCustom extends Component{
             w: 15,
             h: 15,
             matrix: [],
-            name: 'Novo Modo',
-            sequence: 3,
-            players: 2,
+            name: '',
+            sequence: '',
+            players: '',
             gravity: false
         }
 
@@ -89,10 +91,10 @@ export default class CreateCustom extends Component{
 
     save = () => {
         this.setState({error: ''});
-        if(this.state.name.length < 1) return this.setState({error: "Insira um nome!"});
-
+        
         let extract = this.export();
         if(!extract) return this.setState({error: 'Seleção muito pequena!'})
+        if(extract.name.length < 1) return this.setState({error: "Insira um nome!"});
         if(extract.sequence < 2) return this.setState({error: 'Sequência muito pequena!'});
         if(extract.width*extract.height <= extract.sequence * 2) return({error: 'Muito pequeno para uma sequência de ' + this.state.sequence + '!'});
         if(extract.width < 3 && extract.height < 3) return this.setState({error: 'Muito pequeno!'});
@@ -101,9 +103,10 @@ export default class CreateCustom extends Component{
 
         if(!store) store = [];
 
-        store.push(extract);
+        store.unshift(extract);
 
         window.localStorage.setItem('customLayouts', JSON.stringify(store));
+        NotificationManager.info(`"${extract.name}" salvo!`, 'Salvo!');
         this.setState({...this.default, matrix: []});
     
     }
@@ -112,7 +115,7 @@ export default class CreateCustom extends Component{
         
         return(
             <main className="darkBg contentDiv" >
-                <h1 className="mt blue" >Criar Mapa</h1>
+                <h1 className="mt primary" >Criar Mapa</h1>
                 <Grid x={this.state.w} y={this.state.h} className="tttGrid" onMouseDown={this._onMouseDown} onMouseUp={this._onMouseUp} >
                     {this.generateGrid(this.state.w, this.state.h, 'div', {
                         className: 'gridBlock'
@@ -124,7 +127,7 @@ export default class CreateCustom extends Component{
                         <Input 
                             label="Nome"
                             labelStyle={{fontSize: '0.8em'}}
-                            placeholder="Nome" 
+                            placeholder="Novo Modo" 
                             type="text" 
                             value={this.state.name} 
                             onChange={this.handleInput.bind(this, 'name')} 
@@ -133,7 +136,7 @@ export default class CreateCustom extends Component{
                             label="Sequência"
                             labelStyle={{fontSize: '0.8em'}}
                             inputStyle={{width: '150%'}}
-                            placeholder="Sequência" 
+                            placeholder={3} 
                             type="number"
                             step="1"
                             min="2"
@@ -157,7 +160,7 @@ export default class CreateCustom extends Component{
                             label="Jogadores"
                             labelStyle={{fontSize: '0.8em'}}
                             inputStyle={{width: '150%'}}
-                            placeholder="Jogadores" 
+                            placeholder={2} 
                             type="number"
                             step="1"
                             min="2"
@@ -165,7 +168,7 @@ export default class CreateCustom extends Component{
                             value={this.state.players} 
                             onChange={this.handleIntInput.bind(this, 'players', playersRule.min, playersRule.max)} 
                         />
-                        <Button style={{marginTop: 'auto', marginBottom: 'auto'}} variant="outline-primary" onMouseDown={this.save}>Salvar</Button>
+                        <Button className="mvAuto" variant="outline-primary" onMouseDown={this.save}>Salvar</Button>
                     </Row>
                     <Error className="sst red" >{this.state.error}</Error>
                 </Toolbar>
@@ -204,12 +207,12 @@ export default class CreateCustom extends Component{
         return {
             width,
             height,
-            _id: new Date().getTime().toString(16) + Math.floor(Math.random()*1000000).toString(16),
+            _id: new Date().getTime().toString(36) + 'xxxxxxxxxx'.replace(/x/g, () => Math.floor(Math.random()*36).toString(36)),
             disabled: invalid,
-            name: this.state.name,
-            sequence: this.state.sequence,
+            name: this.state.name || 'Novo Modo',
+            sequence: this.state.sequence || 3,
             gravity: this.state.gravity,
-            players: this.state.players
+            players: this.state.players || 2
         }
     }
 }

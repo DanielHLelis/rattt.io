@@ -5,22 +5,16 @@ import {
     Button
 } from 'react-bootstrap'
 import styled from 'styled-components'
+import PubSub from 'pubsub-js'
 import $ from 'jquery'
 
-
-import PubSub from 'pubsub-js'
-
 import paths from 'config/paths'
-
 import symbols from 'config/symbols'
 
 import TTT from 'utils/TicTacToe'
-
 /*
     TODO:
-        -Adicionar surrender
         -Alpha-beta pruning
-        -Adicionar casas disablitadas
 */
 export default class TTTGrid extends Component{
     constructor(props){
@@ -42,8 +36,49 @@ export default class TTTGrid extends Component{
             restart: false,
             innerWidth: window.innerWidth
         };
+}
+
+    componentWillMount(){
+        this._setup();
     }
 
+    componentDidMount(){
+        window.addEventListener('resize', () => this.setState({innerWidth: window.innerWidth}));
+
+        this.setState({oldState: this.state});
+        PubSub.subscribe('reinicia', () => {
+            if(this.props.local)
+                this._restart();
+            else
+                console.error('Error! Only Local Games!');
+        });
+    }
+
+    render(){
+        return(
+            <div className={"wrapper mbAuto"}>
+                {this.props.children}
+                <div className={"wrapper" + (this.state.restart ? ' disappear' : '') }>
+                    <TopState {...this.state} />
+                    <WinnerWinnerChickenDinner local={this.props.local} _restart={this._restart} {...this.state} />
+                    <this.Grid/>
+                </div>
+                <div className="toolbar">
+                        <this.Toolbar vertical={this.state.innerWidth < 475} leftButtons={this.props.leftButtons} rightButtons={this.props.rightButtons} />
+                </div>
+            </div>
+        );
+    }
+
+    /* Setup */    
+    defineContent = (i, val) => {
+            let res = [];
+            while(i--)res.push(val);
+    
+            this.state.disabled.forEach(el => res[el] = 'disabled')
+    
+            return res;
+    }
     _resetMatrix = (cb = () => null) => {
         this.setState({
             matrix:{
@@ -62,14 +97,21 @@ export default class TTTGrid extends Component{
             }
         })
     }
+    _setup = () => {
 
-    defineContent = (i, val) => {
-        let res = [];
-        while(i--)res.push(val);
-
-        this.state.disabled.forEach(el => res[el] = 'disabled')
-
-        return res;
+        this._resetMatrix(() => {
+            this.TTT = new TTT({
+                seq: this.state.seq,
+                players: this.state.players,
+                width: this.state.xSize,
+                height: this.state.ySize,
+                matrix: this.state.matrix.content,
+                gravity: this.state.gravity
+            });    
+        });
+        this._resetGameState();
+        
+        this._botPlay();
     }
 
     /* Grid */
@@ -83,7 +125,7 @@ export default class TTTGrid extends Component{
             if(el._id === _id)
                 symbol = el.symbol;
         });
-        return <span className="blockContent" style={{pointerEvents: 'none', ...(disabled ? {opacity: 0.6} : {})}} >{symbols[symbol]}</span>;
+        return <span className={`${disabled ? 'blockContent-hover' : 'blockContent'}`} >{symbols[symbol]}</span>;
     }
 
     _houseChild = (pos, hovering = false) => {
@@ -98,7 +140,6 @@ export default class TTTGrid extends Component{
         for(let i = 0; i < h; ++i){
             for(let j = 0; j < w; j++){
                 let linearPos = i*w + j;
-
                 let className = `${i === 0 ? 'block-top ' : ''}${i === h-1 ? 'block-bottom ' : ''}${j === 0 ? 'block-left ' : ''}${j === w-1 ? 'block-right ' : ''}`;
 
                 if(this.state.matrix.content[linearPos] !== 'disabled'){
@@ -121,33 +162,66 @@ export default class TTTGrid extends Component{
                         >
                         </El>;
                 }
-
             }
         }
             
         return(matrix);
     }
 
+    Grid = () => {
+        return(
+            <Grid className={this.gridClass()} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
+                {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock`,symbols: {...this.state.symbols}})}
+        </Grid>
+        )  
+    }
+
+    Toolbar = (props) => {
+        return (
+            props.vertical
+            ?(
+                <ButtonGroup vertical className="toolbar" size="sm">    
+                    {props.vertical ? null : props.leftButtons}    
+                    {this.props.local?(
+                        <Button variant="outline-primary" onClick={this._restart}>
+                            <span className="st" >Reiniciar</span>
+                        </Button>    
+                    ):(
+                        <Button variant="outline-primary" onClick={this._surrender}>
+                            Desistir
+                        </Button>
+                    )}
+                    {!props.vertical ? null : props.leftButtons} 
+                    {props.rightButtons}
+                </ButtonGroup>
+            ):(
+                <div className="flexR" >
+                    <ButtonGroup className="toolbar flexBreak" size="sm" >
+                        {this.props.local?(
+                            <Button variant="outline-primary" onClick={this._restart}>
+                                <span className="st" >Reiniciar</span>
+                            </Button>    
+                        ):(
+                            <Button variant="outline-primary" onClick={this._surrender}>
+                                Desistir
+                            </Button>
+                        )}
+                    </ButtonGroup>
+                    <ButtonGroup className="toolbar" size="sm" >
+                        {props.leftButtons} 
+                    </ButtonGroup>
+                    <ButtonGroup className="toolbar" size="sm" >
+                        {props.rightButtons} 
+                    </ButtonGroup>
+                </div>
+            )
+        )
+    }
+
+    gridClass = (extra = '') => (`tttGrid ${this.state.gameState.finished ? 'reduce' : ''} ${extra}`)
     
 
     /* Mechanics */
-
-    _turn = (i, matrix, cb = () => null) => {
-        i = this.TTT.apply(i, matrix.content);
-
-        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
-            matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
-            this.TTT.matrix = matrix.content;
-            this.setState({
-                hovering: {raw: this.state.hovering.raw, applied: this.TTT.apply(this.state.hovering.raw, matrix.content)},
-                playing: (this.state.playing + 1) % this.state.players.length,
-                matrix: matrix,
-                gameState: this.TTT.validate(matrix.content)
-            }, ()=>cb(matrix));
-            return true;
-        }
-        return false;
-    }
     _handle = (e) => {
         e.preventDefault();
         let $el = $(e.target);
@@ -155,11 +229,27 @@ export default class TTTGrid extends Component{
         if(this.state.players[this.state.playing].me)
             this._turn(pos, newMatrix, this._botPlay);
     }
-    _restart = (e) => { //RESTART
-        this.setState({restart: true});
-        setTimeout(() => this.setState({...this.state.oldState, players: this.props.players}, this._setup), 200);
-    }
+    _turn = (i, matrix, cb = () => null) => {
+        i = this.TTT.apply(i, matrix.content);
 
+        if(!this.state.matrix.content[i] && (i !== null && i !== undefined) && !this.state.gameState.finished){
+            matrix.content[i] = this.state.players[this.state.playing]._id; //Importante
+            this.TTT.matrix = matrix.content;
+            let gs = this.TTT.validate(matrix.content);
+            this.setState({
+                hovering: {raw: this.state.hovering.raw, applied: this.TTT.apply(this.state.hovering.raw, matrix.content)},
+                playing: (this.state.playing + 1) % this.state.players.length,
+                matrix: matrix,
+                gameState: gs
+            }, ()=>cb(matrix));
+            if(gs.finished){
+                if(typeof this.props.onFinish === 'function')
+                    this.props.onFinish(gs, matrix)
+            }
+            return true;
+        }
+        return false;
+    }
     _botPlay = (byMatrix, timer = 0) => {
         setTimeout(() => {
             let {players, playing, matrix} = this.state;
@@ -173,87 +263,11 @@ export default class TTTGrid extends Component{
             }else return;
         }, 300)
     }
-
-    /* Core */
-
-    /* Component */
-    _setup = () => {
-
-        this._resetMatrix(() => {
-            this.TTT = new TTT({
-                seq: this.state.seq,
-                players: this.state.players,
-                width: this.state.xSize,
-                height: this.state.ySize,
-                matrix: this.state.matrix.content,
-                gravity: this.state.gravity
-            });    
-        });
-        this._resetGameState();
-        
-        this._botPlay();
-    }
-    componentWillMount(){
-        this._setup();
+    _restart = (e) => { //RESTART
+        this.setState({restart: true});
+        setTimeout(() => this.setState({...this.state.oldState, players: this.props.players}, this._setup), 200);
     }
 
-    componentDidMount(){
-        this.setState({oldState: this.state});
-        window.addEventListener('resize', () => this.setState({innerWidth: window.innerWidth}))
-
-        PubSub.subscribe('reinicia', () => {
-            if(this.props.local)
-                this._restart();
-            else
-                console.error('Error! Forbidden Command')
-        });
-    }
-
-    /*Clean Render*/
-
-    Grid = () => (
-        <Grid className={this.gridClass()} x={this.state.xSize} y={this.state.ySize} onClick={this._handle}>
-                {this._generateGrid(this.state.xSize, this.state.ySize, 'div', {className: `gridBlock`,symbols: {...this.state.symbols}})}
-        </Grid>
-    )
-
-    Toolbar = (props) => (
-        <ButtonGroup vertical={props.vertical} className="toolbar" size="sm">    
-            {props.vertical ? null : props.leftButtons}    
-            {this.props.local?(
-                <Button variant="outline-primary" onClick={this._restart}>
-                    <span className="st" >Reiniciar</span>
-                </Button>    
-            ):(
-                <Button variant="outline-primary" onClick={this._surrender}>
-                    Desistir
-                </Button>
-            )}
-            {!props.vertical ? null : props.leftButtons} 
-            {props.rightButtons}
-        </ButtonGroup>
-    )
-
-    /*Styles*/
-
-    gridClass = (extra = '') => (`tttGrid ${this.state.gameState.finished ? 'reduce' : ''} ${extra}`)
-
-    render(){
-        return(
-            <div className={"wrapper"} style={{marginBottom: 'auto'}}>
-                {this.props.children}
-                <div className={"wrapper" + (this.state.restart ? ' disappear' : '') }>
-                    <TopState {...this.state} />
-                    <WinnerWinnerChickenDinner local={this.props.local} _restart={this._restart} {...this.state} />
-                    <this.Grid/>
-                </div>
-                <div className="toolbar" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
-                        <this.Toolbar vertical={this.state.innerWidth < 475} leftButtons={this.props.leftButtons} rightButtons={this.props.rightButtons} />
-                </div>
-                
-            </div>
-        );
-    }
 }
 
 
@@ -283,7 +297,7 @@ const WinnerWinnerChickenDinner = props => (
 );
 
 const TopState = props => (
-    <p style={{textAlign: 'center'}} className={"lt primary" + (props.gameState.finished ? ' disappear' : '')}>
+    <p className={"lt primary ct" + (props.gameState.finished ? ' disappear' : '')}>
         {(!props.gameState.finished)?(
             `Vez de ${props.players[props.playing].name}!`
         ):(

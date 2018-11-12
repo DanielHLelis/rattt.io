@@ -3,9 +3,12 @@ import {
     Modal,
     Button
 } from 'react-bootstrap'
-// import styled from 'styled-components'
+import { Scrollbars } from 'react-custom-scrollbars'
 
-import 'styles/master.css'
+import {
+    NotificationContainer,
+    // NotificationManager
+} from 'react-notifications'
 
 import NavBox from 'components/NavBar'
 import SideBar from 'components/SideBar'
@@ -24,6 +27,12 @@ export default class Master extends Component{
             modalContent: '',
             modalError: '',
             sideBar: false
+        }
+    }
+
+    componentDidMount(){
+        if(!window.localStorage.getItem('salt') || window.localStorage.getItem('salt').length === 0){
+            window.localStorage.setItem('salt', new Date().getTime().toString(36) + 'xxxxxxxxxx'.replace(/x/g, () => Math.floor(Math.random()*36).toString(36)));
         }
     }
 
@@ -52,13 +61,16 @@ export default class Master extends Component{
         window.ratttAlert = this.ratttAlert;
 
         return(
-            <div className="master">
-                <RatttAlert {...this.state} handleError={this.handleError} handleClose={this.handleClose} />
-                <SideBar visible={this.state.sideBar} toggleSidebar={this.toggleSidebar} />
-                <NavBox sidebar={this.state.sideBar} brandOnClick={this.toggleSidebar} />
-                
-                {this.props.children}
-            </div>
+            <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={400} className="master" >
+                <div className="master">
+                    <NotificationContainer/>
+                    <RatttAlert {...this.state} handleError={this.handleError} handleClose={this.handleClose} />
+                    <SideBar visible={this.state.sideBar} toggleSidebar={this.toggleSidebar} />
+                    <NavBox sidebar={this.state.sideBar} brandOnClick={this.toggleSidebar} />
+
+                    {this.props.children}
+                </div>
+            </Scrollbars>
         );
     }
 }

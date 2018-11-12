@@ -205,7 +205,7 @@ export default class Validator{
             }
         }
 
-        if(base.score === 0 && depth === 0 && limit === 3){ //Improviso
+        if(base.score === 0 && depth === 0 && limit <= 3){ //Improviso
             let all = results.filter(el => el.score === 0);
 
             return all[Math.floor(Math.random() * (all.length-1))]
@@ -222,6 +222,8 @@ export default class Validator{
 
     medium4 = (matrix, botId, oponentId) => this.minimax(3, botId, oponentId, matrix)
 
+    easy = (matrix, botId, oponentId) => this.minimax(2, botId, oponentId, matrix)
+
     botPlay = (botId, oponentId = -1, tipo = 'random-bot', matrix = this.matrix) => {
 
         switch(tipo){
@@ -237,6 +239,8 @@ export default class Validator{
                     return this.mediumClassic(matrix, botId, oponentId).pos;
                 else
                     return this.medium4(matrix, botId, oponentId).pos;
+            case 'easy-bot':
+                return this.easy(matrix, botId, oponentId).pos;
             default:
                 return this.randomPlay(matrix);
         }

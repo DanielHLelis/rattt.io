@@ -5,14 +5,10 @@ import {
     Button
 } from 'react-bootstrap'
 
-// import { Link } from 'react-router-dom'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import{
     faCaretDown
 } from '@fortawesome/free-solid-svg-icons'
-
-// import paths from 'config/paths'
 
 export default class NavBox extends Component{
 
