@@ -46,7 +46,7 @@
     position: fixed;
     background-color: #3b3b3b;
     box-shadow:  1px 0 1em #0002;
-    height: 100vh;
+    min-height: 100vh;
     width: var(--sideWidth);
     left: 0;
     z-index: 4;

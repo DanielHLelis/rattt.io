@@ -62,8 +62,9 @@ export default class SideBar extends Component{
         let {NavLink, NavItem} = this;
 
         window.onscroll = (e) => {
-            this.setState({scrollY: window.scrollY,
-                maxTrans: window.document.getElementById('side-container').offsetTop});
+            if(window.document.getElementById('side-container'))
+                this.setState({scrollY: window.scrollY,
+                    maxTrans: window.document.getElementById('side-container').offsetTop});
         }
 
         return(

@@ -92,7 +92,7 @@ export default class GameHandler extends Component{
                     local={this.state.local} 
                     leftButtons={this._playerConfig(true, true)} 
                     rightButtons={this._playerConfig(true, false)} 
-                    />
+                />
             </main>
 
         );
