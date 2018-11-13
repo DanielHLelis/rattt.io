@@ -21,7 +21,7 @@ export default class Plans extends React.Component{
         }
         return(
             <div className="contentDiv">
-                <Particles params={ParticlesConfig['0']} className="particles" width={window.innerWidth} height={window.innerHeight}/>
+                <Particles params={ParticlesConfig['0']} className="particles" width={this.state.width} height={this.state.height}/>
                 <div id="bg" >
                     <p className="primary textShadow logo giant nf">Que vázio...</p>
                     <p className="white textShadow nf mt">Algo está planejado para aparecer aqui!</p>

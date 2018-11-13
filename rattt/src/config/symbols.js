@@ -9,6 +9,7 @@ import {
 //Change emojis to local svg's
 
 import pparot from 'assets/emojis/pparrot.gif'
+import pirateparrot from 'assets/emojis/pirateparrot.gif'
 import tspin from 'assets/emojis/tspin.gif'
 
 const symbols = {
@@ -20,6 +21,7 @@ const symbols = {
     Pizza: <span aria-label="Pizza Emoji" className='blockContent emojiIcon' role="img">🍕</span>,
     Rato: <span aria-label="Rato Emoji" className='blockContent emojiIcon' role="img">🐀</span>,
     PartyParot: <span className='blockContent'> <img alt="PartyParot Emoji" src={pparot} /> </span>,
+    PirateParrot: <span className='blockContent'> <img alt="PirateParrot Emoji" src={pirateparrot} /> </span>,
     ThinkSpin: <span className='blockContent'> <img alt="ThinkSpin Emoji" src={tspin} /> </span>,
 }
 

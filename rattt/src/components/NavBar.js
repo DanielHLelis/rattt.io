@@ -24,7 +24,7 @@ export default class NavBox extends Component{
         window.localStorage.setItem('firstEnter', 'true');
     }
 
-    _ratttAlert = () => window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servidor! Tente novamente mais tarde!')
+    _ratttAlert = () => window.ratttAlert('Ops!','Aparentemente nossos ratos comeram o fio do servidor! Estamos tentando providenciar uma solução para o problema!')
 
     _toggleNav = () => {
         this.setState({isOpen: !this.state.isOpen})
@@ -37,11 +37,7 @@ export default class NavBox extends Component{
                     <Navbar.Brand><span id="mark" onClick={this.props.brandOnClick} className="logo st primary">Rattt.io <Caret active={this.props.sidebar} /></span></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" variant="outline-primary" />
                     <Navbar.Collapse>
-                        <Nav className="mr-auto">{/*ml == margin left; mr == margin right*/}
-
-                        </Nav>
-
-                        <Nav className="ml-auto">{/*ml == margin left; mr == margin right*/} 
+                        <Nav className="ml-auto"> 
 
                             <Nav.Link onClick={this._ratttAlert} className="mt" href={''}>
                                 <Button onClick={this._ratttAlert} size="md" variant="outline-primary" >Log-in</Button>
@@ -58,18 +54,6 @@ export default class NavBox extends Component{
         )
     }
 }
-// const NavLink = (props) => (
-//     <Link {...props} className={props.className + ' nav-link'} to={props.href}>
-//             {props.children}
-//     </Link>
-    
-// );
-
-// const NavItem = (props) => (
-//         <Nav.Item>
-//             <NavLink {...props} >{props.children}</NavLink>
-//         </Nav.Item>
-// );
 const Caret = (props) => (
     <FontAwesomeIcon className='caret' style={(props.active)?({transform: 'rotate(90deg)'}):({transform: 'rotate(-90deg)'})} icon={faCaretDown}/>
 );

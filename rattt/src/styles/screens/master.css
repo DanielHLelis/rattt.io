@@ -6,6 +6,8 @@
 
   --fontMainColor: #fff;
   --fontSecondaryColor: var(--primary);
+
+  --noHeaderHeight: calc(100vh - var(--headerSize));
 }
 
 /*Master Tags*/
@@ -244,12 +246,22 @@
 .mbAuto{
   margin-bottom: auto;
 }
+.mhAuto{
+  margin-right: auto;
+  margin-left: auto;
+}
 .mvAuto{
   margin-top: auto;
   margin-bottom: auto;
 }
+.flexC{
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+ }
 .flexR{
-  /* background-color: palevioletred; */
  display: flex;
  flex-wrap: wrap;
  flex: 1;
@@ -266,6 +278,10 @@
   display: flex;
   justify-content: center;
 }
+.pdT0{
+  padding-top: 0;
+}
+/*Main*/
 
 /*Media Queries*/
 

@@ -207,12 +207,18 @@ export default class TTTGrid extends Component{
                             </Button>
                         )}
                     </ButtonGroup>
-                    <ButtonGroup className="toolbar" size="sm" >
-                        {props.leftButtons} 
-                    </ButtonGroup>
-                    <ButtonGroup className="toolbar" size="sm" >
-                        {props.rightButtons} 
-                    </ButtonGroup>
+                    {props.leftButtons && props.leftButtons.length > 0
+                       ?<ButtonGroup className="toolbar" size="sm" >
+                            {props.leftButtons} 
+                        </ButtonGroup>
+                       : null
+                    }
+                    {props.rightButtons && props.rightButtons.length > 0
+                       ?<ButtonGroup className="toolbar" size="sm" >
+                            {props.rightButtons} 
+                        </ButtonGroup>
+                       : null
+                    }
                 </div>
             )
         )

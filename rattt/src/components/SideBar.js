@@ -125,6 +125,10 @@ export default class SideBar extends Component{
                                 </div>
                             </Collapse>
                         </Nav.Item>
+
+                        <NavItem href={paths.credits}>
+                            Créditos
+                        </NavItem>
                     </Nav>
                 {/* </Scrollbars> */}
                 </div>

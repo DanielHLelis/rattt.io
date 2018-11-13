@@ -8,6 +8,7 @@ import {
 import paths from 'config/paths'
 
 import IntroScreen from 'screens/IntroScreen'
+import Credits from 'screens/Credits'
 import PlansScreen from 'screens/PlansScreen'
 import NotFound from 'screens/404'
 
@@ -16,6 +17,7 @@ import PlayCustom from 'screens/PlayCustom'
 import CustomRender from 'screens/CustomRender'
 
 import gameRoutes, { Campanha } from 'config/gameRoutes'
+import StartPage from 'screens/StartPage';
 /*
     Switch stops on the first route element, or eof, and renders everything before except routes.
     TODO:
@@ -28,8 +30,8 @@ const ROUTES = (props) => (
         <Route exact path={paths.index} component={(window.localStorage.getItem('firstEnter')==='false')?(() => <Redirect to={paths.main} />):(IntroScreen)} />
         <props.Mestre>
             <Switch>
-                <Route exact path={paths.main} component={PlansScreen} />{/*Change Later*/}
-                {/* <Route exact path={paths.tradicional} component={Tradicional} /> */}
+                <Route exact path={paths.main} component={StartPage} />
+                <Route exact path={paths.void} component={PlansScreen} />
 
                 {
                     gameRoutes.map(({ path, component: C, props }, index) => (
@@ -42,6 +44,8 @@ const ROUTES = (props) => (
                         <Route key={index.toString()} exact path={path} render={prp => <C {...prp} {...props} name={name} _id={_id} auth={auth} requires={requires} />} />
                     ))
                 }
+                
+                <Route exact path={paths.credits} component={Credits} />
                 
                 <Route exact path={paths.playCustom} component={PlayCustom} />
                 <Route exact path={paths.createCustom} component={CreateCustom} />

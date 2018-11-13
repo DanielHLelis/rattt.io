@@ -2,11 +2,13 @@ const prefix = '';
 
 const paths = {
     index: prefix + '/',
-    main: prefix + '/main',
+    main: prefix + '/index',
+    void: prefix + '/void',
+    credits: prefix + '/credits',
     tradicional: prefix + '/classic',
-    playCustom: '/custom/play',
-    createCustom: '/custom/create',
-    gameCustom: '/custom/game',
+    playCustom: prefix + '/custom/play',
+    createCustom: prefix + '/custom/create',
+    gameCustom: prefix + '/custom/game',
     nf: prefix + '/404'
 };
 

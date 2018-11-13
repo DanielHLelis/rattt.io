@@ -95,6 +95,7 @@ export default class CreateCustom extends Component{
         let extract = this.export();
         if(!extract) return this.setState({error: 'Seleção muito pequena!'})
         if(extract.name.length < 1) return this.setState({error: "Insira um nome!"});
+        if(extract.name.length > 30) return this.setState({error: "Limite de 30 caracteres!"});
         if(extract.sequence < 2) return this.setState({error: 'Sequência muito pequena!'});
         if(extract.width*extract.height <= extract.sequence * 2) return({error: 'Muito pequeno para uma sequência de ' + this.state.sequence + '!'});
         if(extract.width < 3 && extract.height < 3) return this.setState({error: 'Muito pequeno!'});

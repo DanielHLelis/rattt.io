@@ -4,6 +4,8 @@ import { Button } from 'react-bootstrap'
 
 import { NavLink as Link } from 'react-router-dom'
 
+import paths from 'config/paths'
+
 import cheet from 'cheet.js'
 
 class IntroScreen extends Component {
@@ -43,7 +45,7 @@ class IntroScreen extends Component {
           <p className='logo primary lt'>Rattt.io</p>
           <p className="mt white" >O site mais rato de Tic Tac Toe</p>
         </div>
-        <Link to="/main">
+        <Link to={paths.main}>
           <Button size='lg' className="mt" variant="primary" onClick={this._setEnter} >
                 Entrar
           </Button>
