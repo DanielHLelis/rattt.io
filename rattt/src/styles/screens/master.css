@@ -283,6 +283,19 @@
 }
 /*Main*/
 
+.link-btn{
+  color: var(--primary);
+  transition: .3s;
+}
+.btn:hover .link-btn{
+  color: #fff;
+}
+.link-btn:hover{
+  color: #fff;
+}
+
+/*Home*/
+
 /*Media Queries*/
 
 @media only screen and (max-width: 425px){

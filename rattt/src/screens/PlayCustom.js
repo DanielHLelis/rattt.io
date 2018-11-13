@@ -55,7 +55,7 @@ export default class PlayCustom extends Component{
 
         return this.state.data.map((el, index) => (
             <ButtonGroup key={index.toString()} >
-                <Button variant="outline-primary" ><Link className="primary" to={`${paths.gameCustom}/${el._id}`}>{el.name}</Link></Button>
+                <Button variant="outline-primary" ><Link className="link-btn" to={`${paths.gameCustom}/${el._id}`}>{el.name}</Link></Button>
                 <Button variant="outline-primary" onClick={() => this.deleteItem(el._id)} ><Icon icon={faTrashAlt} /></Button>
             </ButtonGroup>
         ));

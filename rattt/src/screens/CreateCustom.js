@@ -112,9 +112,9 @@ class CreateCustom extends Component{
 
         window.localStorage.setItem('customLayouts', JSON.stringify(store));
 
-        this.setState({...this.default, matrix: []});
-
-        NotificationManager.info(`"${extract.name}" salvo!`, 'Salvo!', 7500, () => this.props.history.push(paths.playCustom));
+        this.setState({...this.default, matrix: []}, () => {
+            NotificationManager.info(`"${extract.name}" salvo!`, 'Salvo!', 7500, () => this.props.history.push(paths.playCustom))
+        });
     
     }
     
@@ -217,10 +217,12 @@ class CreateCustom extends Component{
             _id: new Date().getTime().toString(36) + 'xxxxxxxxxx'.replace(/x/g, () => Math.floor(Math.random()*36).toString(36)),
             disabled: invalid,
             name: this.state.name || 'Novo Modo',
-            sequence: this.state.sequence || 3,
+            sequence: parseInt(this.state.sequence, 10) || 3,
             gravity: this.state.gravity,
-            players: this.state.players || 2
+            players: parseInt(this.state.players, 10) || 2
         }
+
+        
     }
 }
 
@@ -238,6 +240,8 @@ const Toolbar = styled.div`
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     & > *{
         margin: 0 30px;
     }

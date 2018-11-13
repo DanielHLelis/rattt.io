@@ -32,13 +32,13 @@ export default class GameHandler extends Component{
 
     _playerConfig = (divide = false, first = true) => {
         let buttons = [], {players} = this.state;
-        for(let i = 0; i < players.length / 2 && (!divide || first); i++)
-            if(!players[i].disabled)
+        for(let i = 0; i <= Math.floor(players.length / 2) && (!divide || first); i++)
+            if(players[i] && !players[i].disabled)
             buttons.push(
                 <Button key={`l${i}`} variant="outline-primary" onClick={() => this.setPlayer(players[i], i)}><span className="st">{this.ConfigIcon()} {`${players[i].name} `}</span></Button>
             )
-        for(let i = players.length / 2; i < players.length && (!divide || !first); i++)
-            if(!players[i].disabled)
+        for(let i = Math.floor(players.length / 2) + 1; i < players.length && (!divide || !first); i++)
+            if(players[i] && !players[i].disabled)
             buttons.push(
                 <Button key={`r${i}`} variant="outline-primary" onClick={() => this.setPlayer(players[i], i)}><span className="st">{this.ConfigIcon()} {`${players[i].name} `}</span></Button>
             )

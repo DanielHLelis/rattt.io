@@ -157,5 +157,5 @@ const Grid = styled.div`
     width: 100%;
     min-height: var(--noHeaderHeight);
     display: grid;
-    grid-template-rows: 0.25fr 1fr 1fr 1fr;
+    /* grid-template-rows: 0.25fr 1fr 1fr 1fr; */
     `;

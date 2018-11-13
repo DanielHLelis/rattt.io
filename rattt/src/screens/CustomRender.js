@@ -77,6 +77,7 @@ const spin = keyframes`
 
 const Loader = styled.div`
     border-radius: 50%;
+    margin: auto;
     width: ${props => props.size || '50px'};
     height: ${props => props.size || '50px'};
     animation: ${spin} ${props => props.duration || '2s'} linear infinite;
