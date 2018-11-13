@@ -25,10 +25,10 @@ export default class SideBar extends Component{
 
         this.state = {
             tttCollapse: {},
-            scrollY: window.scrollY
         }
-    }
 
+        this.container = React.createRef();
+    }
     toggleTTT = (index, val = !this.state.tttCollapse[index]) => {
         let tttCollapse = this.state.tttCollapse;
         tttCollapse[index] = val;
@@ -38,7 +38,7 @@ export default class SideBar extends Component{
         <Link {...props} onClick={(e) => {
             if(props.onClick) props.onClick(e);
             this.props.toggleSidebar(false);
-        }} className={props.className + ' sidebar-item nav-link'} activeClassName='sidebar-item-active' exact={true} to={props.href}>
+        }} className={props.className + ' sidebar-item nav-link sst'} activeClassName='sidebar-item-active' exact={true} to={props.href}>
                 {props.children}
         </Link>
         
@@ -50,7 +50,12 @@ export default class SideBar extends Component{
     
     );
 
-    _translate = () => this.state.scrollY > this.state.maxTrans ? this.state.maxTrans : this.state.scrollY;
+    _translate = () => {
+        if(this.container.current)
+            return this.props.scrollY > this.container.current.offsetTop ? this.container.current.offsetTop : this.props.scrollY;
+        else
+            return 0;
+    }
 
     MainOptions = (props) => 
         <div {...props}>
@@ -59,29 +64,37 @@ export default class SideBar extends Component{
             ))}
         </div>
 
-    CampanhaOptions = (props) =>
+    CampanhaOptions = (props) =>(
         <div {...props}>
             {Campanha.map((el, index) => (
                 <this.NavLink key={index.toString()} onClick={() => this.toggleTTT(props.index, false)} href={el.href} className="sideCollapse" >{el.name}</this.NavLink>
             ))}
         </div>
+    )
+
 
     render(){
         let {NavLink, NavItem} = this;
 
-        window.onscroll = (e) => {
-            if(window.document.getElementById('side-container'))
-                this.setState({scrollY: window.scrollY,
-                    maxTrans: window.document.getElementById('side-container').offsetTop});
-        }
+        // window.addEventListener('scroll', (e) => {
+        //     if(window.document.getElementById('side-container'))
+        //         console.log(window.document.getElementById('side-container').offsetTop)
+        //         this.setState({scrollY: window.scrollY,
+        //             maxTrans: window.document.getElementById('side-container').offsetTop});
+        // });
 
         return(
             <div className={'sidebar' + (this.props.visible ? '' : ' hide')} visible={this.state.visible} >
                 {/* <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={400}  style={{height: '100vh'}}> */}
-                <div className="scrollSide" >
-                    <Nav onScroll={e => console.log(e)} id='side-container' className='flex-column' style={{
+                <div 
+                    id='side-container' 
+                    className="scrollSide" 
+                    style={{
                         transform: `translateY(-${this._translate()}px)`
-                    }}>
+                    }} 
+                    ref={this.container}
+                >
+                    <Nav onScroll={e => console.log(e)}  className='flex-column'>
                     
                         <NavItem onClick={(e) => window.localStorage.setItem('firstEnter', 'true')} href={paths.index}>
                             Intro

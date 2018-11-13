@@ -26,7 +26,8 @@ export default class Master extends Component{
             modalTitle: '',
             modalContent: '',
             modalError: '',
-            sideBar: false
+            sideBar: false,
+            scrollY: 0
         }
     }
 
@@ -34,6 +35,10 @@ export default class Master extends Component{
         if(!window.localStorage.getItem('salt') || window.localStorage.getItem('salt').length === 0){
             window.localStorage.setItem('salt', new Date().getTime().toString(36) + 'xxxxxxxxxx'.replace(/x/g, () => Math.floor(Math.random()*36).toString(36)));
         }
+    }
+
+    handleScroll = (e) => {
+        this.setState({scrollY: e.target.scrollTop})
     }
 
     handleError = (msg) => {
@@ -61,11 +66,11 @@ export default class Master extends Component{
         window.ratttAlert = this.ratttAlert;
 
         return(
-            <Scrollbars autoHide autoHideTimeout={1000} autoHideDuration={400} className="master" >
+            <Scrollbars onScroll={this.handleScroll} autoHide autoHideTimeout={1000} autoHideDuration={400} className="master" >
                 <div className="master">
                     <NotificationContainer/>
                     <RatttAlert {...this.state} handleError={this.handleError} handleClose={this.handleClose} />
-                    <SideBar visible={this.state.sideBar} toggleSidebar={this.toggleSidebar} />
+                    <SideBar visible={this.state.sideBar} scrollY={this.state.scrollY} toggleSidebar={this.toggleSidebar} />
                     <NavBox sidebar={this.state.sideBar} brandOnClick={this.toggleSidebar} />
 
                     {this.props.children}

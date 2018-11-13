@@ -307,6 +307,16 @@
     left: calc((-1 * var(--sideWidth)));
   }
 }
+@media only screen and (max-width: 854px){
+  .sidebar{
+    --sideBreath: 0vw;
+    --sideWidth: 100vw;
+    --sidePadding: 2.5vw;
+  }
+  .sidebar.sidebar.hide:hover{
+    left: calc((-1 * var(--sideWidth)));
+  }
+}
 
 @media only screen and (max-width: 375px){
   .giant{

@@ -12,6 +12,9 @@ import {
     Switch
 } from 'components/core/Inputs'
 
+import paths from 'config/paths'
+import { withRouter } from 'react-router-dom'
+
 const sequenceRule = {
     min: 2,
     max: 15
@@ -21,7 +24,8 @@ const playersRule = {
     max: 8
 }
 
-export default class CreateCustom extends Component{
+
+class CreateCustom extends Component{
     constructor(props){
         super(props);
 
@@ -107,8 +111,10 @@ export default class CreateCustom extends Component{
         store.unshift(extract);
 
         window.localStorage.setItem('customLayouts', JSON.stringify(store));
-        NotificationManager.info(`"${extract.name}" salvo!`, 'Salvo!');
+
         this.setState({...this.default, matrix: []});
+
+        NotificationManager.info(`"${extract.name}" salvo!`, 'Salvo!', 7500, () => this.props.history.push(paths.playCustom));
     
     }
     
@@ -250,3 +256,6 @@ const Error = styled.div`
     color: var(--red);
     text-align: center;
 `;
+
+
+export default withRouter(CreateCustom)
