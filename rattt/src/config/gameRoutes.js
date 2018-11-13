@@ -2,7 +2,6 @@ import paths from 'config/paths'
 import generateLocal from 'utils/generateLocal'
 
 import GameHandler from 'components/GameHandler'
-import symbols from './symbols';
 
 import CampanhaHandler from 'screens/CampanhaHandler'
 
@@ -84,7 +83,7 @@ const Routes = [
             28, 34,
             35, 36, 40, 41,
             42, 43, 44, 46, 47, 48],
-            possiblePlayers: ['Local', 'Brandom', 'Greed']
+            possiblePlayers: ['Local', 'Brandom']
         }
     },
     {
