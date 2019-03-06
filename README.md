@@ -1,2 +1,2 @@
 # rattt.io
-Tic tac toe service based on React framework.
+Planned some changes in a near future, maybe online support and optimizing
